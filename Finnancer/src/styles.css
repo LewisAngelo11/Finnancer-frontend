@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+
+body {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  align-items: center;     /* CAMBIAR, ES SOLO PRUEBA*/
+  height: 100vh;           /* asegura que ocupe toda la altura del viewport */
+}

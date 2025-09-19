@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-2 w-full">
+    <h2 class="text-white font-medium text-3xl">Bienvenido a Finnacner</h2>
+    <p class="text-gray-400">¿Listo para controlar las finanzas de tu negocio?</p>
+    <div class="flex flex-col self-bottom items-center justify-center p-5 gap-4 rounded-t-4xl w-full h-3/4 bg-white">
+        <div class="flex justify-between w-3/4 rounded-full p-1 bg-gray-200 p-auto gap-4 w-full text-gray-400">
+            <button [class.btn-clicked]="buttonSelected === 'login'" (click)="changeModal('login')" class="flex items-center justify-center py-4 px-5 w-full">Iniciar Sesión</button>
+            <button [class.btn-clicked]="buttonSelected === 'register'" (click)="changeModal('register')" class="flex items-center justify-center py-4 px-5 w-full">Registrarse</button>
+        </div>
+        @if (buttonSelected === 'login') {
+            <app-login></app-login>
+        } @else if (buttonSelected === 'register'){
+            <app-register></app-register>
+        }
+    </div>
+</div>
