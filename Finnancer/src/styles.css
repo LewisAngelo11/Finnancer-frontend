@@ -3,6 +3,7 @@
 
 html, body {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   background-color: black;
@@ -12,5 +13,4 @@ body {
   display: flex;
   justify-content: center; /* centra horizontalmente */
   align-items: center;     /* CAMBIAR, ES SOLO PRUEBA*/
-  height: 100vh;           /* asegura que ocupe toda la altura del viewport */
 }
