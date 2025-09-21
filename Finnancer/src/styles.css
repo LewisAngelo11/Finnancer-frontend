@@ -11,6 +11,5 @@ html, body {
 
 body {
   display: flex;
-  justify-content: center; /* centra horizontalmente */
-  align-items: center;     /* CAMBIAR, ES SOLO PRUEBA*/
+  justify-content: center;
 }
