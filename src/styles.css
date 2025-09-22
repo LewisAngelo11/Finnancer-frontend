@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import "tailwindcss";
+@import "tailwindcss"; /* Import para tailwind CSS de manera global */
+@import 'boxicons/css/boxicons.min.css'; /* Import para los iconos de boxicons */
 
 html, body {
   height: 100%;

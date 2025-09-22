@@ -1,10 +1,12 @@
 <div class="w-screen">
+    <!-- Header que aparece en pantallas de escritorio -->
     <header class="desktop-menu">
         <button>Mi Cuenta</button>
         <button>Transacciones</button>
         <button>Categorías</button>
         <button>Balance</button>
     </header>
+    <!-- Header que aparece en móviles -->
     <header class="mobile-header relative z-50 flex flex-row items-center w-full h-auto p-5 z-20">
         <div
             (click)="toggle()"
@@ -15,17 +17,30 @@
             <span class="h-1 w-5 rounded-full bg-green-400"></span>
         </div>
     </header>
+    <!-- Navbar que se muestra si el signal "isShow es true, y se oculta si es false" -->
     @if (isShow()) {
         <nav
             [animate.enter]="enterAnimation()"
             animate.leave="slide-in-up"
-            class="menu p-4 absolute top-15 right-0 z-40 w-full flex-col items-center"
-        >   
+            class="menu p-4 absolute top-14 right-0 z-40 w-full flex-col items-center"
+        >
             <ul class="text-white flex flex-col gap-2 items-end w-full">
-                <li>Mi cuenta</li>
-                <li>Transacciones</li>
-                <li>Categorías</li>
-                <li>Balance</li>
+                <li class="flex items-center justify-center gap-2">
+                    Mi cuenta
+                    <i class='bx  bx-user text-xl'  ></i>
+                </li>
+                <li class="flex items-center justify-center gap-2">
+                    Transacciones
+                    <i class='bx  bx-dollar text-xl'  ></i>
+                </li>
+                <li class="flex items-center justify-center gap-2">
+                    Categorías
+                    <i class='bx  bx-bar-chart-square text-xl'  ></i>
+                </li>
+                <li class="flex items-center justify-center gap-2">
+                    Balance
+                    <i class='bx  bx-book text-xl'  ></i>
+                </li>
             </ul>
         </nav>
     }
