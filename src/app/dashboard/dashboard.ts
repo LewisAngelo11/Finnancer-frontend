@@ -8,5 +8,5 @@ import { HeaderDashboard } from '../header-dashboard/header-dashboard';
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
-  
+  presupuesto: number = 200500;
 }
