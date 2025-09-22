@@ -39,4 +39,33 @@
             </div>
         </div>
     </div>
+
+    <!-- Balance del dashboard -->
+    <div class="flex flex-col w-full px-5 py-3 gap-2 text-white">
+        <!-- Ingresos -->
+        <div class="flex flex-row items-center justify-between gap-2 w-full">
+            <div class="flex flex-row justify-between w-full">
+                <h2>Ingresos</h2>
+                <div class="flex flex-row">
+                    <p>{{signo}}</p> <!-- Pendiente de corregir en el ts -->
+                    <p>{{calcularIngresos(ingresosMensuales, ingresosMinimos)}}</p>
+                </div>
+            </div>
+        </div>
+        <span class="w-full h-1 rounded-full bg-green-400"></span>
+        <p class="font-thin">${{ingresosMensuales}} de ${{ingresosMinimos}}</p>
+
+        <!-- Egresos -->
+        <div class="flex flex-row items-center justify-between gap-2 w-full">
+            <div class="flex flex-row justify-between w-full">
+                <h2>Egresos</h2>
+                <div class="flex flex-row">
+                    <p>{{signo}}</p> <!-- Pendiente de corregir en el ts -->
+                    <p>{{calcularEgresos(egresosMensuales, egresosMinimos)}}</p>
+                </div>
+            </div>
+        </div>
+        <span class="w-full h-1 rounded-full bg-green-400"></span>
+        <p class="font-thin">${{egresosMensuales}} de ${{egresosMinimos}}</p>
+    </div>
 </div>
