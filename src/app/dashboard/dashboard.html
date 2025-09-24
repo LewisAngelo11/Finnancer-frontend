@@ -22,7 +22,7 @@
                 <i class='bx  bx-bell text-xl'  ></i> 
             </button>
             <button
-                class="flex items-center justify-center bg-green-400 rounded-full p-2 w-12 h-12"
+                class="bg-green-primary flex items-center justify-center rounded-full p-2 w-12 h-12"
             >
                 <i class='bx  bxs-user text-xl'  ></i>
             </button>
@@ -35,7 +35,7 @@
             <h2 class="font-thin text-xl">Tu Presupuesto</h2>
             <div class="flex flex-row gap-2 items-center">
                 <p class="text-3xl font-medium">{{presupuesto}}</p>
-                <p class="text-xs bg-gray-800 p-1 rounded-full">MXN</p>
+                <p class="bg-categories text-xs p-1 rounded-full">MXN</p>
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <span class="w-full h-1 rounded-full bg-green-400"></span>
+        <span class="bg-green-primary w-full h-1 rounded-full"></span>
         <p class="font-thin">${{ingresosMensuales}} de ${{ingresosMinimos}}</p>
 
         <!-- Egresos -->
@@ -65,7 +65,61 @@
                 </div>
             </div>
         </div>
-        <span class="w-full h-1 rounded-full bg-green-400"></span>
+        <span class="bg-green-primary w-full h-1 rounded-full"></span>
         <p class="font-thin">${{egresosMensuales}} de ${{egresosMinimos}}</p>
+    </div>
+
+    <!-- Categorías del dashboard -->
+    <div class="w-full p-4 flex flex-col gap-3">
+        @for (categoria of categorias; track categoria.id) {
+            <div class="bg-categories flex flex-col rounded-3xl p-4 w-full text-white gap-1 justify-between">
+                <p class="font-thin">{{categoria.nombre}}</p>
+                <p class="text-lg">{{categoria.total}}</p>
+            </div>
+        }
+    </div>
+
+    <!-- Grafica de pastel de categorias -->
+    <div class="w-full px-4 flex flex-col h-auto">
+        <div class="w-full p-4 flex flex-col bg-white rounded-3xl gap-1">
+            <h2 class="font-medium text-xl">Estadísticas</h2>
+            <div class="w-full flex items-center justify-center">
+                @if (isBrowser){
+                    <div class="w-[80%] flex items-center justify-center">
+                        <canvas
+                            baseChart
+                            [data]="pieChartData"
+                            [options]="pieChartOptions"
+                            [type]="'pie'">
+                        </canvas>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Grafica de barras gastos a lo largo del tiempo -->
+    <div class="w-full px-4 flex flex-col h-auto mt-4">
+        <div class="bg-green-secundary w-full p-4 flex flex-col rounded-3xl gap-1 overflow-x-auto">
+            <div class="flex w-full justify-between items-center">
+                <h2>Gastos al largo del tiempo</h2>
+                <div class="flex items-center justify-center gap-2">
+                    <p>{{gastosTotales}}</p>
+                    <p class="bg-categories text-xs p-1 rounded-full text-white">MXN</p>
+                </div>
+            </div>
+            @if (isBrowser) {
+                <div class="w-full flex items-center">
+                    <canvas
+                        baseChart
+                        [data]="barChartData"
+                        [options]="barChartOptions"
+                        [type]="barChartType"
+                        (chartHover)="chartHovered($event)"
+                    >
+                    </canvas>
+                </div>
+            }
+        </div>
     </div>
 </div>
