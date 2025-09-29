@@ -19,13 +19,24 @@ export class Dashboard {
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
 
+  // Datos de prueba
   categorias = [
     {id: 1, nombre: 'Ingresos de Ventas', total: 5499},
     {id: 2, nombre: 'Servicios Básicos', total: 2599},
     {id: 3, nombre: 'Otros Ingresos', total: 3769},
     {id: 4, nombre: 'Otros Egresos', total: 1229},
-  ]
+  ];
 
+  // Datos de prueba
+  ultimasTransacciones = [
+    {id: 1, icono: 3, nombre: 'Otros Ingresos', monto: 1500},
+    {id: 2, icono: 1, nombre: 'Ingresos de Ventas', monto: 2230},
+    {id: 3, icono: 1, nombre: 'Ingresos de Ventas', monto: 3499},
+    {id: 4, icono: 2, nombre: 'Servicios Básicos', monto: 1199},
+    {id: 5, icono: 1, nombre: 'Ingresos de Ventas', monto: 3299}
+  ];
+
+  // Datos de prueba
   presupuesto: number = 200500;
   ingresosMensuales: number = 10000;
   ingresosMinimos: number = 4000;

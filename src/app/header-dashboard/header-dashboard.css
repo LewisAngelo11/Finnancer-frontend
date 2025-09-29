@@ -8,6 +8,14 @@
   background: #292929;
 }
 
+.bg-green-primary {
+    background-color: #46E24D;
+}
+
+.bg-green-secundary {
+    background-color: #00C40A;
+}
+
 @media (max-width: 768px) {
   .mobile-header {
     display: block;
@@ -27,7 +35,7 @@
 }
 
 .slide-in-down {
-    animation: slideInDown 300ms ease-out forwards;
+  animation: slideInDown 300ms ease-out forwards;
 }
 
 @keyframes slideInUp {
@@ -40,5 +48,5 @@
 }
 
 .slide-in-up {
-    animation: slideInUp 300ms ease-in forwards;
+  animation: slideInUp 300ms ease-in forwards;
 }
