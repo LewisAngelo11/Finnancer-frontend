@@ -1,0 +1,35 @@
+.bg-green-primary {
+  background-color: #46E24D;
+}
+
+.bg-green-secundary {
+  background-color: #00C40A;
+}
+
+.bg-gray {
+    background-color: #292929;
+}
+
+@keyframes bounce-fade {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.99);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-bounce-scale {
+    background-color: #46E24D;
+    color: #292929;
+    animation: bounce-fade 0.5s ease-in-out;
+}

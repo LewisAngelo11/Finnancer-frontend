@@ -1,0 +1,72 @@
+<div class="w-screen p-2 flex flex-col">
+    <div class="w-full p-4 flex flex-col">
+        <button
+            (click)="goBackToDash()"
+            class="bg-green-primary flex items-center justify-center rounded-full w-10 h-auto p-2"
+        >
+            <i class='bx  bx-chevron-left text-2xl'  ></i> 
+        </button>
+    </div>
+
+    <!-- Información de la cuenta -->
+    <div class="flex flex-col items-start justify-center gap-2 py-4">
+        <h2 class="text-white font-bold ml-2">Mi Cuenta</h2>
+        <div class="bg-gray w-full h-auto p-5 flex flex-row items-center justify-between rounded-2xl">
+            <div class="flex flex-row items-start gap-4">
+                <div class="flex items-center justify-center w-12 h-12 p-2 rounded-full bg-green-primary">
+                    <i class='bx  bxs-user text-2xl'  ></i>
+                </div>
+                <div class="text-white flex flex-col items-start justify-center">
+                    <p class="text-lg">{{nameAccount}}</p>
+                    <p class="text-base font-thin text-gray-400">{{mailAccount}}</p>
+                </div>
+            </div>
+            <select class="bg-green-primary rounded-full border-1 px-1 w-auto">
+                @for (perfil of perfiles; track perfil.id){
+                    <option>{{perfil.name}}</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="flex flex-col items-start justify-center gap-2 py-4">
+        <h2 class="text-white font-bold ml-2">Ajustes de mi cuenta</h2>
+        <div class="bg-gray w-full h-auto flex flex-row items-center justify-between rounded-2xl">
+            <div class="w-full flex flex-col items-center justify-center gap-2 text-white p-2">
+                <button
+                    [class.animate-bounce-scale]="buttonSelected() === 1"
+                    (click)="buttonSelect(1)"
+                    class="p-3 w-full rounded-2xl font-medium"
+                >
+                    Información
+                </button>
+                <button
+                    [class.animate-bounce-scale]="buttonSelected() === 2"
+                    (click)="buttonSelect(2)"
+                    class="p-3 w-full rounded-2xl font-medium"
+                >
+                    Perfiles
+                </button>
+                <button
+                    [class.animate-bounce-scale]="buttonSelected() === 3"
+                    (click)="buttonSelect(3)"
+                    class="p-3 w-full rounded-2xl font-medium"
+                >
+                    Seguridad
+                </button>
+            </div>
+        </div>
+    </div>
+
+    @if (buttonSelected() === 1) {
+        <app-info-account
+            [nombreCuenta]="nameAccount"
+            [correo]="mailAccount"
+            [perfilesActivos]="activeProfiles"
+            [fechaRegistro]="registerDate"
+            [presupuesto]="budget"
+            [ingresosMinimo]="minimumIncomes"
+            [egresosMaximos]="maximumSpendings"
+        ></app-info-account>
+    }
+</div>

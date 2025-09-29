@@ -1,0 +1,71 @@
+<div class="w-full flex flex-col items-start justify-center h-auto bg-white p-4 rounded-2xl gap-3">
+    <h2 class="font-medium ml-2 text-2xl">Información de la Cuenta</h2>
+    <div class="flex flex-col items-start justify-center p-4 bg-gray-300 rounded-2xl border-1 border-gray-400 w-full">
+        <h2 class="text-gray-500">NOMBRE DE USUARIO</h2>
+        <p>{{nombreCuenta()}}</p>
+    </div>
+
+    <div class="flex flex-col items-start justify-center p-4 bg-gray-300 rounded-2xl border-1 border-gray-400 w-full">
+        <h2 class="text-gray-500">CORREO ELECTRÓNICO</h2>
+        <p>{{correo()}}</p>
+    </div>
+
+    <div class="flex flex-col items-start justify-center p-4 bg-gray-300 rounded-2xl border-1 border-gray-400 w-full">
+        <h2 class="text-gray-500">PERFILES ACTIVOS</h2>
+        <p>{{perfilesActivos()}}</p>
+    </div>
+
+    <div class="flex flex-col items-start justify-center p-4 bg-gray-300 rounded-2xl border-1 border-gray-400 w-full">
+        <h2 class="text-gray-500">FECHA DE REGISTRO</h2>
+        <p>{{fechaRegistro()}}</p>
+    </div>
+
+    <div class="flex flex-col w-full my-2 gap-3">
+        <!-- Input del nombre del usuario -->
+        <div class="flex flex-col items-start justify-center gap-1 w-full">
+            <label>Nombre de la cuenta</label>
+            <input
+                type="text"
+                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
+                [ngModel]="nombreCuenta()"
+            >
+        </div>
+        <!-- Input del correo del usuario -->
+        <div class="flex flex-col items-start justify-center gap-1 w-full">
+            <label>Correo Electrónico</label>
+            <input 
+                type="text"
+                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
+                [ngModel]="correo()"
+            >
+        </div>
+        <!--  -->
+        <div class="flex flex-col items-start justify-center gap-1 w-full">
+            <label>Presupuesto Mensual</label>
+            <input
+                type="text"
+                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
+                [ngModel]="presupuesto()"
+            >
+        </div>
+
+        <div class="flex flex-col items-start justify-center gap-1 w-full">
+            <label>Ingresos Mínimos</label>
+            <input
+                type="text"
+                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
+                [ngModel]="ingresosMinimo()"
+            >
+        </div>
+
+        <div class="flex flex-col items-start justify-center gap-1 w-full">
+            <label>Egresos Máximos</label>
+            <input
+                type="text"
+                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
+                [ngModel]="egresosMaximos()"
+            >
+        </div>
+        <button class="animate-bounce-scale bg-green-primary p-4 rounded-2xl font-bold">Guardar Cambios</button>
+    </div>
+</div>
