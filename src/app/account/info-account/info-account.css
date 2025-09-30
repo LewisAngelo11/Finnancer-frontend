@@ -9,27 +9,22 @@
 @keyframes bounce-fade {
   0% {
     transform: scale(0.95);
-    opacity: 0;
   }
   40% {
     transform: scale(1.02);
-    opacity: 1;
   }
   60% {
     transform: scale(0.99);
   }
   100% {
     transform: scale(1);
-    opacity: 1;
   }
 }
 
-.animate-bounce-scale {
-    background-color: #46E24D;
-    color: #292929;
-    animation: bounce-fade 0.5s ease-in-out;
+.btnSaveData {
+  cursor: pointer;
 }
 
-.animate-bounce-scale {
-    animation: bounce-fade 0.5s ease-in-out;
+.btnSaveData:active {
+  animation: bounce-fade 0.5s ease-in-out;
 }
