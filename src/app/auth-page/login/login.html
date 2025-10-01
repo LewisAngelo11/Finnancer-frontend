@@ -1,0 +1,32 @@
+<div class="flex flex-col items-center justify-center p-1 gap-5 w-full h-auto slide-in-down">
+    <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
+        <label>Correo Electrónico</label>
+        <input
+            type="text"
+            placeholder="Ingrese su correo"
+            class="w-full p-3 md:h-15 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+    </div>
+    <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
+        <label>Contraseña</label>
+        <input
+            type="password"
+            placeholder="Ingrese su contraseña"
+            class="w-full p-3 md:h-15 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+        >
+    </div>
+    <div class="flex items-center justify-between w-full slide-in-down-2">
+        <div class="flex gap-2 justify-start items-center">
+            <input type="checkbox">
+            <p>Recordarme</p>
+        </div>
+        <nav>
+            <a routerLink="restorePassw" class="text-green-400">¿Olvidó su contraseña?</a>
+        </nav>
+    </div>
+    <button
+        (click)="goToDashboard()"
+        class="flex items-start justify-center font-bold w-80 h-auto p-3 rounded-lg bg-green-400 m-4 slide-in-down-2"
+    >
+        Iniciar Sesión
+    </button>
+</div>

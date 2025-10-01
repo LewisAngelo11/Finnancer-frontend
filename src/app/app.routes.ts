@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthPage } from './auth-page/auth-page';
-import { RestorePassw } from './restore-passw/restore-passw';
+import { RestorePassw } from './auth-page/restore-passw/restore-passw';
 import { Dashboard } from './dashboard/dashboard';
 import { Account } from './account/account';
 
