@@ -4,7 +4,7 @@
     
     <!-- Buscador y botones de notificaciones y usuario -->
     <div class="flex flex-row justify-between w-full p-4 gap-2">
-        <div class="relative flex flex-row">
+        <div class="buttons slide-in-down relative flex flex-row">
             <input
                 type="text"
                 placeholder="Buscar"
@@ -18,12 +18,13 @@
         </div>
         <div class="flex flex-row gap-2">
             <button
-                class="flex items-center justify-center bg-white rounded-full p-2 w-12 h-12"
+                class="buttons slide-in-down delay-400 flex items-center justify-center bg-white rounded-full p-2 w-12 h-12"
             >
                 <i class='bx  bx-bell text-xl'  ></i> 
             </button>
             <button
-                class="bg-green-primary flex items-center justify-center rounded-full p-2 w-12 h-12"
+                (click)="goToAccount()"
+                class="buttons slide-in-down delay-600 bg-green-primary flex items-center justify-center rounded-full p-2 w-12 h-12"
             >
                 <i class='bx  bxs-user text-xl'  ></i>
             </button>
@@ -31,7 +32,7 @@
     </div>
 
     <!-- Encabezado del Dashboard -->
-    <div class="flex flex-row items-center justify-between text-white w-full p-4">
+    <div class="slide-in-down flex flex-row items-center justify-between text-white w-full p-4">
         <h2 class="text-3xl w-1/2">Análisis de Gastos</h2>
         <div class="1/2 flex flex-col">
             <h2 class="font-thin text-xl">Tu Presupuesto</h2>
@@ -43,7 +44,7 @@
     </div>
 
     <!-- Balance del dashboard -->
-    <div class="flex flex-col w-full px-5 py-3 gap-2 text-white">
+    <div class="slide-in-down flex flex-col w-full px-5 py-3 gap-2 text-white">
         <!-- Ingresos -->
         <div class="flex flex-row items-center justify-between gap-2 w-full">
             <div class="flex flex-row justify-between w-full">
@@ -74,16 +75,19 @@
     <!-- Categorías del dashboard -->
     <div class="w-full p-4 flex flex-col gap-3">
         @for (categoria of categorias; track categoria.id) {
-            <div class="bg-categories flex flex-col rounded-3xl p-4 w-full text-white gap-1 justify-between">
-                <p class="font-thin">{{categoria.nombre}}</p>
-                <p class="text-lg">{{categoria.total}}</p>
+            <div class="slide-in-down card bg-categories flex flex-row rounded-3xl p-4 w-full text-white gap-4 justify-between items-center">
+                <p class="w-22 h-19 flex items-center justify-center font-bold p-4 rounded-full border-5 border-[#46E24D]">{{categoria.icono}}</p>
+                <div class="flex flex-col gap-1 w-full items-center items-start h-full">
+                    <p class="font-thin">{{categoria.nombre}}</p>
+                    <p class="text-lg">{{categoria.total}}</p>
+                </div>
             </div>
         }
     </div>
 
     <!-- Grafica de pastel de categorias -->
     <div class="w-full px-4 flex flex-col h-auto">
-        <div class="w-full p-4 flex flex-col bg-white rounded-3xl gap-1">
+        <div class="w-full card p-4 flex flex-col bg-white rounded-3xl gap-1">
             <h2 class="font-medium text-xl">Estadísticas</h2>
             <div class="w-full flex items-center justify-center">
                 @if (isBrowser){
@@ -102,7 +106,7 @@
 
     <!-- Grafica de barras gastos a lo largo del tiempo -->
     <div class="w-full px-4 flex flex-col h-auto mt-4">
-        <div class="bg-green-secundary w-full h-65 p-4 flex flex-col rounded-3xl gap-4 overflow-x-auto">
+        <div class="bg-green-secundary card w-full h-65 p-4 flex flex-col rounded-3xl gap-4 overflow-x-auto">
             <div class="flex w-full justify-between items-center">
                 <h2 class="font-medium text-xl">Gastos al largo del tiempo</h2>
                 <div class="flex items-center justify-center gap-2">
@@ -127,7 +131,7 @@
 
     <!-- Lista de las últimas transacciones -->
     <div class="w-full px-4 flex flex-col mt-4 h-auto">
-        <div class="bg-categories w-full h-65 p-4 flex flex-col rounded-3xl text-white gap-4">
+        <div class="bg-categories card w-full h-65 p-4 flex flex-col rounded-3xl text-white gap-4">
             <h2 class="font-medium text-xl">Últimas Transacciones</h2>
             <div class="overflow-y-auto w-auto">
                 <table class="w-full">
@@ -150,7 +154,7 @@
 
     <!-- Gráfico que visualiza los mayores gastos del mes -->
     <div class="w-full px-4 flex flex-col my-4 h-auto">
-        <div class="bg-categories w-full h-65 p-4 flex flex-col rounded-3xl text-white gap-4">
+        <div class="bg-categories card w-full h-65 p-4 flex flex-col rounded-3xl text-white gap-4">
             <h2 class="font-medium text-xl">Mayores Gastos</h2>
             <div class="overflow-auto w-full h-full">
                 <!-- Próximamente -->

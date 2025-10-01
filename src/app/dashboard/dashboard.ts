@@ -4,7 +4,13 @@ import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 
+interface Gasto {
+  id: number,
+  nombre: string,
+  monto: number
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -21,10 +27,10 @@ export class Dashboard {
 
   // Datos de prueba
   categorias = [
-    {id: 1, nombre: 'Ingresos de Ventas', total: 5499},
-    {id: 2, nombre: 'Servicios Básicos', total: 2599},
-    {id: 3, nombre: 'Otros Ingresos', total: 3769},
-    {id: 4, nombre: 'Otros Egresos', total: 1229},
+    {id: 1, icono: 1 ,nombre: 'Ingresos de Ventas', total: 5499},
+    {id: 2, icono: 2 ,nombre: 'Servicios Básicos', total: 2599},
+    {id: 3, icono: 3 ,nombre: 'Otros Ingresos', total: 3769},
+    {id: 4, icono: 4 ,nombre: 'Otros Egresos', total: 1229},
   ];
 
   // Datos de prueba
@@ -37,6 +43,20 @@ export class Dashboard {
   ];
 
   // Datos de prueba
+  mayoresGastos: Gasto[] = [
+    {id: 1, nombre: 'Servicios Básicos', monto: 859},
+    {id: 2, nombre: 'Otros Egresos', monto: 800},
+    {id: 3, nombre: 'Servcios Básicos', monto: 835},
+    {id: 4, nombre: 'Servicios Básicos', monto: 1500},
+    {id: 5, nombre: 'Otros Egresos', monto: 999},
+    {id: 6, nombre: 'Otros Egresos', monto: 599},
+    {id: 7, nombre: 'Servicios Básicos', monto: 1199},
+    {id: 8, nombre: 'Otros Egresos', monto: 633}
+  ];
+
+  private mayoresGastosSort: Gasto[] = [];
+
+  // Datos de prueba
   presupuesto: number = 200500;
   ingresosMensuales: number = 10000;
   ingresosMinimos: number = 4000;
@@ -46,6 +66,11 @@ export class Dashboard {
 
   isPositive = signal(true);
   signo: string = '';
+  private router = inject(Router);
+
+  goToAccount() {
+    this.router.navigate(['account']);
+  }
 
   calcularIngresos(ingresosMen:number, ingresosMin:number) {
     return ingresosMen - ingresosMin;
@@ -71,7 +96,7 @@ export class Dashboard {
       {
         data: [5499, 2599, 3769, 1229],
         backgroundColor: ['#000000', '#46E24D', '#00C40A', '#00C40A'],
-        borderRadius: 10
+        borderRadius: 5
       },
     ],
   };
@@ -128,6 +153,17 @@ export class Dashboard {
   }): void {
     console.log(event, active);
   }
-   
+
+  // Función para ordenar los gastos por mayor monto (EN PROCESO...)
+  mayoresGastosOrdenados() {
+    for (let i = 0; i < this.mayoresGastos.length; i++){
+      if (this.mayoresGastos[i].monto > this.mayoresGastos[i + 1].monto) {
+        this.mayoresGastosSort.push(this.mayoresGastos[i]);
+      } else {
+        this.mayoresGastosSort.push(this.mayoresGastos[i + 1]);
+      }
+    }
+    console.log(this.mayoresGastosSort);
+  }
 }
 
