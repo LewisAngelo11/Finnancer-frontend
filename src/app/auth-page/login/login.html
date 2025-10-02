@@ -4,14 +4,14 @@
         <input
             type="text"
             placeholder="Ingrese su correo"
-            class="w-full p-3 md:h-15 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+            class="card w-full p-3 md:h-15 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
     </div>
     <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
         <label>Contraseña</label>
         <input
             type="password"
             placeholder="Ingrese su contraseña"
-            class="w-full p-3 md:h-15 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+            class="card w-full p-3 md:h-15 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
         >
     </div>
     <div class="flex items-center justify-between w-full slide-in-down-2">
@@ -25,7 +25,8 @@
     </div>
     <button
         (click)="goToDashboard()"
-        class="flex items-start justify-center font-bold w-80 h-auto p-3 rounded-lg bg-green-400 m-4 slide-in-down-2"
+        class="flex items-start justify-center font-bold w-80 h-auto p-3 rounded-lg lg:rounded-xl
+                bg-green-400 m-4 slide-in-down-2 card"
     >
         Iniciar Sesión
     </button>

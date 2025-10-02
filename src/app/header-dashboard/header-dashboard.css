@@ -18,7 +18,7 @@
 
 @media (max-width: 768px) {
   .mobile-header {
-    display: block;
+    display: flex;
   }
   .desktop-menu {
     display: none;
