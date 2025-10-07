@@ -15,3 +15,76 @@ body {
   display: flex;
   justify-content: center;
 }
+
+.bg-categories {
+    background-color: #292929;
+}
+
+.bg-green-primary {
+    background-color: #46E24D;
+}
+
+.bg-green-secundary {
+    background-color: #00C40A;
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.buttons {
+    transition: transform 0.2s ease;
+}
+
+.buttons:hover {
+    transform: translateY(-3px);
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-down {
+    animation: slideInDown 700ms ease-out;
+}
+
+@keyframes slideToLeft {
+    from {
+        transform: translateX(10%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide-to-left {
+    animation: slideToLeft 800ms ease-out;
+}
+
+@keyframes slideToRight {
+    from {
+        transform: translateX(-20%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide-to-right {
+    animation: slideToRight 900ms ease-out;
+}

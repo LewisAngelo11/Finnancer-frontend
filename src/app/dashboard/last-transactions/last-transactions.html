@@ -1,0 +1,22 @@
+<!-- Lista de las últimas transacciones -->
+<div class="w-full flex flex-col h-full">
+    <div class="bg-categories card w-full h-65 lg:h-full p-4 flex flex-col rounded-3xl text-white gap-4">
+        <h2 class="font-medium text-xl">Últimas Transacciones</h2>
+        <div class="overflow-y-auto w-auto">
+            <table class="w-full">
+                <tbody class="flex flex-col gap-4">
+                    @for (transaccion of ultimasTransacciones; track transaccion.id) {
+                        <tr class="flex justify-between p-2">
+                            <td>{{transaccion.icono}}</td>
+                            <td class="font-thin">{{transaccion.nombre}}</td>
+                            <td class="font-thin">{{transaccion.monto}}</td>
+                        </tr>
+                    }
+                    @empty {
+                        <p>No hay transacciones recientes</p>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

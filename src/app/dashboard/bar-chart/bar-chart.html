@@ -1,0 +1,23 @@
+<div class="w-full flex flex-col h-full">
+    <div class="bg-green-secundary card w-full h-65 lg:h-full p-4 flex flex-col rounded-3xl gap-2 overflow-x-auto">
+        <div class="flex w-full h-auto justify-between items-center lg:px-5">
+            <h2 class="font-medium text-xl lg:text-2xl">Gastos al largo del tiempo</h2>
+            <div class="flex items-center justify-center gap-2 overflow-x-auto">
+                <p class="lg:text-4xl">${{gastosTotales}}</p>
+                <p class="bg-categories text-xs p-1 rounded-full text-white">MXN</p>
+            </div>
+        </div>
+        @if (isBrowser) {
+            <div class="w-full h-full flex items-center lg:px-5">
+                <canvas
+                    baseChart
+                    [data]="barChartData"
+                    [options]="barChartOptions"
+                    [type]="barChartType"
+                    (chartHover)="chartHovered($event)"
+                >
+                </canvas>
+            </div>
+        }
+    </div>
+</div>
