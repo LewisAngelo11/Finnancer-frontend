@@ -16,11 +16,13 @@ body {
   justify-content: center;
 }
 
-.bg-categories {
+
+/* Estilos globales para la app */
+.bg-gradient-gray-h {
     background: linear-gradient(to right, #292929, #111111);
 }
 
-.bg-gradient-gray {
+.bg-gradient-gray-v {
     background: linear-gradient(to top, #292929, #111111);
 }
 

@@ -1,11 +1,11 @@
 /* styles.css */
 .mobile-header {
   display: none;
-  background: #292929;
+  background: linear-gradient(to right, #292929, #111111);
 }
 
 .menu {
-  background: #292929;
+  background: linear-gradient(to right, #292929, #111111);
   transition: transform 0.3s ease;
 }
 
