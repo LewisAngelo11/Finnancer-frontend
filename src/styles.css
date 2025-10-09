@@ -54,6 +54,7 @@ body {
     transform: translateY(-3px);
 }
 
+/* Animaciones globales */
 @keyframes slideInDown {
     from {
         transform: translateY(-20%);
