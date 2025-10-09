@@ -1,71 +1,43 @@
-<div class="w-full flex flex-col items-start justify-center h-auto bg-white p-4 rounded-2xl gap-3">
-    <h2 class="font-medium ml-2 text-2xl">Información de la Cuenta</h2>
-    <div class="flex flex-col items-start justify-center p-4 bg-gray-300 rounded-2xl border-1 border-gray-400 w-full">
-        <h2 class="text-gray-500">NOMBRE DE USUARIO</h2>
-        <p>{{nombreCuenta()}}</p>
+<div class="bg-categories w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-3">
+    <!-- Encabezado de la información de la cuenta del usuario -->
+    <div class="flex flex-row justify-between w-full items-center py-1">
+        <h2 class="text-2xl text-white">Información</h2>
+        <button class="bg-green-primary px-4 py-2 rounded-xl">
+            Editar
+            <i class='bx  bx-edit-alt'  ></i> 
+        </button>
     </div>
+    <!-- Línea divisora -->
+    <span class="bg-gray-details w-full h-0.5"></span>
 
-    <div class="flex flex-col items-start justify-center p-4 bg-gray-300 rounded-2xl border-1 border-gray-400 w-full">
-        <h2 class="text-gray-500">CORREO ELECTRÓNICO</h2>
-        <p>{{correo()}}</p>
+    <!-- Info de la cuenta -->
+    <div class="flex flex-col p-2 gap-4">
+        <!-- Nombre del usuario -->
+        <div class="flex flex-col">
+            <label class="font-thin text-lg text-[#a4a4a4]">Nombre</label>
+            <p class="font-thin text-white text-xl">{{nombreCuenta()}}</p>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="font-thin text-lg text-[#a4a4a4]">Apellidos</label>
+            <p class="font-thin text-white text-xl">{{apellidoCuenta()}}</p>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="font-thin text-lg text-[#a4a4a4]">Correo Electrónico</label>
+            <p class="font-thin text-white text-xl">{{correo()}}</p>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="font-thin text-lg text-[#a4a4a4]">Fecha de Registro</label>
+            <p class="font-thin text-white text-xl">{{fechaRegistro()}}</p>
+        </div>
     </div>
-
-    <div class="flex flex-col items-start justify-center p-4 bg-gray-300 rounded-2xl border-1 border-gray-400 w-full">
-        <h2 class="text-gray-500">PERFILES ACTIVOS</h2>
-        <p>{{perfilesActivos()}}</p>
-    </div>
-
-    <div class="flex flex-col items-start justify-center p-4 bg-gray-300 rounded-2xl border-1 border-gray-400 w-full">
-        <h2 class="text-gray-500">FECHA DE REGISTRO</h2>
-        <p>{{fechaRegistro()}}</p>
-    </div>
-
-    <div class="flex flex-col w-full my-2 gap-3">
-        <!-- Input del nombre del usuario -->
-        <div class="flex flex-col items-start justify-center gap-1 w-full">
-            <label>Nombre de la cuenta</label>
-            <input
-                type="text"
-                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
-                [ngModel]="nombreCuenta()"
-            >
-        </div>
-        <!-- Input del correo del usuario -->
-        <div class="flex flex-col items-start justify-center gap-1 w-full">
-            <label>Correo Electrónico</label>
-            <input 
-                type="text"
-                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
-                [ngModel]="correo()"
-            >
-        </div>
-        <!--  -->
-        <div class="flex flex-col items-start justify-center gap-1 w-full">
-            <label>Presupuesto Mensual</label>
-            <input
-                type="text"
-                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
-                [ngModel]="presupuesto()"
-            >
-        </div>
-
-        <div class="flex flex-col items-start justify-center gap-1 w-full">
-            <label>Ingresos Mínimos</label>
-            <input
-                type="text"
-                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
-                [ngModel]="ingresosMinimo()"
-            >
-        </div>
-
-        <div class="flex flex-col items-start justify-center gap-1 w-full">
-            <label>Egresos Máximos</label>
-            <input
-                type="text"
-                class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500"
-                [ngModel]="egresosMaximos()"
-            >
-        </div>
-        <button class="btnSaveData bg-green-primary p-4 rounded-2xl font-bold">Guardar Cambios</button>
+    <!-- Línea divisora -->
+    <span class="bg-gray-details w-full h-0.5"></span>
+    <!-- Botón para cerrar sesión  -->
+    <div class="w-full p-2 text-white flex gap-2 items-center">
+        <i class='bx  bx-door-open text-3xl'  ></i> 
+        <button class="text-xl font-light">Cerrar sesión</button>
     </div>
 </div>

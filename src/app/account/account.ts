@@ -1,15 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { InfoAccount } from './info-account/info-account';
+import { ProfilesAccount } from './profiles-account/profiles-account';
+import { HistoryTransactions } from './history-transactions/history-transactions';
 
 @Component({
   selector: 'app-account',
-  imports: [InfoAccount],
+  imports: [InfoAccount, ProfilesAccount, HistoryTransactions],
   templateUrl: './account.html',
   styleUrl: './account.css'
 })
 export class Account {
-  nameAccount: string = 'Luis Soto Gálvez';
+  nameAccount: string = 'Luis Angel';
+  lastNameAccount: string = 'Soto Galvez';
   mailAccount: string = 'luis123@mail.com';
   registerDate: string = 'Septiembre de 2025';
   budget: number = 200500;
@@ -24,6 +28,8 @@ export class Account {
     {id: 2, name: 'Recepcionista'},
     {id: 3, name: 'Secretaria'}
   ];
+
+  currentProfile = 'Administrador';
 
   activeProfiles = this.perfiles.length;
 
@@ -41,6 +47,9 @@ export class Account {
         break;
       case 3:
         this.buttonSelected.set(3);
+        break;
+      case 4:
+        this.buttonSelected.set(4);
         break;
     }
   }
