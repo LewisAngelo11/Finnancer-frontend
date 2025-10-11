@@ -4,10 +4,12 @@ import { Router } from '@angular/router';
 import { InfoAccount } from './info-account/info-account';
 import { ProfilesAccount } from './profiles-account/profiles-account';
 import { HistoryTransactions } from './history-transactions/history-transactions';
+import { FinanceAccount } from './finance-account/finance-account';
+import { SecurityAccount } from './security-account/security-account';
 
 @Component({
   selector: 'app-account',
-  imports: [InfoAccount, ProfilesAccount, HistoryTransactions],
+  imports: [InfoAccount, ProfilesAccount, HistoryTransactions, FinanceAccount, SecurityAccount],
   templateUrl: './account.html',
   styleUrl: './account.css'
 })
@@ -38,19 +40,6 @@ export class Account {
   }
 
   buttonSelect(id: number) {
-    switch (id) {
-      case 1:
-        this.buttonSelected.set(1);
-        break;
-      case 2:
-        this.buttonSelected.set(2);
-        break;
-      case 3:
-        this.buttonSelected.set(3);
-        break;
-      case 4:
-        this.buttonSelected.set(4);
-        break;
-    }
+    this.buttonSelected.set(id);
   }
 }

@@ -1,0 +1,83 @@
+<div class="bg-gradient-gray-h slide-to-left w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-5">
+    <!-- Presupuestos y límites -->
+    <div class="w-full flex flex-col items-start gap-2 text-white">
+        <h2 class="text-2xl">Presupuestos y Límites</h2>
+        <!-- Línea divisora -->
+        <span class="bg-gray-details w-full h-0.5"></span>
+
+        <div class="w-full flex flex-col lg:flex-row justify-between gap-4 lg:gap-10 font-thin">
+            <div class="w-full flex flex-col gap-2">
+                <div class="w-full flex flex-col gap-2">
+                    <label>Presupuesto mensual</label>
+                    <input
+                        type="number"
+                        name="presupuesto"
+                        placeholder="$0.00"
+                        class="card w-full p-2 border-1 border-white rounded-lg"
+                    >
+                    <small>Cantidad máxima de gastos para el mes</small>
+                </div>
+                <div class="w-full flex flex-col gap-2">
+                    <label>Ingresos mínimos</label>
+                    <input
+                        type="number"
+                        name="ingresos"
+                        placeholder="$0.00"
+                        class="card w-full p-2 border-1 border-white rounded-lg"
+                    >
+                    <small>Monto minimo que deseas recibir en el mes</small>
+                </div>
+            </div>
+
+            <div class="w-full flex flex-col gap-2">
+                <div class="w-full flex flex-col gap-2">
+                    <label>Egresos máximos</label>
+                    <input
+                        type="number"
+                        name="egresos"
+                        placeholder="$0.00"
+                        class="card w-full p-2 border-1 border-white rounded-lg"
+                    >
+                    <small>Límite de gastos que no deberías superar</small>
+                </div>
+                <div class="w-full flex flex-col gap-2">
+                    <label>Meta de ahorro mensual</label>
+                    <input
+                        type="number"
+                        name="ahorro"
+                        placeholder="$0.00"
+                        class="card w-full p-2 border-1 border-white rounded-lg"
+                    >
+                    <small>Cantidad que deseas apartar o guardar cada mes</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ciclo de corte -->
+    <div class="w-full flex flex-col items-start justify-center md:justify-start gap-4 text-white">
+        <h2 class="text-2xl">Ciclo de corte</h2>
+        <!-- Línea divisora -->
+        <span class="bg-gray-details w-full h-0.5"></span>
+
+        <div class="w-full lg:w-2/5 flex flex-col font-thin gap-2">
+            <label>Día de corte</label>
+            <select name="corte" class="card w-full p-2 border-1 border-white rounded-lg">
+                <option value="1">Día 1</option>
+                <option value="5">Día 5</option>
+                <option value="10">Día 10</option>
+                <option value="15">Día 15</option>
+                <option value="20">Día 20</option>
+                <option value="25">Día 25</option>
+                <option value="30">Día 30</option>
+            </select>
+            <small>Selecciona el día en que inicia tu nuevo ciclo</small>
+        </div>
+        <!-- Línea divisora -->
+        <span class="bg-gray-details w-full h-0.5"></span>
+          
+        <!-- Botón de guardar -->
+        <div class="w-full flex items-center justify-center">
+            <button class="card bg-green-primary px-4 py-2 rounded-xl w-full lg:max-w-150 text-[#292929]">Guardar cambios</button>
+        </div>
+    </div>
+</div>

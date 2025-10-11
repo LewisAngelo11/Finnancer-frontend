@@ -67,7 +67,22 @@ body {
 }
 
 .slide-in-down {
-    animation: slideInDown 700ms ease-out;
+    animation: slideInDown 600ms ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-up {
+    animation: slideInUp 600ms ease-out;
 }
 
 @keyframes slideToLeft {
@@ -82,7 +97,7 @@ body {
 }
 
 .slide-to-left {
-    animation: slideToLeft 800ms ease-out;
+    animation: slideToLeft 600ms ease-out;
 }
 
 @keyframes slideToRight {
@@ -97,5 +112,5 @@ body {
 }
 
 .slide-to-right {
-    animation: slideToRight 900ms ease-out;
+    animation: slideToRight 600ms ease-out;
 }
