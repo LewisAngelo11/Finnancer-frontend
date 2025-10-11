@@ -3,6 +3,7 @@ import { AuthPage } from './auth-page/auth-page';
 import { RestorePassw } from './auth-page/restore-passw/restore-passw';
 import { Dashboard } from './dashboard/dashboard';
 import { Account } from './account/account';
+import { Categories } from './categories/categories';
 
 export const routes: Routes = [
     {
@@ -20,5 +21,9 @@ export const routes: Routes = [
     {
         path: 'account',
         component: Account,
+    },
+    {
+        path: 'categories',
+        component: Categories,
     }
 ];

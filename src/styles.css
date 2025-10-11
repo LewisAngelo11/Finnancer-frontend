@@ -22,6 +22,10 @@ body {
     background: linear-gradient(to right, #292929, #111111);
 }
 
+.bg-gradient-gray-h-2 {
+    background: linear-gradient(to left, #292929, #111111);
+}
+
 .bg-gradient-gray-v {
     background: linear-gradient(to top, #292929, #111111);
 }

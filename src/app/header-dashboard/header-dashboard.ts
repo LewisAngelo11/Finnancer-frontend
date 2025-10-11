@@ -21,5 +21,9 @@ export class HeaderDashboard {
     this.router.navigate(['/account']);
   }
 
+  goToCategories() {
+    this.router.navigate(['/categories']);
+  }
+
   enterAnimation = signal('slide-in-down');
 }
