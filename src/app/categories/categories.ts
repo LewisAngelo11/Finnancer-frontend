@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 export class Categories {
   private router = inject(Router);
   tipoOperacion: string = '';
+  modalOpen = signal(false);
+  animateModal = signal(false);
 
   // Datos de prueba
   categorias = [
@@ -22,5 +24,16 @@ export class Categories {
 
   goBackToDash() {
     this.router.navigate(['/dashboard']);
+  }
+
+  openModal() {
+    this.modalOpen.set(true);
+    setTimeout(() => this.animateModal.set(true), 10); // Hace una pausa para que se monte el modal
+  }
+
+  closeModal() {
+    this.animateModal.set(false);
+    // Espera a que termine la animación antes de ocultarlo
+    setTimeout(() => this.modalOpen.set(false), 100);
   }
 }

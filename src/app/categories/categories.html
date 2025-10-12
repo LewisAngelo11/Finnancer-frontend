@@ -1,4 +1,4 @@
-<div class="flex flex-col w-screen h-full md:items-center md:justify-center p-4 gap-5">
+<div class="flex flex-col w-screen h-auto md:items-center md:justify-center p-4 gap-5">
     <div class="w-full flex flex-col">
         <button
             (click)="goBackToDash()"
@@ -147,7 +147,10 @@
                                 <i class='bx  bx-edit-alt'  ></i> 
                                 Editar
                             </button>
-                            <button class="card bg-red-500 px-4 py-2 rounded-xl font-medium w-full text-white">
+                            <button
+                                class="card bg-red-500 px-4 py-2 rounded-xl font-medium w-full text-white"
+                                (click)="openModal()"
+                            >
                                 Dar de baja
                             </button>
                         </div>
@@ -155,5 +158,35 @@
                 }
             </div>
         </div>
+        <!-- Modal para gestionar el estatus de una categoría -->
+        @if (modalOpen()) {
+            <div class="modal">
+                <div
+                    class="modal-container" 
+                    [class.animate]="animateModal()"
+                >
+                    <div class="w-full flex flex-col items-center justify-center gap-2">
+                        <div class="w-full flex flex-row items-baseline justify-between">
+                            <h2 class="text-2xl font-semibold">Cambiar Estatus</h2>
+                            <button (click)="closeModal()" class="text-3xl">
+                                <i class='bx  bx-x'  ></i> 
+                            </button>
+                        </div>
+                        <!-- Línea divisora -->
+                        <span class="bg-gray-details w-full h-0.5"></span>
+                    </div>
+                    <div class="w-full flex flex-col items-start justify-center gap-2">
+                        <p class="font-semibold text-lg">¿Estás seguro que desea dar de baja esta categoría?</p>
+                        <p class="text-gray-400 font-light text-sm"
+                        >
+                            No podrá realizar transacciones de esta categoría mientras este dada de baja
+                        </p>
+                    </div>
+                    <button class="card w-full bg-red-500 text-white p-3 rounded-xl">
+                        Dar de baja
+                    </button>
+                </div>
+            </div>
+        }
     <div>
 </div>
