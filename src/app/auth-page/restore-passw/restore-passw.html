@@ -33,28 +33,43 @@
         </div>
     </div>
 
-    <div class="h-2/3 md:h-150 flex flex-col items-center justify-start md:justify-center p-6 gap-5 rounded-t-4xl md:rounded-none md:rounded-r-lg w-full md:w-100 bg-white slide-in-down">
-        <div class="flex flex-col w-full items-start gap-1 mt-2">
-            <label for="">Correo Electrónico</label>
-            <input type="text" placeholder="Ingerese su correo" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
-        </div>
-        <div class="flex flex-col w-full items-start gap-1">
-            <label for="">Nueva Contraseña</label>
-            <input type="password" placeholder="Ingrese la nueva contraseña" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
-        </div>
-        <div class="flex flex-col w-full items-start gap-1">
-            <label for="">Confirmar Nueva Contraseña</label>
-            <input type="password" placeholder="Confirme la nueva contraseña" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
-        </div>
-        <div class="flex flex-row w-full items-center justify-center gap-2">
-            <p>¿Recordó su contraeña?</p>
-            <a
-                class="text-green-400 cursor-pointer"
+    <div class="h-2/3 md:h-150 flex flex-col items-center justify-start md:justify-center rounded-t-4xl md:rounded-none md:rounded-r-lg w-full md:w-100 bg-white">
+        <div class="w-full hidden md:flex flex-row justify-between items-center px-6">
+            <!-- Botón -->
+            <button
+                class="flex items-center justify-center border border-black rounded-full w-10 h-auto p-2 z-10"
                 routerLink=""
             >
-                Inicar Sesión
-            </a>
+                <i class='bx bx-chevron-left text-2xl'></i> 
+            </button>
+
+            <h2 class="text-2xl font-bold flex">
+                Finn<p class="text-green-400">ancer</p>
+            </h2>
         </div>
-        <button class="flex items-start justify-center font-bold w-80 h-auto p-3 rounded-lg bg-green-400 m-4 md:m-0 slide-in-down-2">Restablecer Contraseña</button>
+        <div class="slide-in-down w-full flex flex-col p-6 gap-5 ">
+            <div class="flex flex-col w-full items-start gap-1 mt-2">
+                <label for="">Correo Electrónico</label>
+                <input type="text" placeholder="Ingerese su correo" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
+            </div>
+            <div class="flex flex-col w-full items-start gap-1">
+                <label for="">Nueva Contraseña</label>
+                <input type="password" placeholder="Ingrese la nueva contraseña" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
+            </div>
+            <div class="flex flex-col w-full items-start gap-1">
+                <label for="">Confirmar Nueva Contraseña</label>
+                <input type="password" placeholder="Confirme la nueva contraseña" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
+            </div>
+            <div class="flex flex-row w-full items-center justify-center gap-2">
+                <p>¿Recordó su contraeña?</p>
+                <a
+                    class="text-green-400 cursor-pointer"
+                    routerLink=""
+                >
+                    Iniciar Sesión
+                </a>
+            </div>
+            <button class="flex items-start justify-center font-bold w-full h-auto p-3 rounded-lg bg-green-400 mt-4 md:m-0 slide-in-down-2">Restablecer Contraseña</button>
+        </div>
     </div>
 </div>
