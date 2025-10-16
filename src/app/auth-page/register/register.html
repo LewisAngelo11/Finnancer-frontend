@@ -1,49 +1,77 @@
-<div class="flex flex-col items-center justify-center gap-1 md:gap-3 w-full h-full slide-in-down">
-    <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
-        <label for="">Nombre</label>
-        <input
-            type="text"
-            placeholder="Ingrese su nombre"
-            class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
-        >
-    </div>
-    <div class="flex flex-row items-center justify-center gap-3 w-full">
+<form [formGroup]="formSignUp" (ngSubmit)="onSumbit()">
+    <div class="flex flex-col items-center justify-center gap-1 lg:gap-3 w-full h-full slide-in-down">
         <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
-            <label for="">Apellido Paterno</label>
-            <input 
-                type="text"
-                placeholder="Apellido paterno"
+            <div class="flex gap-2 items-center">
+                <label for="name">Nombre</label>
+                @if (name?.touched && name?.invalid) {
+                    <small class="text-red-600 ml-2">Campo Obligatorio</small>
+                }
+            </div>
+            <input type="text" id="name" placeholder="Ingrese su nombre" [class.input-invalid]="name?.touched && name?.invalid"
+                formControlName="name" required (click)="resetErrorMessage()"
+                class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
+            >
+        </div>
+        <div class="flex flex-row items-center justify-center gap-3 w-full">
+            <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
+                <div class="flex gap-2 items-center">
+                    <label for="lastNameP">Apellido Paterno</label>
+                    @if (lasNameP?.touched && lasNameP?.invalid) {
+                        <small class="text-red-600 ml-2">Obligatorio</small>
+                    }
+                </div>
+                <input type="text" id="lastNameP" placeholder="Apellido paterno" [class.input-invalid]="lasNameP?.touched && lasNameP?.invalid"
+                    formControlName="lastNameP" required (click)="resetErrorMessage()"
+                    class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
+                >
+            </div>
+            <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
+                <div class="flex gap-2 items-center">
+                    <label for="lastNameM">Apellido Materno</label>
+                    @if (lastNameM?.touched && lastNameM?.invalid) {
+                        <small class="text-red-600 ml-2">Obligatorio</small>
+                    }
+                </div>
+                <input type="text" id="lastNameM" placeholder="Apellido materno" [class.input-invalid]="lastNameM?.touched && lastNameM?.invalid"
+                    formControlName="lastNameM" required (click)="resetErrorMessage()"
+                    class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
+                >
+            </div>
+        </div>
+        <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
+            <div>
+                <label for="mail">Correo Electrónico</label>
+                @if (mail?.touched && mail?.invalid) {
+                    <small class="text-red-600 ml-2">Este campo es obligatorio</small>
+                }
+            </div>
+            <input type="text" id="mail" placeholder="Ingrese su correo" [class.input-invalid]="mail?.touched && mail?.invalid"
+                formControlName="mail" required
                 class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
             >
         </div>
         <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
-            <label for="">Apellido Materno</label>
-            <input 
-                type="text"
-                placeholder="Apellido materno"
+            <div>
+                <label for="password">Contraseña</label>
+                @if (password?.touched && password?.invalid) {
+                    <small class="text-red-600 ml-2">Este campo es obligatorio</small>
+                }
+            </div>
+            <input type="password" id="password" placeholder="Ingrese su contraseña" [class.input-invalid]="password?.touched && password?.invalid"
+                formControlName="password" required (click)="resetErrorMessage()"
                 class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
             >
         </div>
-    </div>
-    <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
-        <label for="">Correo Electrónico</label>
-        <input
-            type="text"
-            placeholder="Ingrese su correo"
-            class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
+        <button
+            type="submit"
+            [disabled]="!formSignUp.valid"
+            class="card items-start justify-center font-bold w-80 h-auto p-3 rounded-lg 
+                bg-green-400 m-4 slide-in-down-2"
         >
+            Crear Cuenta
+        </button>
+        <div>
+            <p class="text-red-600">{{mensajeError}}</p>
+        </div>
     </div>
-    <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
-        <label for="">Contraseña</label>
-        <input
-            type="password"
-            placeholder="Ingrese su contraseña"
-            class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
-        >
-    </div>
-    <button
-        class="card items-start justify-center font-bold w-80 h-auto p-3 rounded-lg bg-green-400 m-4 slide-in-down-2"
-    >
-        Crear Cuenta
-    </button>
-</div>
+</form>

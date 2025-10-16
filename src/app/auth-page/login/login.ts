@@ -11,10 +11,10 @@ import { Auth } from '../../services/auth';
 })
 export class Login {
   private fb = inject(FormBuilder);
-  mensajeError = '';
-
-  constructor(private auth: Auth) {}
+  private auth = inject(Auth);
   private router = inject(Router);
+  
+  mensajeError = '';
 
   // Crear el formulario de login
   form = this.fb.group({

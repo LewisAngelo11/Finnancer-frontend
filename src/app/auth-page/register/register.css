@@ -25,3 +25,7 @@
 .slide-in-down-2 {
     animation: slideInDown 1s ease-out;
 }
+
+.input-invalid {
+    border-color: red;
+}
