@@ -6,6 +6,12 @@ import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 
+import { CategoriasDashboard } from './categorias-dashboard/categorias-dashboard';
+import { PieChart } from './pie-chart/pie-chart';
+import { BarChart } from './bar-chart/bar-chart';
+import { LastTransactions } from './last-transactions/last-transactions';
+import { MostSpendings } from './most-spendings/most-spendings';
+
 interface Gasto {
   id: number,
   nombre: string,
@@ -14,7 +20,9 @@ interface Gasto {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [HeaderDashboard, BaseChartDirective],
+  imports: [HeaderDashboard, CategoriasDashboard,
+            PieChart, BarChart,
+            LastTransactions, MostSpendings],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

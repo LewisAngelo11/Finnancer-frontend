@@ -1,0 +1,41 @@
+<div class="slide-to-left bg-gradient-gray-h w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-3">
+    <div class="w-full flex justify-between items-center text-white">
+        <h2 class="text-2xl">Gestión de Perfiles</h2>
+        <button
+            class="card bg-green-primary px-4 py-2 rounded-xl text-black flex items-center gap-1"
+        >
+            <i class='bx  bx-plus text-xl'  ></i> 
+            Nuevo Perfil
+        </button>
+    </div>
+    <!-- Línea divisora -->
+    <span class="bg-gray-details w-full h-0.5"></span>
+
+    <div class="w-full flex flex-col gap-2">
+        <div class="flex items-center gap-1">
+            <h2 class="font-medium text-white">Número de perfiles</h2>
+            <p class="font-semibold text-[#46E24D]">{{numeroPerfiles}}</p>
+        </div>
+        <!-- Tabla de los perfiles del usuario -->
+        <div class="w-full overflow-auto text-white border border-[#3B3B3B] rounded-lg">
+            <table class="min-w-100 flex flex-col items-center p-4">
+                <tbody class="w-full flex flex-col items-start gap-4 lg:p-2">
+                    @for (perfil of perfilesCreados; track perfil.id) {
+                        <tr class="w-full flex flex-row items-center justify-between">
+                            <td>{{perfil.icono}}</td>
+                            <td>{{perfil.nombre}}</td>
+                            <td>
+                                <button class="">Seleccionar</button>
+                            </td>
+                            <td>
+                                <button>
+                                    <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

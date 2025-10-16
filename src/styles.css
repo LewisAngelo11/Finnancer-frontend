@@ -15,3 +15,119 @@ body {
   display: flex;
   justify-content: center;
 }
+
+
+/* Estilos globales para la app */
+.bg-gradient-gray-h {
+    background: linear-gradient(to right, #292929, #111111);
+}
+
+.bg-gradient-gray-h-2 {
+    background: linear-gradient(to left, #292929, #111111);
+}
+
+.bg-gradient-gray-v {
+    background: linear-gradient(to top, #292929, #111111);
+}
+
+.bg-gray-details {
+    background-color: #3B3B3B;
+}
+
+.bg-green-primary {
+    background-color: #46E24D;
+}
+
+.bg-green-secundary {
+    background-color: #00C40A;
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.buttons {
+    transition: transform 0.2s ease;
+}
+
+.buttons:hover {
+    transform: translateY(-3px);
+}
+
+/* Animaciones globales */
+@keyframes slideInDown {
+    from {
+        transform: translateY(-10%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-down {
+    animation: slideInDown 600ms ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(10%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-up {
+    animation: slideInUp 600ms ease-out;
+}
+
+@keyframes slideToLeft {
+    from {
+        transform: translateX(10%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide-to-left {
+    animation: slideToLeft 600ms ease-out;
+}
+
+@keyframes slideToRight {
+    from {
+        transform: translateX(-20%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide-to-right {
+    animation: slideToRight 600ms ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 500ms ease-in;
+}

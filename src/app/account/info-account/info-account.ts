@@ -9,10 +9,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class InfoAccount {
   nombreCuenta = input<string>();
+  apellidoCuenta = input<string>();
   correo = input<string>();
-  perfilesActivos = input<number>();
   fechaRegistro = input<string>();
-  presupuesto = input<number>();
-  ingresosMinimo = input<number>();
-  egresosMaximos = input<number>();
 }

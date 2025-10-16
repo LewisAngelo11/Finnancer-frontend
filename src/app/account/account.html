@@ -1,4 +1,4 @@
-<div class="w-screen p-2 flex flex-col">
+<div class="w-screen p-2 flex flex-col gap-4 h-full">
     <div class="w-full p-4 flex flex-col">
         <button
             (click)="goBackToDash()"
@@ -9,64 +9,123 @@
     </div>
 
     <!-- Información de la cuenta -->
-    <div class="flex flex-col items-start justify-center gap-2 py-4">
+    <div class="slide-in-down flex flex-col items-start justify-center gap-2">
         <h2 class="text-white font-bold ml-2">Mi Cuenta</h2>
-        <div class="bg-gray w-full h-auto p-5 flex flex-row items-center justify-between rounded-2xl">
-            <div class="flex flex-row items-start gap-4">
-                <div class="flex items-center justify-center w-12 h-12 p-2 rounded-full bg-green-primary">
-                    <i class='bx  bxs-user text-2xl'  ></i>
+        <div class="bg-gradient-gray-h w-full h-auto p-5 lg:p-8 flex flex-row items-center justify-between rounded-2xl">
+            <div class="flex flex-row items-center gap-4">
+                <div class="flex items-center justify-center w-15 md:w-18 lg:w-24 h-15 md:h-18 lg:h-24 lg:ml-5 p-2 rounded-full bg-green-primary">
+                    <i class='bx  bxs-user text-2xl lg:text-4xl'  ></i>
                 </div>
-                <div class="text-white flex flex-col items-start justify-center">
-                    <p class="text-lg">{{nameAccount}}</p>
-                    <p class="text-base font-thin text-gray-400">{{mailAccount}}</p>
+                <div class="text-white flex flex-col items-start justify-center lg:gap-1">
+                    <p class="text-lg lg:text-3xl">{{nameAccount}} {{lastNameAccount}}</p>
+                    <p class="text-sm lg:text-xl font-thin text-gray-400">{{mailAccount}}</p>
+                    <p class="text-[#46E24D] lg:text-xl rounded-full font-medium w-auto">{{currentProfile}}</p>
                 </div>
-            </div>
-            <select class="bg-green-primary rounded-full border-1 px-1 w-auto">
-                @for (perfil of perfiles; track perfil.id){
-                    <option>{{perfil.name}}</option>
-                }
-            </select>
-        </div>
-    </div>
-
-    <div class="flex flex-col items-start justify-center gap-2 py-4">
-        <h2 class="text-white font-bold ml-2">Ajustes de mi cuenta</h2>
-        <div class="bg-gray w-full h-auto flex flex-row items-center justify-between rounded-2xl">
-            <div class="w-full flex flex-col items-center justify-center gap-2 text-white p-2">
-                <button
-                    [class.animate-bounce-scale]="buttonSelected() === 1"
-                    (click)="buttonSelect(1)"
-                    class="p-3 w-full rounded-2xl font-medium"
-                >
-                    Información
-                </button>
-                <button
-                    [class.animate-bounce-scale]="buttonSelected() === 2"
-                    (click)="buttonSelect(2)"
-                    class="p-3 w-full rounded-2xl font-medium"
-                >
-                    Perfiles
-                </button>
-                <button
-                    [class.animate-bounce-scale]="buttonSelected() === 3"
-                    (click)="buttonSelect(3)"
-                    class="p-3 w-full rounded-2xl font-medium"
-                >
-                    Seguridad
-                </button>
             </div>
         </div>
     </div>
 
-    @if (buttonSelected() === 1) {
-        <app-info-account
-            [nombreCuenta]="nameAccount"
-            [correo]="mailAccount"
-            [perfilesActivos]="activeProfiles"
-            [fechaRegistro]="registerDate"
-            [presupuesto]="budget"
-            [ingresosMinimo]="minimumIncomes"
-            [egresosMaximos]="maximumSpendings"
-        ></app-info-account>
-    }
+    <div class="flex flex-col md:flex-row w-full gap-4">
+        <div class="w-full lg:w-100 h-full gap-2">
+            <div class="bg-gradient-gray-h slide-to-right w-full h-full flex flex-row items-start justify-start rounded-2xl">
+                <div class="w-full flex flex-col items-start justify-start gap-2 text-white p-4">
+                    <!-- Botón para mostrar la info de la cuenta -->
+                    <div class="w-full flex flex-col items-center justify-start">
+                        <button
+                            [class.btn-selected]="buttonSelected() === 1"
+                            (click)="buttonSelect(1)"
+                            class="p-3 w-full font-thin flex items-center justify-start gap-2 lg:gap-4"
+                        >
+                            <i class='bx  bx-user text-xl'  ></i> 
+                            Mi cuenta
+                        </button>
+                        <!-- Linea que se activa cuando el botón fue seleccionado -->
+                        <div class="is-selected">
+                            <span
+                                class="line"
+                                [class.line-selected]="buttonSelected() === 1"
+                            >
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Botón para mostrar los perfiles del usuario -->
+                    <div class="w-full flex flex-col items-center justify-start">
+                        <button
+                            [class.btn-selected]="buttonSelected() === 2"
+                            (click)="buttonSelect(2)"
+                            class="p-3 w-full font-thin flex items-center justify-start gap-2 lg:gap-4"
+                        >
+                            <i class='bx  bx-group text-xl'  ></i> 
+                            Perfiles
+                        </button>
+                        <!-- Linea que se activa cuando el botón fue seleccionado -->
+                        <div class="is-selected">
+                            <span
+                                class="line"
+                                [class.line-selected]="buttonSelected() === 2"
+                            >
+                            </span>
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col items-center justify-start">
+                        <button
+                            [class.btn-selected]="buttonSelected() === 3"
+                            (click)="buttonSelect(3)"
+                            class="p-3 w-full font-thin flex items-center justify-start gap-2 lg:gap-4"
+                        >
+                            <i class='bx  bx-dollar text-xl'  ></i> 
+                            Finanzas
+                        </button>
+                        <!-- Linea que se activa cuando el botón fue seleccionado -->
+                        <div class="is-selected">
+                            <span
+                                class="line"
+                                [class.line-selected]="buttonSelected() === 3"
+                            >
+                            </span>
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col items-center justify-start">
+                        <button
+                            [class.btn-selected]="buttonSelected() === 4"
+                            (click)="buttonSelect(4)"
+                            class="p-3 w-full font-thin flex items-center justify-start gap-2 lg:gap-4"
+                        >
+                            <i class='bx  bx-lock text-xl'  ></i> 
+                            Seguridad
+                        </button>
+                        <!-- Linea que se activa cuando el botón fue seleccionado -->
+                        <div class="is-selected">
+                            <span
+                                class="line"
+                                [class.line-selected]="buttonSelected() === 4"
+                            >
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col gap-4">
+            @if (buttonSelected() === 1) {
+                <app-info-account
+                    [nombreCuenta]="nameAccount"
+                    [apellidoCuenta]="lastNameAccount"
+                    [correo]="mailAccount"
+                    [fechaRegistro]="registerDate"
+                ></app-info-account>
+            }
+            @else if (buttonSelected() === 2) {
+                <app-profiles-account></app-profiles-account>
+                <app-history-transactions></app-history-transactions>
+            }
+            @else if (buttonSelected() === 3) {
+                <app-finance-account></app-finance-account>
+            }
+            @else if (buttonSelected() === 4) {
+                <app-security-account></app-security-account>
+            }
+            </div>
+    </div>
 </div>

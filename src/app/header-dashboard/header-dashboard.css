@@ -1,24 +1,29 @@
 /* styles.css */
 .mobile-header {
   display: none;
-  background: #292929;
+  background: linear-gradient(to right, #292929, #111111);
 }
 
 .menu {
-  background: #292929;
+  background: linear-gradient(to right, #292929, #111111);
+  transition: transform 0.3s ease;
+}
+
+.menu:hover {
+  transform: translateY(-5px);
 }
 
 .bg-green-primary {
-    background-color: #46E24D;
+  background-color: #46E24D;
 }
 
 .bg-green-secundary {
-    background-color: #00C40A;
+  background-color: #00C40A;
 }
 
 @media (max-width: 768px) {
   .mobile-header {
-    display: block;
+    display: flex;
   }
   .desktop-menu {
     display: none;

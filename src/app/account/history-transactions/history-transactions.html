@@ -1,0 +1,28 @@
+<div class="slide-in-up bg-gradient-gray-h w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-3">
+    <div class="w-full flex items-center text-white">
+        <h2 class="text-2xl">Historial de transacciones</h2>
+    </div>
+    <div class="flex flex-row gap-1 items-center">
+        <p class="text-white">Transacciones de:</p>
+        <p class="font-semibold text-[#46E24D]">{{currentProfile}}</p>
+    </div>
+    <!-- Línea divisora -->
+    <span class="bg-gray-details w-full h-0.5"></span>
+
+    <!-- Tabla para mostrar las transacciones del perfil actual -->
+    <div class="w-full overflow-auto text-white border border-[#3B3B3B] rounded-lg">
+        <table class="min-w-100 flex flex-col items-center p-4">
+            <tbody class="w-full flex flex-col items-start gap-4 lg:p-2">
+                @for (transaction of transactionsHistory; track transaction.id) {
+                    <tr class="w-full flex flex-row items-center justify-between">
+                        <td>{{transaction.icono}}</td>
+                        <td>{{transaction.nombre}}</td>
+                        <td>{{transaction.monto}}</td>
+                        <td>{{transaction.fecha}}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
