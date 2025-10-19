@@ -35,7 +35,7 @@ export class VerifyMail {
 
     this.auth.signUp(registerBody).subscribe({
       next: () => {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/onboarding']);
       },
       error: (err) => {
         console.log(err);

@@ -5,6 +5,7 @@ import { Dashboard } from './dashboard/dashboard';
 import { Account } from './account/account';
 import { Categories } from './categories/categories';
 import { VerifyMail } from './verify-mail/verify-mail';
+import { Onboarding } from './onboarding/onboarding';
 
 export const routes: Routes = [
     {
@@ -30,5 +31,9 @@ export const routes: Routes = [
     {
         path: 'verifyMail',
         component: VerifyMail,
+    },
+    {
+        path: 'onboarding',
+        component: Onboarding,
     }
 ];
