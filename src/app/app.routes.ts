@@ -4,6 +4,7 @@ import { RestorePassw } from './auth-page/restore-passw/restore-passw';
 import { Dashboard } from './dashboard/dashboard';
 import { Account } from './account/account';
 import { Categories } from './categories/categories';
+import { VerifyMail } from './verify-mail/verify-mail';
 
 export const routes: Routes = [
     {
@@ -25,5 +26,9 @@ export const routes: Routes = [
     {
         path: 'categories',
         component: Categories,
+    },
+    {
+        path: 'verifyMail',
+        component: VerifyMail,
     }
 ];

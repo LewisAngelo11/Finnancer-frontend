@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Auth, bodyCreateUser } from '../../services/auth';
 import { Router } from '@angular/router';
+import { RegistrationState } from '../../services/registration-state';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,7 @@ export class Register {
   private fb = inject(FormBuilder);
   private auth = inject(Auth);
   private router = inject(Router);
+  private registrationState = inject(RegistrationState);
 
   mensajeError = '';
 
@@ -45,7 +47,8 @@ export class Register {
     return this.formSignUp.get('password');
   }
 
-  onSumbit() {
+  // Este metodo envía el mail de verificacion y guarda los datos del nuevo usuario temporalmente
+  onSumbit () {
     const nuevoUsuario: bodyCreateUser = {
       nombre: this.name?.value || '',
       apellidoP: this.lasNameP?.value || '',
@@ -54,13 +57,16 @@ export class Register {
       contrasena: this.password?.value || ''
     }
 
-    this.auth.signUp(nuevoUsuario).subscribe({
-      next: (res) => {
-        console.log(res)
-        this.router.navigate(['/dashboard']);
+    // Guarda los datos en memoria para recuperarlos posteriormente
+    this.registrationState.setRegistrationData(nuevoUsuario);
+
+    const nombreCompleto = `${nuevoUsuario.nombre} ${nuevoUsuario.apellidoP} ${nuevoUsuario.apellidoM}`;
+
+    this.auth.sendMail(nuevoUsuario.correo, nombreCompleto).subscribe({
+      next: () => {
+        this.router.navigate(['/verifyMail']);
       },
       error: (err) => {
-        console.log(err);
         this.mensajeError = err.error.message;
       }
     });

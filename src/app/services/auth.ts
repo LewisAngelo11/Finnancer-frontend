@@ -10,6 +10,15 @@ export interface bodyCreateUser {
   contrasena: string
 };
 
+export interface bodyCreateUserWithCode {
+  nombre: string,
+  apellidoP: string
+  apellidoM: string,
+  correo: string,
+  contrasena: string,
+  codigo: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +35,12 @@ export class Auth {
   }
 
   // Método signUp
-  signUp(bodyCrear: bodyCreateUser): Observable<any> {
+  signUp(bodyCrear: bodyCreateUserWithCode): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/create`, bodyCrear);
+  }
+
+  // Método enviar correo
+  sendMail(to: string, name: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/send-mail`, {to, name});
   }
 }
