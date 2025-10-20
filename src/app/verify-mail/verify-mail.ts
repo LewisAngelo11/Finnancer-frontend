@@ -31,7 +31,6 @@ export class VerifyMail {
     let registerBody = {
       ...this.registrationState.getRegistrationData(), codigo: this.formVerificacion.value.codigo
     }
-    console.log(registerBody);
 
     this.auth.signUp(registerBody).subscribe({
       next: () => {

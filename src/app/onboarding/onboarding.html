@@ -1,7 +1,11 @@
-<main class="w-full h-full flex flex-col items-center justify-center overflow-hidden">
-    <form class="w-full bg-white flex flex-col items-center justify-center p-6 gap-2 rounded-xl max-w-md mx-auto">
+<main class="w-full h-full flex flex-col items-center justify-center overflow-y-auto lg:overflow-hidden">
+    <form 
+        [formGroup]="financeForm"
+        (ngSubmit)="onSumbit()"
+        class="slide-in-down w-screen h-screen lg:w-full lg:h-auto bg-white flex flex-col items-center justify-center p-6 gap-2 rounded-xl max-w-md mx-auto"
+    >
         <div class="text-center flex flex-col items-center justify-center gap-4">
-            <h2 class="text-4xl">¡Bienvenido a Finnancer!</h2>
+            <h2 class="text-2xl lg:text-4xl font-semibold">¡Bienvenido a Finnancer!</h2>
             <p class="text-gray-500 font-thin">Completa los campos a continuación para definir tu presupuesto y metas de ahorro.</p>
         </div>
             
@@ -10,46 +14,48 @@
     
         <section class="flex flex-col items-start justify-center gap-4 w-full">
             <div class="flex flex-col gap-2 w-full">
-                <label for="">Ingresa tu presupuesto mensual</label>
+                <label for="presupuesto">Ingresa tu presupuesto mensual</label>
                 <input
                     type="number"
-                    name="" id=""
+                    formControlName="presupuesto"
+                    id="presupuesto"
                     placeholder="$0.00"
                     class="card p-2 border-1 border-gray-400 text-lg rounded-xl text-gray-800 w-full"
                 >
             </div>
             <div class="flex flex-col gap-2 w-full">
-                <label for="">Ingresa tus mínimo de ingresos al mes</label>
+                <label for="ingresos">Ingresa tus mínimo de ingresos al mes</label>
                 <input
                     type="number"
-                    name=""
-                    id=""
+                    formControlName="ingresos"
+                    id="ingresos"
                     placeholder="$0.00"
                     class="card p-2 border-1 border-gray-400 text-lg rounded-xl text-gray-800 w-full"
                 >
             </div>
             <div class="flex flex-col gap-2 w-full">
-                <label for="">Ingresa tu máximo de egresos al mes</label>
+                <label for="egresos">Ingresa tu máximo de egresos al mes</label>
                 <input
                     type="number"
-                    name="" id=""
+                    formControlName="egresos"
+                    id="egresos"
                     placeholder="$0.00"
                     class="card p-2 border-1 border-gray-400 text-lg rounded-xl text-gray-800 w-full"
                 >
             </div>
             <div class="flex flex-col gap-2 w-full">
-                <label for="">Ingresa tu meta mensual de ahorro</label>
+                <label for="ahorroMensual">Ingresa tu meta mensual de ahorro</label>
                 <input
                     type="number"
-                    name=""
-                    id=""
+                    formControlName="ahorroMensual"
+                    id="ahorroMensual"
                     placeholder="$0.00"
                     class="card p-2 border-1 border-gray-400 text-lg rounded-xl text-gray-800 w-full"
                 >
             </div>
             <div class="flex flex-col gap-2 w-full">
-                <label for="">Selecciona tu dia de corte</label>
-                <select name="corte" class="card w-full p-2 border-1 text-lg border-gray-400 rounded-xl">
+                <label for="diaCorte">Selecciona tu dia de corte</label>
+                <select formControlName="diaCorte" id="diaCorte" class="card w-full p-2 border-1 text-lg border-gray-400 rounded-xl">
                     <option value="1">Día 1</option>
                     <option value="5">Día 5</option>
                     <option value="10">Día 10</option>
@@ -67,6 +73,7 @@
         <div class="flex items-center justify-between w-full gap-2">
             <button
                 type="button"
+                (click)="omitFinances()"
                 class="card items-start w-full justify-center font-bold h-auto px-4 py-2 rounded-lg border-1 border-green-500"
             >
                 Omitir

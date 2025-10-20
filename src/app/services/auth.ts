@@ -24,7 +24,7 @@ export interface bodyCreateUserWithCode {
 })
 export class Auth {
   private http = inject(HttpClient);
-  private host = 'localhost';
+  private host = '192.168.100.88';
   private port = 3000;
 
   private apiUrl = `http://${this.host}:${this.port}`;

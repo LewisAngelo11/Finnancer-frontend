@@ -15,6 +15,7 @@ export class Login {
   private router = inject(Router);
   
   mensajeError = '';
+  showPassword = false;
 
   // Crear el formulario de login
   form = this.fb.group({
@@ -44,6 +45,11 @@ export class Login {
         this.mensajeError = err.error.message;
       }
     });
+  }
+
+  // Función para mostrar la contraseña en el input
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 
   resetErrorMessage() {
