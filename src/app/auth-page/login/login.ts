@@ -32,16 +32,14 @@ export class Login {
   }
 
   onSumbit() {
-    const mail = this.mail?.value || '';
-    const password = this.password?.value || '';
+    const correo = this.mail?.value || '';
+    const contrasena = this.password?.value || '';
 
-    this.auth.login(mail, password).subscribe({
+    this.auth.login({correo, contrasena}).subscribe({
       next: (res) => {
-        console.log(res);
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        console.log(err);
         this.mensajeError = err.error.message;
       }
     });

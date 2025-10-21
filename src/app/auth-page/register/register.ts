@@ -63,7 +63,7 @@ export class Register {
     const nombreCompleto = `${nuevoUsuario.nombre} ${nuevoUsuario.apellidoP} ${nuevoUsuario.apellidoM}`;
 
     this.auth.sendMail(nuevoUsuario.correo, nombreCompleto).subscribe({
-      next: () => {
+      next: (res) => {
         this.router.navigate(['/verifyMail']);
       },
       error: (err) => {
