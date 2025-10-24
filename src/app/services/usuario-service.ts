@@ -24,4 +24,14 @@ export class UsuarioService {
   createFinanceParams(correo: string, bodyCreateUserFinance: BodyCreateUserFinance): Observable<any> {
     return this.http.patch(`${this.apiUrl}/usuarios/${correo}`, bodyCreateUserFinance );
   }
+
+  // Método que solicita la info de el usuario
+  getInfoUser() {
+    return this.http.get(`${this.apiUrl}/usuarios/me`);
+  }
+
+  // Método que actualiza los datos financieros del usuario ya autenticado
+  updateFinanceParamas(bodyCreateUserFinance: BodyCreateUserFinance): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/usuarios/update`, bodyCreateUserFinance);
+  }
 }
