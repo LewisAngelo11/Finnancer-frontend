@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../services/usuario-service';
 import { InfoAccount } from './info-account/info-account';
@@ -6,6 +7,7 @@ import { ProfilesAccount } from './profiles-account/profiles-account';
 import { HistoryTransactions } from './history-transactions/history-transactions';
 import { FinanceAccount } from './finance-account/finance-account';
 import { SecurityAccount } from './security-account/security-account';
+
 
 @Component({
   selector: 'app-account',
@@ -19,7 +21,8 @@ export class Account implements OnInit {
   year: string = '';
 
   nameAccount: string = '';
-  lastNameAccount: string = '';
+  lastNamePAccount: string = '';
+  lastNameMAccount: string = '';
   mailAccount: string = '';
   registerDate: string = '';
   
@@ -32,6 +35,7 @@ export class Account implements OnInit {
   buttonSelected = signal(1);
   private router = inject(Router);
   private usuarioService = inject(UsuarioService);
+  private platformId = inject(PLATFORM_ID);
 
   perfiles = [
     {id: 1, name: 'Administrador'},
@@ -52,7 +56,10 @@ export class Account implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getInfoUser();
+    // Valida si ya se renderizó en el navegador para pedir los datos al back
+    if(isPlatformBrowser(this.platformId)){
+      this.getInfoUser();
+    }
   }
 
   // Método que obtiene los datos del usuario
@@ -60,11 +67,11 @@ export class Account implements OnInit {
     this.usuarioService.getInfoUser().subscribe({
       next: (res) => {
         this.userData = res;
-        console.log(this.userData);
 
         // Extraer los datos del back a variales para mostrarlas en la UI con input signals
         this.nameAccount = this.userData.nombre;
-        this.lastNameAccount = `${this.userData.apellido_paterno} ${this.userData.apellido_materno}`;
+        this.lastNamePAccount = this.userData.apellido_paterno;
+        this.lastNameMAccount = this.userData.apellido_materno;
         this.mailAccount = this.userData.correo;
 
         // Convertir la fecha que viene del back a una fecha mas legible para el usuario
@@ -83,6 +90,13 @@ export class Account implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  // Esta función actualiza los datos del usuario que actualizó en la bd y los muestra en la interfaz
+  changeInfo(datos: any) {
+    this.nameAccount = datos.nombre;
+    this.lastNamePAccount = datos.apellidoP;
+    this.lastNameMAccount = datos.apellidoM;
   }
 
   // Convertidor de fecha mas legible para el usuario

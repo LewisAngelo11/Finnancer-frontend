@@ -17,7 +17,7 @@
                     <i class='bx  bxs-user text-2xl lg:text-4xl'  ></i>
                 </div>
                 <div class="text-white flex flex-col items-start justify-center lg:gap-1">
-                    <p class="text-lg lg:text-3xl">{{nameAccount}} {{lastNameAccount}}</p>
+                    <p class="text-lg lg:text-3xl">{{nameAccount}} {{lastNamePAccount}} {{lastNameMAccount}}</p>
                     <p class="text-sm lg:text-xl font-thin text-gray-400">{{mailAccount}}</p>
                     <p class="text-[#46E24D] lg:text-xl rounded-full font-medium w-auto">{{currentProfile}}</p>
                 </div>
@@ -111,9 +111,11 @@
             @if (buttonSelected() === 1) {
                 <app-info-account
                     [nombreCuenta]="nameAccount"
-                    [apellidoCuenta]="lastNameAccount"
+                    [apellidoPCuenta]="lastNamePAccount"
+                    [apellidoMCuenta]="lastNameMAccount"
                     [correo]="mailAccount"
                     [fechaRegistro]="registerDate"
+                    (datosActualizados)="changeInfo($event)"
                 ></app-info-account>
             }
             @else if (buttonSelected() === 2) {

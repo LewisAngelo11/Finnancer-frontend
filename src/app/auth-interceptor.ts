@@ -1,9 +1,17 @@
 import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 // Este interceptor añade el token JWT al header de la request, primero clona la original y a la copia, añade el token
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
-  // Obtener el token del local storage
-  const authToken = localStorage.getItem('token');
+  const platformId = inject(PLATFORM_ID);
+  
+  let authToken: string | null = null;
+
+  // Solo acceder a localStorage si ya está en el navegador
+  if (isPlatformBrowser(platformId)) {
+    authToken = localStorage.getItem('token');
+  }
 
   // Si no hay un token en localSotrage, dejamos pasar la request tal cual
   if (!authToken) {

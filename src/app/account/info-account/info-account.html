@@ -1,8 +1,8 @@
-<div class="bg-gradient-gray-h slide-to-left w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-3">
+<main class="bg-gradient-gray-h slide-to-left w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-3">
     <!-- Encabezado de la información de la cuenta del usuario -->
     <div class="flex flex-row justify-between w-full items-center py-1">
         <h2 class="text-2xl text-white">Información</h2>
-        <button class="card bg-green-primary px-4 py-2 rounded-xl">
+        <button (click)="openModal()" class="card bg-green-primary px-4 py-2 rounded-xl">
             Editar
             <i class='bx  bx-edit-alt'  ></i> 
         </button>
@@ -20,7 +20,7 @@
 
         <div class="flex flex-col">
             <label class="font-thin text-lg text-[#a4a4a4]">Apellidos</label>
-            <p class="font-thin text-white text-xl">{{apellidoCuenta()}}</p>
+            <p class="font-thin text-white text-xl">{{apellidoPCuenta()}} {{apellidoMCuenta()}}</p>
         </div>
 
         <div class="flex flex-col">
@@ -40,4 +40,68 @@
         <i class='bx  bx-door-open text-3xl'  ></i> 
         <button class="text-xl font-light">Cerrar sesión</button>
     </div>
-</div>
+
+    @if (modalOpen()) {
+        <div class="modal">
+            <div
+                class="modal-container"
+                [class.animate]="animateModal()"
+            >
+                <form
+                    [formGroup]="formInfo"
+                    (ngSubmit)="onSumbit()"
+                    class="w-full h-full flex flex-col gap-2 items-center justify-center">
+                    <div class="w-full flex flex-row items-center justify-between">
+                        <h2 class="text-2xl font-semibold">Información Personal</h2>
+                        <button (click)="closeModal()" class="text-3xl">
+                            <i class='bx  bx-x'  ></i> 
+                        </button>
+                    </div>
+                    <!-- Línea divisora -->
+                    <span class="bg-gray-200 w-full h-0.5"></span>
+
+                    <section class="w-full flex flex-col items-center justify-start gap-4">
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="nombre">Nombre Completo</label>
+                            <input
+                                type="text"
+                                formControlName="nombre"
+                                placeholder="Nombre"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="apellidoP">Apellido Paterno</label>
+                            <input
+                                type="text"
+                                formControlName="apellidoP"
+                                placeholder="Modificar Apellido Paterno"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="apellidoM">Apellido Materno</label>
+                            <input
+                                type="text"
+                                formControlName="apellidoM"
+                                placeholder="Modificar Apellido Materno"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="">Correo Electrónico</label>
+                            <input
+                                type="text"
+                                placeholder="Correo"
+                                disabled
+                                class="w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500 bg-gray-200">
+                        </div>
+                        <button
+                            type="submit"
+                            class="card bg-green-primary p-4 rounded-2xl w-full font-medium"
+                        >
+                            Guardar Cambios
+                        </button>
+                    </section>
+                </form>
+            </div>
+        </div>
+    }
+</main>
