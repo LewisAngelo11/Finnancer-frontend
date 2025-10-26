@@ -6,6 +6,15 @@
   background-color: #00C40A;
 }
 
+.btn-logout {
+  color: #fff;
+  transition: color 0.2s ease;
+}
+
+.btn-logout:hover {
+  color: #46E24D;
+}
+
 @keyframes bounce-fade {
   0% {
     transform: scale(0.95);

@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario-service';
 import { BodyUpdateUser } from '../../services/usuario-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-info-account',
@@ -23,6 +24,7 @@ export class InfoAccount {
 
   private fb = inject(FormBuilder);
   private usuarioService = inject(UsuarioService);
+  private router = inject(Router);
 
   mensajeRequest: string = '';
 
@@ -84,5 +86,11 @@ export class InfoAccount {
     this.animateModal.set(false);
     // Espera a que la animación termine antes de ocultarlo en el DOM
     setTimeout(() => this.modalOpen.set(false), 100);
+  }
+
+  // Método para cerrar sesión y eliminar el token JWT
+  logOut() {
+    localStorage.removeItem('token');
+    this.router.navigate(['']); // Redirigir al login,
   }
 }

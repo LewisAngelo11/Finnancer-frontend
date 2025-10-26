@@ -36,9 +36,14 @@
     <!-- Línea divisora -->
     <span class="bg-gray-details w-full h-0.5"></span>
     <!-- Botón para cerrar sesión  -->
-    <div class="w-full p-2 text-white flex gap-2 items-center">
+    <div class="btn-logout w-full p-2 text-white flex gap-2 items-center">
         <i class='bx  bx-door-open text-3xl'  ></i> 
-        <button class="text-xl font-light">Cerrar sesión</button>
+        <button 
+            class="text-xl font-light"
+            (click)="logOut()"
+        >
+            Cerrar sesión
+        </button>
     </div>
 
     @if (modalOpen()) {
