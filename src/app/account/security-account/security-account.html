@@ -1,44 +1,128 @@
 <div class="bg-gradient-gray-h slide-to-left w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-5">
-    <div class="w-full flex flex-col items-start gap-6 text-white">
+    <form [formGroup]="formSecurity" (ngSubmit)="onSumbit()" (click)="resetMessage()" class="w-full flex flex-col items-start gap-6 text-white">
         <h2 class="text-2xl">Cambiar Contraseña</h2>
         <!-- Línea divisora -->
         <span class="bg-gray-details w-full h-0.5"></span>
-
+        
         <div class="w-full flex flex-col gap-4 lg:gap-8 font-thin">
-            <div class="w-full lg:max-w-120 flex flex-col gap-2">
-                <label>Contraseña Actual</label>
-                <input
-                    type="password"
-                    name="currentPassword"
-                    placeholder="Ingrese su contraseña"
-                    class="card w-full p-2 border-1 border-white rounded-lg"
-                >
+            <div class="w-full lg:max-w-130 flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                    <label for="contrasenaActual">Contraseña Actual</label>
+                    @if (currentPassw?.touched && currentPassw?.invalid) {
+                        <small class="text-red-600 ml-2 hidden lg:flex">La contraseña debe tener al menos 8 caracteres</small>
+                    }
+                </div>
+                <div class="relative w-full card">
+                    <input
+                        [type]="showCurrentPassword ? 'text': 'password'"
+                        name="contrasenaActual"
+                        placeholder="Ingrese su contraseña"
+                        formControlName="contrasenaActual"
+                        [class.input-invalid]="currentPassw?.touched && currentPassw?.invalid"
+                        class="w-full p-2 border-1 border-white rounded-lg"
+                    >
+                    <button
+                        class="absolute right-3 top-1/4 text-[#46E24D]"
+                        type="button"
+                        (click)="toggleCurrentPassword()"
+                    >
+                        @if (showCurrentPassword) {
+                            Ocultar
+                        }
+                        @else {
+                            Mostrar
+                        }
+                    </button>
+                </div>
+                @if (currentPassw?.touched && currentPassw?.invalid) {
+                    <small class="text-red-600 ml-2 flex lg:hidden">La contraseña debe tener al menos 8 caracteres</small>
+                }
             </div>
-            <div class="w-full lg:max-w-120 flex flex-col gap-2">
-                <label>Nueva Contraseña</label>
-                <input
-                    type="password"
-                    name="currentPassword"
-                    placeholder="Ingrese su nueva contraseña"
-                    class="card w-full p-2 border-1 border-white rounded-lg"
-                >
+            <div class="w-full lg:max-w-130 flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                    <label for="nuevaContrasena">Nueva Contraseña</label>
+                    @if (newPassw?.touched && newPassw?.invalid) {
+                        <small class="text-red-600 ml-2 hidden lg:flex">La contraseña debe tener al menos 8 caracteres</small>
+                    }
+                </div>
+                <div class="relative w-full card">
+                    <input
+                        [type]="showNewPassword ? 'text': 'password'"
+                        name="nuevaContrasena"
+                        formControlName="nuevaContrasena"
+                        placeholder="Ingrese su nueva contraseña"
+                        [class.input-invalid]="newPassw?.touched && newPassw?.invalid || !isEqualsPassw()"
+                        class="w-full p-2 border-1 border-white rounded-lg"
+                    >
+                    <button
+                        class="absolute right-3 top-1/4 text-[#46E24D]"
+                        type="button"
+                        (click)="toggleNewPassword()"
+                    >
+                        @if (showNewPassword) {
+                            Ocultar
+                        }
+                        @else {
+                            Mostrar
+                        }
+                    </button>
+                </div>
+                @if (newPassw?.touched && newPassw?.invalid) {
+                    <small class="text-red-600 ml-2 flex lg:hidden">La contraseña debe tener al menos 8 caracteres</small>
+                }
             </div>
-            <div class="w-full lg:max-w-120 flex flex-col gap-2">
-                <label>Confirmar Nueva Contraseña</label>
-                <input
-                    type="password"
-                    name="currentPassword"
-                    placeholder="Confirmar contraseña"
-                    class="card w-full p-2 border-1 border-white rounded-lg"
-                >
+            <div class="w-full lg:max-w-130 flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                    <label for="confirmarContrasena">Confirmar Nueva Contraseña</label>
+                    @if (confirmPassw?.touched && confirmPassw?.invalid) {
+                        <small class="text-red-600 ml-2 hidden lg:flex">La contraseña debe tener al menos 8 caracteres</small>
+                    }
+                </div>
+                <div class="relative w-full card">
+                    <input
+                        [type]="showConfirmPassword ? 'text': 'password'"
+                        name="confirmarContrasena"
+                        formControlName="confirmarContrasena"
+                        placeholder="Confirmar contraseña"
+                        [class.input-invalid]="confirmPassw?.touched && confirmPassw?.invalid || !isEqualsPassw()"
+                        class="w-full p-2 border-1 border-white rounded-lg"
+                    >
+                    <button
+                        class="absolute right-3 top-1/4 text-[#46E24D]"
+                        type="button"
+                        (click)="toggleConfirmPassword()"
+                    >
+                        @if (showConfirmPassword) {
+                            Ocultar
+                        }
+                        @else {
+                            Mostrar
+                        }
+                    </button>
+                </div>
+                @if (confirmPassw?.touched && confirmPassw?.invalid) {
+                    <small class="text-red-600 ml-2 flex lg:hidden">La contraseña debe tener al menos 8 caracteres</small>
+                }
             </div>
         </div>
         <!-- Línea divisora -->
         <span class="bg-gray-details w-full h-0.5"></span>
 
         <!-- Botón de guardar -->
-        <div class="w-full flex items-center justify-start">
-            <button class="card bg-green-primary px-4 py-2 rounded-xl w-full lg:max-w-120 text-[#292929]">Cambiar Contraseña</button>
+        <div class="w-full flex flex-col md:flex-row items-center gap-4 justify-start">
+            <button
+                class="card bg-green-primary px-4 py-2 rounded-xl w-full lg:max-w-130 text-[#292929]"
+                type="submit"
+            >
+                Cambiar Contraseña
+            </button>
+            <p
+                class="font-light text-xl"
+                [class.mensaje-error]="!isEqualsPassw() || !isGodRequest()"
+                [class.mensaje-valid]="isGodRequest()"
+                >
+                {{mensajeValidacion}}
+            </p>
         </div>
-    </div>
+    </form>
 </div>

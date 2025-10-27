@@ -1,0 +1,11 @@
+.input-invalid {
+    border-color: rgb(255, 51, 51);
+}
+
+.mensaje-error {
+    color: red;
+}
+
+.mensaje-valid {
+    color: #46E24D;
+}

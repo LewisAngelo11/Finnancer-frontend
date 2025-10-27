@@ -58,9 +58,7 @@ export class Onboarding {
       diaCorte: this.diaCorte?.value || 0,
     }
 
-    let registrationData = this.registrationState.getRegistrationData();
-
-    this.usuarioService.createFinanceParams(registrationData.correo, paramsFinance).subscribe({
+    this.usuarioService.createFinanceParams(paramsFinance).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
       },
