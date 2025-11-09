@@ -5,6 +5,7 @@
         <button (click)="goToAccount()" class="menu rounded-full p-4 text-white font-thin">Mi Cuenta</button>
         <button class="menu rounded-full py-4 px-6 text-white font-thin">Transacciones</button>
         <button (click)="goToCategories()" class="menu rounded-full py-4 px-6 text-white font-thin">Categorías</button>
+        <button class="menu rounded-full py-4 px-6 text-white font-thin">Clientes y Proveedores</button>
         <button class="menu rounded-full py-4 px-6 text-white font-thin">Balance</button>
     </header>
     <!-- Header que aparece en móviles -->
@@ -41,9 +42,16 @@
                     Transacciones
                     <i class='bx  bx-dollar text-xl'  ></i>
                 </li>
-                <li class="flex items-center justify-center gap-2">
+                <li
+                    class="flex items-center justify-center gap-2"
+                    routerLink="/categories"
+                >
                     Categorías
                     <i class='bx  bx-bar-chart-square text-xl'  ></i>
+                </li>
+                <li class="flex items-center justify-center gap-2">
+                    Clientes y Proveedores
+                    <i class='bx  bx-move-vertical bx-rotate-90 text-xl'    ></i> 
                 </li>
                 <li class="flex items-center justify-center gap-2">
                     Balance
