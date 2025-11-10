@@ -22,6 +22,21 @@ export interface BodyUpdatePassw {
   nueva_contrasena: string;
 }
 
+export interface BodyCreateProfile {
+  nombre: string;
+  icono: number;
+  pin: string;
+}
+
+export interface Perfil {
+  id: number;
+  nombre: string;
+  icono: string;
+  fechaCreacion: Date;
+  estatus: string;
+  pin: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -55,5 +70,14 @@ export class UsuarioService {
   // Método que actualiza la contraseña del usuario
   updatePassw(bodyUpdatePassw: BodyUpdatePassw): Observable<any> {
     return this.http.patch(`${this.apiUrl}/usuarios/security`, bodyUpdatePassw);
+  }
+
+  // Método que crea un nuevo perfil de un usuario
+  createProfile(bodyCreateProfile: BodyCreateProfile): Observable<any> {
+    return this.http.post(`${this.apiUrl}/perfiles/create`, bodyCreateProfile);
+  }
+
+  getAllProfiles(): Observable<Perfil[]>{
+    return this.http.get<Perfil[]>(`${this.apiUrl}/perfiles/all`);
   }
 }
