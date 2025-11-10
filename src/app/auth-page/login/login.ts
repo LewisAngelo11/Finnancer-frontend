@@ -38,6 +38,7 @@ export class Login {
     this.auth.login({correo, contrasena}).subscribe({
       next: (res) => {
         this.router.navigate(['/dashboard']);
+        //this.router.navigate(['/profilesSelector']);
       },
       error: (err) => {
         this.mensajeError = err.error.message;

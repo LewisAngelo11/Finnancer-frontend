@@ -6,6 +6,7 @@ import { Account } from './account/account';
 import { Categories } from './categories/categories';
 import { VerifyMail } from './verify-mail/verify-mail';
 import { Onboarding } from './onboarding/onboarding';
+import { ProfilesSelector } from './profiles-selector/profiles-selector';
 
 export const routes: Routes = [
     {
@@ -35,5 +36,9 @@ export const routes: Routes = [
     {
         path: 'onboarding',
         component: Onboarding,
+    },
+    {
+        path: 'profilesSelector',
+        component: ProfilesSelector,
     }
 ];

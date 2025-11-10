@@ -1,13 +1,21 @@
 <main class="slide-to-left bg-gradient-gray-h w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-3">
     <div class="w-full flex justify-between items-center text-white">
         <h2 class="text-2xl">Gestión de Perfiles</h2>
-        <button
-            class="card bg-green-primary px-4 py-2 rounded-xl text-black flex items-center gap-1"
-            (click)="openModal()"
-        >
-            <i class='bx  bx-plus text-xl'  ></i> 
-            Nuevo Perfil
-        </button>
+        <div class="flex flex-row gap-4">
+            <button
+                class="card bg-green-primary px-4 py-2 rounded-xl text-black flex items-center gap-1"
+                (click)="goToSelectProfile()"
+            >
+                Cambiar de perfil
+            </button>
+            <button
+                class="card bg-green-primary px-4 py-2 rounded-xl text-black flex items-center gap-1"
+                (click)="openModal()"
+            >
+                <i class='bx  bx-plus text-xl'  ></i> 
+                Nuevo Perfil
+            </button>
+        </div>
     </div>
     <!-- Línea divisora -->
     <span class="bg-gray-details w-full h-0.5"></span>
@@ -18,17 +26,29 @@
             <p class="font-semibold text-[#46E24D]">{{numeroPerfiles}}</p>
         </div>
         <!-- Tabla de los perfiles del usuario -->
-        <section class="w-full overflow-auto text-white border border-[#3B3B3B] rounded-lg">
-            <table class="min-w-100 flex flex-col items-center p-4">
-                <tbody class="w-full flex flex-col items-start gap-4 lg:p-2">
-                    @for (perfil of perfilesCreados; track perfil.id) {
-                        <tr class="w-full flex flex-row items-center justify-between">
-                            <td>{{perfil.icono}}</td>
-                            <td>{{perfil.nombre}}</td>
-                            <td>
-                                <button class="">Seleccionar</button>
+        <section class="w-full max-h-68 overflow-auto text-white border border-[#3B3B3B] rounded-lg">
+            <table class="w-full border-collapse">
+                <thead class="bg-[#151515]">
+                    <tr>
+                        <th class="p-3 text-center font-light">Icono</th>
+                        <th class="p-3 text-center font-light">Nombre del perfil</th>
+                        <th class="p-3 text-center font-light">Estado actual</th>
+                        <th class="p-3 text-center font-light">Selección</th>
+                        <th class="p-3 text-center font-light">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (perfil of perfiles; track perfil.id) {
+                        <tr class="border-t border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
+                            <td class="p-3 text-center font-thin">
+                                <i [class]="icons[+perfil.icono]" class="bg-[#46E24D] rounded-full p-2 text-black"></i>
                             </td>
-                            <td>
+                            <td class="p-3 text-center font-thin">{{perfil.nombre}}</td>
+                            <td class="p-3 text-center font-thin">{{perfil.estatus}}</td>
+                            <td class="p-3 text-center font-thin">
+                                <button class="text-[#46E24D] hover:underline">Seleccionar</button>
+                            </td>
+                            <td class="p-3 text-center">
                                 <button>
                                     <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
                                 </button>
@@ -51,7 +71,7 @@
                     class="w-full h-full flex flex-col gap-2 items-center justify-center">
                     <div class="w-full flex flex-row items-center justify-between">
                         <h2 class="text-2xl font-semibold">Nuevo Perfil</h2>
-                        <button (click)="closeModal()" class="text-3xl">
+                        <button (click)="closeModal()" type="button" class="text-3xl">
                             <i class='bx  bx-x'  ></i> 
                         </button>
                     </div>
@@ -71,10 +91,19 @@
                         <div class="w-full flex flex-col gap-2 items-start justify-start">
                             <label for="iconos">Icono del perfil</label>
                             <select
-                                name="iconos"
+                                formControlName="iconos"
                                 id="iconos"
                                 class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
-                                <option value="">Por Defecto</option>
+                                <option value="2" selected>Por Defecto</option>
+                                <option value="1">Administrador</option>
+                                <option value="3">Finanzas</option>
+                                <option value="4">Ventas</option>
+                                <option value="5">Almacén</option>
+                                <option value="6">Seguridad</option>
+                                <option value="7">Soporte</option>
+                                <option value="8">Secretaría</option>
+                                <option value="9">Recepción</option>
+                                <option value="10">Atención</option>
                             </select>
                         </div>
                         <div class="w-full flex flex-col gap-2 items-start justify-start">
