@@ -60,7 +60,7 @@ export class Onboarding {
 
     this.usuarioService.createFinanceParams(paramsFinance).subscribe({
       next: () => {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/profilesSelector']);
       },
       error: (err) => {
         console.log(err);

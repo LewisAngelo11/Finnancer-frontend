@@ -1,5 +1,5 @@
 <main class="slide-to-left bg-gradient-gray-h w-full flex flex-col items-start justify-center h-auto p-5 rounded-2xl gap-3">
-    <div class="w-full flex justify-between items-center text-white">
+    <div class="w-full flex flex-col lg:flex-row sm:gap-4 lg:justify-between sm:justify-start items-center text-white">
         <h2 class="text-2xl">Gestión de Perfiles</h2>
         <div class="flex flex-row gap-4">
             <button
@@ -33,23 +33,26 @@
                         <th class="p-3 text-center font-light">Icono</th>
                         <th class="p-3 text-center font-light">Nombre del perfil</th>
                         <th class="p-3 text-center font-light">Estado actual</th>
-                        <th class="p-3 text-center font-light">Selección</th>
+                        <th class="p-3 text-center font-light">Tipo de perfil</th>
                         <th class="p-3 text-center font-light">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (perfil of perfiles; track perfil.id) {
+                    @for (perfil of perfiles; track perfil.id_perfil) {
                         <tr class="border-t border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
                             <td class="p-3 text-center font-thin">
                                 <i [class]="icons[+perfil.icono]" class="bg-[#46E24D] rounded-full p-2 text-black"></i>
                             </td>
                             <td class="p-3 text-center font-thin">{{perfil.nombre}}</td>
                             <td class="p-3 text-center font-thin">{{perfil.estatus}}</td>
-                            <td class="p-3 text-center font-thin">
-                                <button class="text-[#46E24D] hover:underline">Seleccionar</button>
-                            </td>
+                            @if(perfil.super_usuario) {
+                                <td class="p-3 text-center font-thin">Administrador</td>
+                            }
+                            @else {
+                                <td class="p-3 text-center font-thin">Usuario</td>
+                            }
                             <td class="p-3 text-center">
-                                <button>
+                                <button (click)="openModalUpdate(perfil)">
                                     <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
                                 </button>
                             </td>
@@ -59,6 +62,7 @@
             </table>
         </section>
     </div>
+    <!-- Modal de crear un nuevo perfil -->
     @if (modalOpen()) {
         <div class="modal">
             <div
@@ -130,6 +134,96 @@
                             class="card bg-green-primary p-4 rounded-2xl w-full font-medium"
                         >
                             Crear Perfil
+                        </button>
+                    </section>
+                </form>
+            </div>
+        </div>
+    }
+    <!-- Modal de actualizar un perfil -->
+    @else if (modalUpdateOpen()) {
+        <div class="modal">
+            <div
+                class="modal-container-update"
+                [class.animate]="animateModal()"
+            >
+                <form
+                    [formGroup]="formPerfilesUpdate"
+                    (ngSubmit)="modifyProfile()"
+                    class="w-full h-full flex flex-col gap-2 items-center justify-center">
+                    <div class="w-full flex flex-row items-center justify-between">
+                        <h2 class="text-2xl font-semibold">Modificar el perfil:</h2>
+                        <p></p>
+                        <button (click)="closeModalUpdate()" type="button" class="text-3xl">
+                            <i class='bx  bx-x'  ></i> 
+                        </button>
+                    </div>
+                    <!-- Línea divisora -->
+                    <span class="bg-gray-200 w-full h-0.5"></span>
+
+                    <section class="w-full flex flex-col items-center justify-start gap-5">
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="nombrePerfil">Nombre del perfil</label>
+                            <input
+                                type="text"
+                                formControlName="nombrePerfil"
+                                placeholder="Ingrese el nombre"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="iconos">Icono del perfil</label>
+                            <select
+                                formControlName="iconos"
+                                id="iconos"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                                <option value="2" selected>Por Defecto</option>
+                                <option value="1">Administrador</option>
+                                <option value="3">Finanzas</option>
+                                <option value="4">Ventas</option>
+                                <option value="5">Almacén</option>
+                                <option value="6">Seguridad</option>
+                                <option value="7">Soporte</option>
+                                <option value="8">Secretaría</option>
+                                <option value="9">Recepción</option>
+                                <option value="10">Atención</option>
+                            </select>
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <div class="flex flex-row gap-2">
+                                <input type="checkbox" formControlName="habilitarPIN" class="checkboxes">
+                                <label class="label-check font-light" for="habilitarPIN">PIN de acceso</label>
+                            </div>
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="pin">PIN</label>
+                            <input
+                                type="password"
+                                formControlName="pin"
+                                (input)="soloNumeros($event)"
+                                placeholder="Ingrese el PIN de 6 dígitos"
+                                [class.pin-disabled]="!pinEnabled()"
+                                [class.pin-enabled]="pinEnabled()"
+                                class="w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="estatus">Estatus</label>
+                            <select
+                                formControlName="estatus"
+                                [class.pin-disabled]="!statusEnabled()"
+                                [class.pin-enabled]="statusEnabled()"
+                                class="w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                                >
+                                <option value="activo">Activo</option>
+                                <option value="baja">Baja</option>
+                            </select>
+                        </div>
+                        <!-- Línea divisora -->
+                        <span class="bg-gray-200 w-full h-0.5"></span>
+                        <button
+                            type="submit"
+                            class="card bg-green-primary p-4 rounded-2xl w-full font-medium"
+                        >
+                            Guardar Cambios
                         </button>
                     </section>
                 </form>

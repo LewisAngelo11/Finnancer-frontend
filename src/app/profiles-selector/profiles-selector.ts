@@ -1,7 +1,8 @@
-import { PLATFORM_ID, Component, inject, OnInit } from '@angular/core';
+import { PLATFORM_ID, Component, inject, OnInit, signal } from '@angular/core';
 import { Perfil, UsuarioService } from '../services/usuario-service';
 import { isPlatformBrowser } from '@angular/common';
-import { ProfilesAccount } from '../account/profiles-account/profiles-account';
+import { Router } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 @Component({
@@ -13,6 +14,8 @@ import { ProfilesAccount } from '../account/profiles-account/profiles-account';
 export class ProfilesSelector implements OnInit {
   private usuarioService = inject(UsuarioService);
   private platformId = inject(PLATFORM_ID);
+  private router = inject(Router);
+  pinRequired = signal(false);
 
   perfiles: Perfil[] = [];
   
@@ -32,7 +35,7 @@ export class ProfilesSelector implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.usuarioService.getAllProfiles().subscribe({
+      this.usuarioService.getAllActiveProfiles().subscribe({
         next: (res) => {
           this.perfiles = res;
         },
@@ -41,5 +44,24 @@ export class ProfilesSelector implements OnInit {
         },
       });
     }
+  }
+
+  // Función que guarda el perfil seleccionado en localstorage
+  seleccionarPerfil(perfil: Perfil) {
+    if (perfil.pin !== null) {
+      this.pinRequired.set(true);
+    }
+
+    // Creo el objeto perfil para guardarlo en el localstorage
+    const perfilActual = {
+      id_perfil: perfil.id_perfil,
+      super_usuario: perfil.super_usuario,
+    };
+    
+    // Guardar el del perfil seleccionado
+    localStorage.setItem('perfilActual', JSON.stringify(perfilActual));
+
+    // Redirigir a la siguiente página o dashboard
+    this.router.navigate(['/dashboard']);
   }
 }

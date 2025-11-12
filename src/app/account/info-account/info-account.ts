@@ -34,6 +34,8 @@ export class InfoAccount {
     apellidoM: [''],
   });
 
+  
+
   constructor() {
     // Utilizo un effect para actualizar el formulario cuando los inputs cambien
     effect(() => {
@@ -90,6 +92,7 @@ export class InfoAccount {
 
   // Método para cerrar sesión y eliminar el token JWT
   logOut() {
+    localStorage.removeItem('perfilActual');
     localStorage.removeItem('token');
     this.router.navigate(['']); // Redirigir al login,
   }

@@ -37,15 +37,7 @@ export class Account implements OnInit {
   private usuarioService = inject(UsuarioService);
   private platformId = inject(PLATFORM_ID);
 
-  perfiles = [
-    {id: 1, name: 'Administrador'},
-    {id: 2, name: 'Recepcionista'},
-    {id: 3, name: 'Secretaria'}
-  ];
-
-  currentProfile = 'Administrador';
-
-  activeProfiles = this.perfiles.length;
+  currentProfile = '';
 
   goBackToDash() {
     this.router.navigate(['/dashboard']);
@@ -60,6 +52,15 @@ export class Account implements OnInit {
     if(isPlatformBrowser(this.platformId)){
       this.getInfoUser();
     }
+
+    this.usuarioService.getOneProfile().subscribe({
+      next: (res) => {
+        this.currentProfile = res.nombre;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   // Método que obtiene los datos del usuario

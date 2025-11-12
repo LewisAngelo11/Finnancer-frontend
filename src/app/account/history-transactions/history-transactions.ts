@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-history-transactions',
@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
   templateUrl: './history-transactions.html',
   styleUrl: './history-transactions.css'
 })
-export class HistoryTransactions {
-  currentProfile = 'Administrador';
+export class HistoryTransactions{
+  perfilActual = input<string>();
 
   transactionsHistory = [
     {id: 1, icono: 1, nombre: 'Ingresos de Ventas', monto: 2230, fecha: '15/09/2025'},

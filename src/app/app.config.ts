@@ -5,12 +5,13 @@ import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http'; // Se agregó el HttpClient con Fetch
-import { authInterceptor } from './auth-interceptor';
+import { authInterceptor } from '../interceptors/auth-interceptor';
+import { profileInterceptor } from '../interceptors/profile-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withFetch(), // Esto permite que HttpCLient se utilice en toda la app
-      withInterceptors([authInterceptor]) // Agrega el interceptor de auth
+      withInterceptors([authInterceptor, profileInterceptor]) // Agrega el interceptor de auth y profile
     ),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),

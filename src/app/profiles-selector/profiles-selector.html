@@ -1,13 +1,14 @@
-<main class="w-screen h-screen overflow-hidden">
-    <div class="h-full flex flex-col items-center justify-center gap-10">
+<main class="w-screen h-screen overflow-y-auto lg:overflow-hidden">
+    <div class="fade-in h-full flex flex-col items-center justify-center gap-10">
         <h2 class="text-white text-5xl font-medium">Seleccione un perfil para entrar a Finnancer</h2>
-        <section class="flex flex-row w-full overflow-x-auto gap-10 items-center justify-center">
-            @for(perfil of perfiles; track perfil.id) {
-                <div class="text-white flex flex-col items-center justify-center gap-3 w-56 bg-gradient-gray-v rounded-3xl p-5">
+        <section class="flex flex-col lg:flex-row w-full overflow-x-auto gap-10 items-center justify-center">
+            @for(perfil of perfiles; track perfil.id_perfil) {
+                <div class="slide-in-up text-white flex flex-col items-center justify-center gap-3 w-56 bg-gradient-gray-v rounded-3xl p-5">
                     <p><i [class]="icons[+perfil.icono]" class="bg-[#46E24D] rounded-full p-5 text-black text-2xl"></i></p>
                     <p class="text-3xl font-light">{{perfil.nombre}}</p>
                     <button
                         class="menu rounded-full py-4 px-6 text-white font-thin"
+                        (click)="seleccionarPerfil(perfil)"
                     >
                         Seleccionar
                     </button>
@@ -15,4 +16,11 @@
             }
         </section>
     </div>
+    @if(pinRequired()) {
+        <form action="">
+            <label for=""></label>
+            <input type="password" placeholder="Ingrese el pin de 6 digitos">
+            <button type="submit" class="menu rounded-full py-4 px-6 text-white font-thin">Ingresar</button>
+        </form>
+    }
 </main>

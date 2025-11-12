@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 // Interfaz que es para actualizar los datos del usuario sin el correo
 export interface BodyUpdateUser {
@@ -29,12 +29,13 @@ export interface BodyCreateProfile {
 }
 
 export interface Perfil {
-  id: number;
+  id_perfil: number;
   nombre: string;
   icono: string;
-  fechaCreacion: Date;
+  fecha_creacion: Date;
   estatus: string;
   pin: string;
+  super_usuario: boolean;
 }
 
 @Injectable({
@@ -44,6 +45,7 @@ export class UsuarioService {
   private http = inject(HttpClient);
   private host = 'localhost';
   private port = 3000;
+  private perfiles$?: Observable<Perfil[]>; // Cache local en memoria para evitar peticiones repetitivas
 
   private apiUrl = `http://${this.host}:${this.port}`;
 
@@ -77,7 +79,23 @@ export class UsuarioService {
     return this.http.post(`${this.apiUrl}/perfiles/create`, bodyCreateProfile);
   }
 
-  getAllProfiles(): Observable<Perfil[]>{
-    return this.http.get<Perfil[]>(`${this.apiUrl}/perfiles/all`);
+  //Método que obtiene todos los perfiles relacionados al usuario
+  getAllProfiles(): Observable<Perfil[]> {
+    if (!this.perfiles$) {
+      this.perfiles$ = this.http
+        .get<Perfil[]>(`${this.apiUrl}/perfiles/all`)
+        .pipe(shareReplay(1)); // cachea la última respuesta
+    }
+    return this.perfiles$;
+  }
+
+  // Método que obtiene únicamente los perfiles activos relacionados al usuario
+  getAllActiveProfiles(): Observable<Perfil[]>{
+    return this.http.get<Perfil[]>(`${this.apiUrl}/perfiles/all-active`);
+  }
+
+  // Método que obtiene un perfil con el id
+  getOneProfile(): Observable<Perfil>{
+    return this.http.get<Perfil>(`${this.apiUrl}/perfiles/one`);
   }
 }

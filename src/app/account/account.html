@@ -120,7 +120,7 @@
             }
             @else if (buttonSelected() === 2) {
                 <app-profiles-account></app-profiles-account>
-                <app-history-transactions></app-history-transactions>
+                <app-history-transactions [perfilActual]="currentProfile"></app-history-transactions>
             }
             @else if (buttonSelected() === 3) {
                 <app-finance-account
