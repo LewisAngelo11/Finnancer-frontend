@@ -9,7 +9,10 @@
                 Cambiar de perfil
             </button>
             <button
-                class="card bg-green-primary px-4 py-2 rounded-xl text-black flex items-center gap-1"
+                class="px-4 py-2 rounded-xl text-black flex items-center gap-1"
+                [disabled]="!isSuperUser()"
+                [class.button-disabled]="!isSuperUser()"
+                [class.button-enabled]="isSuperUser()"
                 (click)="openModal()"
             >
                 <i class='bx  bx-plus text-xl'  ></i> 
@@ -52,8 +55,13 @@
                                 <td class="p-3 text-center font-thin">Usuario</td>
                             }
                             <td class="p-3 text-center">
-                                <button (click)="openModalUpdate(perfil)">
-                                    <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                                <button
+                                    [disabled]="!isSuperUser()"
+                                    [class.edit-disabled]="!isSuperUser()"
+                                    [class.edit-enabled]="isSuperUser()"
+                                    (click)="openModalUpdate(perfil)"
+                                >
+                                    <i class='bx  bx-pencil'  ></i> 
                                 </button>
                             </td>
                         </tr>

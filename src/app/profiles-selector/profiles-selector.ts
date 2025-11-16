@@ -2,12 +2,12 @@ import { PLATFORM_ID, Component, inject, OnInit, signal } from '@angular/core';
 import { Perfil, UsuarioService } from '../services/usuario-service';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule, Validators, FormsModule, FormControl } from '@angular/forms';
 
 
 @Component({
   selector: 'app-profiles-selector',
-  imports: [],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './profiles-selector.html',
   styleUrl: './profiles-selector.css'
 })
@@ -15,9 +15,24 @@ export class ProfilesSelector implements OnInit {
   private usuarioService = inject(UsuarioService);
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
+
   pinRequired = signal(false);
+  animateModal = signal(false);
+  profileSelected = signal(0);
+  mensajeError = signal('');
+  nombrePerfil = signal('');
+
+  // Es un state para guardar de manera local el perfil seleccionado
+  private perfilSeleccionado: any;
 
   perfiles: Perfil[] = [];
+
+  // Input del pin del usuario
+  pinProfile = new FormControl('', [
+    Validators.required,
+    Validators.maxLength(6),
+    Validators.pattern((/^\d{6}$/)),
+  ]);
   
     // Iconos predeterminados que el usuario puede seleccionar para el icono de un perfil
   icons: Record<number ,string> = {
@@ -48,8 +63,12 @@ export class ProfilesSelector implements OnInit {
 
   // Función que guarda el perfil seleccionado en localstorage
   seleccionarPerfil(perfil: Perfil) {
-    if (perfil.pin !== null) {
+    if (perfil.pin !== null || perfil.pin === "") {
       this.pinRequired.set(true);
+      setTimeout(() => this.animateModal.set(true), 10);
+      this.perfilSeleccionado = perfil; // Guardo el perfil seleccionado en el state
+      this.nombrePerfil.set(this.perfilSeleccionado.nombre);
+      return;
     }
 
     // Creo el objeto perfil para guardarlo en el localstorage
@@ -63,5 +82,40 @@ export class ProfilesSelector implements OnInit {
 
     // Redirigir a la siguiente página o dashboard
     this.router.navigate(['/dashboard']);
+  }
+
+  closeModal() {
+    this.animateModal.set(false);
+    // Espera a que la animación termine antes de ocultarlo en el DOM
+    setTimeout(() => this.pinRequired.set(false), 100);
+  }
+
+  // Esta función valida si el pin ingresado
+  validatePIN() {
+    const idPerfil = Number(this.perfilSeleccionado.id_perfil);
+    const pin = this.pinProfile.value;
+
+    // Si no propociona pin, da error
+    if (!pin) {
+      this.mensajeError.set('Proporcione el PIN');
+      return
+    }
+
+    this.usuarioService.validatePinProfile({ idPerfil, pin }).subscribe({
+      next: () => {
+        const perfilActual = {
+          id_perfil: this.perfilSeleccionado.id_perfil,
+          super_usuario: this.perfilSeleccionado.super_usuario,
+        }
+        // Guardar el del perfil seleccionado
+        localStorage.setItem('perfilActual', JSON.stringify(perfilActual));
+        // Redirigir a la siguiente página o dashboard
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        console.log(err);
+        this.mensajeError.set(err.error.message);
+      }
+    })
   }
 }

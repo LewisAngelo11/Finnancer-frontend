@@ -1,7 +1,7 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-import { BodyCreateProfile, UsuarioService } from '../../services/usuario-service';
+import { BodyCreateProfile, UsuarioService, BodyUpdateProfile } from '../../services/usuario-service';
 import { Perfil } from '../../services/usuario-service';
 import { Router } from '@angular/router';
 
@@ -17,6 +17,7 @@ export class ProfilesAccount implements OnInit {
   animateModal = signal(false);
   pinEnabled = signal(false);
   statusEnabled = signal(false);
+  isSuperUser = signal(false); // Este signal lu utilizo para limitar a los perfiles que son de tipo 'Usuario' y no 'Administrador'
   
   private fb = inject(FormBuilder);
   private usuarioService = inject(UsuarioService);
@@ -126,6 +127,16 @@ export class ProfilesAccount implements OnInit {
         console.log(err);
       },
     });
+
+    const perfil = localStorage.getItem('perfilActual'); // Obtener el tipo de perfil actual
+    let tipoPerfil;
+    if (perfil) {
+      tipoPerfil = JSON.parse(perfil);
+    }
+
+    if(tipoPerfil.super_usuario) {
+      this.isSuperUser.set(true);
+    }
   }
 
   openModal() {
@@ -141,7 +152,7 @@ export class ProfilesAccount implements OnInit {
     this.formPerfilesUpdate.patchValue({
       nombrePerfil: perfil.nombre,
       iconos: perfil.icono,
-      pin: perfil.pin,
+      pin: null,
       estatus: perfil.estatus,
       habilitarPIN: !!perfil.pin
     });
@@ -176,7 +187,7 @@ export class ProfilesAccount implements OnInit {
     const body: BodyCreateProfile = {
       nombre: this.nombrePerfil?.value || '',
       icono: Number(this.getIconoPerfil?.value) || 2,
-      pin: this.pinProfile?.value || '',
+      pin: this.pinProfile?.value || null,
     };
 
     this.usuarioService.createProfile(body).subscribe({
@@ -194,7 +205,25 @@ export class ProfilesAccount implements OnInit {
   }
 
   modifyProfile() {
-    
+    const body: BodyUpdateProfile = {
+      nombre: this.nombrePerfilUpdate?.value || '',
+      icono: Number(this.getIconoPerfilUpdate?.value) || 2,
+      pin: this.pinProfileUpdate?.value || null,
+      estatus: this.estatusProfileUpdate?.value || 'activo'
+    };
+
+    this.usuarioService.updateProfile(body).subscribe({
+      next: (perfilUpdate) => {
+        // Actualiza el perfil del array de perfiles
+        this.perfiles = this.perfiles.map(perfil =>
+          perfil.id_perfil === perfilUpdate.id_perfil ? perfilUpdate : perfil
+        );
+        this.closeModalUpdate();
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   // Función que evita que el usuario escriba letras en el input de PIN

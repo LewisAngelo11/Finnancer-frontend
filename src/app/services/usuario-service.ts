@@ -25,7 +25,14 @@ export interface BodyUpdatePassw {
 export interface BodyCreateProfile {
   nombre: string;
   icono: number;
-  pin: string;
+  pin: string | null;
+}
+
+export interface BodyUpdateProfile {
+  nombre: string;
+  icono: number;
+  pin: string | null;
+  estatus: string;
 }
 
 export interface Perfil {
@@ -74,6 +81,8 @@ export class UsuarioService {
     return this.http.patch(`${this.apiUrl}/usuarios/security`, bodyUpdatePassw);
   }
 
+  // ------- Endpoints para los perfiles relacionados a un usuario -----------
+
   // Método que crea un nuevo perfil de un usuario
   createProfile(bodyCreateProfile: BodyCreateProfile): Observable<any> {
     return this.http.post(`${this.apiUrl}/perfiles/create`, bodyCreateProfile);
@@ -97,5 +106,15 @@ export class UsuarioService {
   // Método que obtiene un perfil con el id
   getOneProfile(): Observable<Perfil>{
     return this.http.get<Perfil>(`${this.apiUrl}/perfiles/one`);
+  }
+
+  // Método que valida el pin de un perfil
+  validatePinProfile(credetnials: {idPerfil: number, pin: string}) {
+    return this.http.post(`${this.apiUrl}/perfiles/validatePIN`, credetnials);
+  }
+
+  // Método que actializa los datos de un perfil
+  updateProfile(bodyUpdateProfile: BodyUpdateProfile):Observable<any> {
+    return this.http.patch(`${this.apiUrl}/perfiles/update`, bodyUpdateProfile);
   }
 }

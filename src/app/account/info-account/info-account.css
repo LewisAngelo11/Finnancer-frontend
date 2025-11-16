@@ -68,3 +68,11 @@
   opacity: 1;
   transform: scale(1);
 }
+
+.edit-disabled {
+  background-color: #ababab;
+}
+
+.edit-enabled {
+  background-color: #46E24D;
+}

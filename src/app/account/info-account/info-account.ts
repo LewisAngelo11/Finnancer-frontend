@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, effect, output } from '@angular/core';
+import { Component, inject, input, signal, effect, output, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario-service';
@@ -11,9 +11,10 @@ import { Router } from '@angular/router';
   templateUrl: './info-account.html',
   styleUrl: './info-account.css'
 })
-export class InfoAccount {
+export class InfoAccount implements OnInit {
   modalOpen = signal(false);
   animateModal = signal(false);
+  isSuperUser = signal(false); // Este signal lu utilizo para limitar a los perfiles que son de tipo 'Usuario' y no 'Administrador'
 
   nombreCuenta = input<string>();
   apellidoPCuenta = input<string>();
@@ -34,7 +35,17 @@ export class InfoAccount {
     apellidoM: [''],
   });
 
-  
+  ngOnInit(): void {
+    const perfil = localStorage.getItem('perfilActual'); // Obtener el tipo de perfil actual
+    let tipoPerfil;
+    if (perfil) {
+      tipoPerfil = JSON.parse(perfil);
+    }
+
+    if(tipoPerfil.super_usuario) {
+      this.isSuperUser.set(true);
+    }
+  }
 
   constructor() {
     // Utilizo un effect para actualizar el formulario cuando los inputs cambien

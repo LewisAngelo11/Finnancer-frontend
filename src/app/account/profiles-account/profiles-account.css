@@ -9,19 +9,19 @@
 }
 
 .modal-container, .modal-container-update {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    height: 550px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    transform: scale(0.02);
-    transition: all 0.20s ease;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  height: 550px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0.02);
+  transition: all 0.20s ease;
 }
 
 .modal-container-update {
@@ -44,4 +44,25 @@
 
 .pin-enabled:hover {
   transform: translateY(-5px);
+}
+
+.button-disabled {
+  background-color: #ababab;
+}
+
+.button-enabled {
+  background-color: #46E24D;
+  transition: transform 0.3s ease;
+}
+
+.button-enabled:hover {
+  transform: translateY(-5px);
+}
+
+.edit-disabled {
+  color: #ababab;
+}
+
+.edit-enabled {
+  color: #46E24D;
 }
