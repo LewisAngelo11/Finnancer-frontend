@@ -50,7 +50,7 @@ export interface Perfil {
 })
 export class UsuarioService {
   private http = inject(HttpClient);
-  private host = '192.168.100.28';
+  private host = 'localhost';
   private port = 3000;
   private perfiles$?: Observable<Perfil[]>; // Cache local en memoria para evitar peticiones repetitivas
 
