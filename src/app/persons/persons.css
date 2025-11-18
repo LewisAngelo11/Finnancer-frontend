@@ -1,0 +1,15 @@
+.bg-categories {
+    background-color: #292929;
+}
+
+.bg-green-primary {
+    background-color: #46E24D;
+}
+
+.filter-activate {
+    background-color: var(--color-zinc-900);
+}
+
+.filter-inactivate {
+    background-color: var(--color-zinc-800);
+}

@@ -1,0 +1,91 @@
+<!-- CONTENEDOR PRINCIPAL -->
+<main class="w-screen h-screen bg-black p-4 text-white">
+    <!-- REGRESAR -->
+    <div class="slide-in-down w-full flex flex-col m-2 text-black">
+        <button
+            (click)="goBackToDash()"
+            class="bg-green-primary flex items-center justify-center rounded-full w-10 h-auto p-2"
+        >
+            <i class='bx  bx-chevron-left text-2xl'  ></i> 
+        </button>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="slide-in-up bg-gradient-gray-h rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-semibold">Clientes y Proveedores</h1>
+
+            <button class="card bg-green-primary text-black px-6 py-2 rounded-xl font-light transition">
+                Agregar
+            </button>
+        </div>
+
+        <!-- Línea divisora -->
+        <span class="block bg-gray-details w-full h-0.5 my-3"></span>
+
+        <!-- TABS -->
+        <div class="flex mt-3 overflow-x-auto w-full overscroll-none">
+            <button
+                (click)="selectorFilter('todos')"
+                [class.filter-activate]="selectFilter() === 'todos'"
+                [class.filter-inactivate]="selectFilter() !== 'todos'"
+                class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+            >
+                Todas
+            </button>
+            <button
+                (click)="selectorFilter('clientes')"
+                [class.filter-activate]="selectFilter() === 'clientes'"
+                [class.filter-inactivate]="selectFilter() !== 'clientes'"
+                class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+            >
+                Ingresos
+            </button>
+            <button
+                (click)="selectorFilter('proveedores')"
+                [class.filter-activate]="selectFilter() === 'proveedores'"
+                [class.filter-inactivate]="selectFilter() !== 'proveedores'"
+                class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+            >
+                Egresos
+            </button>
+        </div>
+
+        <!-- CONTENEDOR TABLA -->
+        <section class="bg-zinc-800 md:rounded-tr-2xl overscroll-none overflow-auto">
+            <table class="w-full text-center">
+                <thead class="text-white">
+                    <tr class="bg-zinc-900">
+                        <th class="font-thin p-4">Nombre</th>
+                        <th class="font-thin p-4">Tipo</th>
+                        <th class="font-thin p-4">Deuda</th>
+                        <th class="font-thin p-4">Último Movimiento</th>
+                        <th class="font-thin p-4">Estatus</th>
+                        <th class="font-thin p-4">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (persona of personas; track persona.id) {
+                        <tr>
+                            <td class="font-thin p-4"></td>
+                            <td class="font-thin p-4"></td>
+                            <td class="font-thin p-4"></td>
+                            <td class="font-thin p-4"></td>
+                            <td class="font-thin p-4"></td>
+                            <td class="font-thin p-4"></td>
+                        </tr>
+                    }
+                    @empty {
+                        <tr>
+                            <td colspan="6" class="font-thin p-4 text-center">
+                                No hay clientes o proveedores registrados.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+</main>

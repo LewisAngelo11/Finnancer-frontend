@@ -8,6 +8,7 @@ import { VerifyMail } from './verify-mail/verify-mail';
 import { Onboarding } from './onboarding/onboarding';
 import { ProfilesSelector } from './profiles-selector/profiles-selector';
 import { Transactions } from './transactions/transactions';
+import { Persons } from './persons/persons';
 
 export const routes: Routes = [
     {
@@ -41,6 +42,10 @@ export const routes: Routes = [
     {
         path: 'profilesSelector',
         component: ProfilesSelector,
+    },
+    {
+        path: 'persons',
+        component: Persons,
     },
     {
         path: 'transactions',

@@ -25,6 +25,10 @@ export class HeaderDashboard {
     this.router.navigate(['/categories']);
   }
 
+  goToPersons() {
+    this.router.navigate(['/persons']);
+  }
+
   goToTransactions() {
     this.router.navigate(['/transactions']);
   }
