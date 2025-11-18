@@ -25,5 +25,9 @@ export class HeaderDashboard {
     this.router.navigate(['/categories']);
   }
 
+  goToTransactions() {
+    this.router.navigate(['/transactions']);
+  }
+
   enterAnimation = signal('slide-in-down');
 }

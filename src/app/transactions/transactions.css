@@ -1,0 +1,53 @@
+.bg-categories {
+    background-color: #292929;
+}
+
+.bg-green-primary {
+    background-color: #46E24D;
+}
+
+.filter-activate {
+    background-color: var(--color-zinc-900);
+}
+
+.filter-inactivate {
+    background-color: var(--color-zinc-800);
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    z-index: 1000;
+}
+
+.modal-container {
+    background-color: #fff;
+    padding: 10px 20px;
+    width: 600px;
+    height: 100%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(-100%);
+    transition: all 0.20s ease;
+}
+
+.animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+    .modal-container {
+        width: 100%;
+        height: 100%;
+        padding: 15px;
+    }
+}
