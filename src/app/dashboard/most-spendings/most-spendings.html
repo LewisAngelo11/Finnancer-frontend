@@ -1,8 +1,18 @@
 <div class="w-full flex flex-col lg:h-full">
-    <div class="bg-gradient-gray-h card w-full h-6 lg:h-full p-4 flex flex-col rounded-3xl text-white gap-4">
+    <div class="bg-gradient-gray-h card w-full h-full p-4 flex flex-col rounded-3xl text-white gap-4">
         <h2 class="font-medium text-xl">Mayores Gastos</h2>
         <div class="overflow-auto w-full h-full">
             <!-- Próximamente -->
+            <section class="relative min-h-[300px] min-w-[600px]">
+                @for (gasto of gastos; track gasto.id) {
+                    <div [class]="containers[gasto.id]" class="font-thin text-xs flex items-center justify-center text-center">
+                        <div>
+                        {{ gasto.categoria }} <br />
+                        ${{ gasto.monto }}
+                        </div>
+                    </div>
+                }
+            </section>
         </div>
     </div>
 </div>
