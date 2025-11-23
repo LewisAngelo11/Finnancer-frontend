@@ -1,0 +1,29 @@
+.filter-activate {
+    background-color: #151515;
+}
+
+.filter-inactivate {
+    background-color: var(--color-zinc-800);
+}
+
+@keyframes bounce-fade {
+    0% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    40% {
+        transform: scale(1.02);
+        opacity: 1;
+    }
+    60% {
+        transform: scale(0.99);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.bounce {
+    animation: bounce-fade 500ms ease-in-out;
+}

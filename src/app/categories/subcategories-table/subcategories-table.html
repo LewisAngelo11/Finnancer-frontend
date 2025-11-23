@@ -1,0 +1,119 @@
+<!-- Tabla de Subcategorias y filtros -->
+<section class="mt-5 slide-in-up w-full overflow-x-auto">
+    <!-- Header de la tabla de las subcategorías -->
+    <div class="w-full flex flex-row items-start justify-between mt-2">
+        <h2 class="text-xl font-light">Subcategorías Totales</h2>
+        <button
+            (click)="notifyOpenModalSubcategoria()"
+            class="card text-black bg-green-primary flex items-center gap-1 rounded-xl py-2 px-4 font-light"
+        >
+            <i class='bx  bx-plus'></i> 
+            Agregar
+        </button>
+    </div>
+    <!-- Filtros -->
+    <div class="flex mt-3 overflow-x-auto w-full overscroll-none">
+        <button
+            (click)="animateButton($event); selectorFilterSubategories('Todos'); filtrarSubcategorias('Todos')"
+            [class.filter-activate]="selectedFilterSubcategories() === 'Todos'"
+            [class.filter-inactivate]="selectedFilterSubcategories() !== 'Todos'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+        >
+            Todos
+        </button>
+        <button
+            (click)="animateButton($event); selectorFilterSubategories('Ingreso'); filtrarSubcategorias('Ingreso')"
+            [class.filter-activate]="selectedFilterSubcategories() === 'Ingreso'"
+            [class.filter-inactivate]="selectedFilterSubcategories() !== 'Ingreso'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+        >
+            Ingreso
+        </button>
+        <button
+            (click)="animateButton($event); selectorFilterSubategories('Egreso'); filtrarSubcategorias('Egreso')"
+            [class.filter-activate]="selectedFilterSubcategories() === 'Egreso'"
+            [class.filter-inactivate]="selectedFilterSubcategories() !== 'Egreso'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+        >
+            Egreso
+        </button>
+        <button
+            (click)="animateButton($event); selectorFilterSubategories('Activo'); filtrarSubcategorias('Activo')"
+            [class.filter-activate]="selectedFilterSubcategories() === 'Activo'"
+            [class.filter-inactivate]="selectedFilterSubcategories() !== 'Activo'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+        >
+            Activo
+        </button>
+        <button
+            (click)="animateButton($event); selectorFilterSubategories('Baja'); filtrarSubcategorias('Baja')"
+            [class.filter-activate]="selectedFilterSubcategories() === 'Baja'"
+            [class.filter-inactivate]="selectedFilterSubcategories() !== 'Baja'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+        >
+            Baja
+        </button>
+    </div>
+
+    <div class="w-full bg-zinc-800 md:rounded-tr-2xl overscroll-none overflow-auto">
+        <table class="w-full text-center">
+            <thead class="text-white bg-[#151515] sticky top-0 z-20">
+                <tr>
+                    <th class="font-thin p-4">Icono</th>
+                    <th class="font-thin p-4">Nombre</th>
+                    <th class="font-thin p-4">Categoría</th>
+                    <th class="font-thin p-4">Tipo de Movimiento</th>
+                    <th class="font-thin p-4">Flujo de Efectivo</th>
+                    <th class="font-thin p-4">Mostrar</th>
+                    <th class="font-thin p-4">Estatus</th>
+                    <th class="font-thin p-4">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <!-- Datos De la tabla -->
+                @for (subcategoria of subcategoriasFiltradas; track subcategoria.id_subcategoria) {
+                    <tr class="border-t border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
+                        <th class="font-thin p-4">{{subcategoria.icono}}</th>
+                        <th class="font-thin p-4">{{subcategoria.nombre}}</th>
+                        <th class="font-thin p-4">{{subcategoria.categoria}}</th>
+                        @switch (subcategoria.tipo) {
+                            @case ('ingreso') {
+                                <th class="font-thin p-4">Ingreso</th>
+                            }
+                            @case ('egreso') {
+                                <th class="font-thin p-4">Egreso</th>
+                            }
+                        }
+                        @switch (subcategoria.flujo) {
+                            @case ('efectivo') {
+                                <th class="font-thin p-4">Efectivo</th>
+                            }
+                            @case ('cuenta_por_cobrar') {
+                                <th class="font-thin p-4">Cuenta por cobrar</th>
+                            }
+                            @case ('cuenta_por_pagar') {
+                                <th class="font-thin p-4">Cuenta por pagar</th>
+                            }
+                        }
+                        @if (subcategoria.mostrar_panel) {
+                            <th class="font-thin p-4">Mostrar</th>
+                        }
+                        @else {
+                            <th class="font-thin p-4">No mostrar</th>
+                        }
+                        <th class="font-thin p-4">{{subcategoria.estatus}}</th>
+                        <th class="font-thin p-4">
+                            <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                        </th>
+                    </tr>
+                }
+                @empty {
+                    <tr>
+                        <th colspan="8" class="font-thin p-4">No hay subcategorías</th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

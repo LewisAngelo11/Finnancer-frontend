@@ -1,0 +1,127 @@
+<!-- Tabla de Categorias y filtros -->
+<section class="mt-5 slide-in-up w-full overflow-x-auto">
+    <!-- Header de la tabla de categorias -->
+    <div class="w-full flex md:flex-row items-start justify-between mt-2">
+        <h2 class="text-xl font-light">Categorías Totales</h2>
+        <button
+            (click)="notifyOpenModalCategoria()"
+            class="card text-black bg-green-primary flex items-center gap-1 rounded-xl py-2 px-4 font-light "
+        >
+            <i class='bx  bx-plus'></i> 
+            Agregar
+        </button>
+    </div>
+    <!-- Filtros -->
+    <div class="flex mt-3 overflow-x-auto w-full overscroll-none">
+        <button
+            (click)="animateButton($event); selectorFilterCategories('Todos')"
+            [class.filter-activate]="selectedFilterCategories() === 'Todos'"
+            [class.filter-inactivate]="selectedFilterCategories() !== 'Todos'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+            (click)="filtrarCategorias('Todos')"
+        >
+            Todos
+        </button>
+        <button
+            (click)="animateButton($event); selectorFilterCategories('Ingreso'); filtrarCategorias('Ingreso')"
+            [class.filter-activate]="selectedFilterCategories() === 'Ingreso'"
+            [class.filter-inactivate]="selectedFilterCategories() !== 'Ingreso'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+            (click)="filtrarCategorias('Ingreso')"
+        >
+            Ingreso
+        </button>
+        <button
+            (click)="animateButton($event); selectorFilterCategories('Egreso')"
+            [class.filter-activate]="selectedFilterCategories() === 'Egreso'"
+            [class.filter-inactivate]="selectedFilterCategories() !== 'Egreso'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+            (click)="filtrarCategorias('Egreso')"
+        >
+            Egreso
+        </button>
+        <button
+            (click)="animateButton($event); selectorFilterCategories('Activo')"
+            [class.filter-activate]="selectedFilterCategories() === 'Activo'"
+            [class.filter-inactivate]="selectedFilterCategories() !== 'Activo'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+            (click)="filtrarCategorias('Activo')"
+        >
+            Activo
+        </button>
+        <button
+            (click)="animateButton($event); selectorFilterCategories('Baja')"
+            [class.filter-activate]="selectedFilterCategories() === 'Baja'"
+            [class.filter-inactivate]="selectedFilterCategories() !== 'Baja'"
+            class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
+            (click)="filtrarCategorias('Baja')"
+        >
+            Baja
+        </button>
+    </div>
+    
+    <div class="w-full h-78 bg-zinc-800 md:rounded-tr-2xl rounded-b-2xl overscroll-none overflow-auto">
+        <table class="w-full text-center">
+            <thead class="text-white bg-[#151515] sticky top-0 z-20">
+                <tr>
+                    <th class="font-thin p-4">Icono</th>
+                    <th class="font-thin p-4">Nombre</th>
+                    <th class="font-thin p-4">Tipo de Movimiento</th>
+                    <th class="font-thin p-4">Flujo de Efectivo</th>
+                    <th class="font-thin p-4">Mostrar en el panel</th>
+                    <th class="font-thin p-4">Estatus</th>
+                    <th class="font-thin p-4">Acciones</th>
+                </tr>
+            </thead>
+        
+            <tbody>
+                <!-- Datos De la tabla -->
+                @for (categoria of categoriasFiltradas; let i = $index; track categoria.id_categoria) {
+                    <tr
+                        class="border-t border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
+                        <th class="font-thin p-4">
+                            <i [class]="icons[+categoria.icono]" class="p-2 bg-[#46E24D] rounded-full"></i>
+                        </th>
+                        <th class="font-thin p-4">{{categoria.nombre}}</th>
+                            @switch (categoria.tipo) {
+                                @case ('ingreso') {
+                                    <th class="font-thin p-4">Ingreso</th>
+                            }
+                                @case ('egreso') {
+                                    <th class="font-thin p-4">Egreso</th>
+                                }
+                            }
+
+                            @switch (categoria.flujo) {
+                                @case ('efectivo') {
+                                    <th class="font-thin p-4">Efectivo</th>
+                                }
+                                @case ('cuenta_por_cobrar') {
+                                    <th class="font-thin p-4">Cuenta por cobrar</th>
+                                }
+                                @case ('cuenta_por_pagar') {
+                                    <th class="font-thin p-4">Cuenta por pagar</th>
+                                }
+                            }
+                                    
+                            @if (categoria.mostrar_panel) {
+                                <th class="font-thin p-4">Mostrar</th>
+                            }
+                            @else {
+                                <th class="font-thin p-4">No mostrar</th>
+                            }
+                            <th class="font-thin p-4">{{categoria.estatus}}</th>
+                            <th class="font-thin p-4">
+                                <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                            </th>
+                        </tr>
+                        }
+                    @empty {
+                        <tr>
+                            <th colspan="7" class="font-thin p-4">No hay categorías</th>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+    </div>
+</section>
