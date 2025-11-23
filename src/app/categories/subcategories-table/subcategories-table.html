@@ -55,7 +55,7 @@
         </button>
     </div>
 
-    <div class="w-full bg-zinc-800 md:rounded-tr-2xl overscroll-none overflow-auto">
+    <div class="w-full h-78 bg-zinc-800 md:rounded-tr-2xl rounded-b-2xl overscroll-none overflow-auto">
         <table class="w-full text-center">
             <thead class="text-white bg-[#151515] sticky top-0 z-20">
                 <tr>
@@ -73,8 +73,10 @@
             <tbody>
                 <!-- Datos De la tabla -->
                 @for (subcategoria of subcategoriasFiltradas; track subcategoria.id_subcategoria) {
-                    <tr class="border-t border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
-                        <th class="font-thin p-4">{{subcategoria.icono}}</th>
+                    <tr class="border-b border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
+                        <th class="font-thin p-4">
+                            <i [class]="icons[+subcategoria.icono]" class="p-2 bg-[#46E24D] rounded-full"></i>
+                        </th>
                         <th class="font-thin p-4">{{subcategoria.nombre}}</th>
                         <th class="font-thin p-4">{{subcategoria.categoria}}</th>
                         @switch (subcategoria.tipo) {
