@@ -4,18 +4,29 @@
     <div class="slide-in-down w-full flex flex-col m-2 text-black">
         <button
             (click)="goBackToDash()"
-            class="bg-green-primary flex items-center justify-center rounded-full w-10 h-auto p-2"
+            class="bg-green-primary flex items-center justify-center rounded-full w-10 h-auto p-2 mb-4 ml-2"
         >
             <i class='bx  bx-chevron-left text-2xl'  ></i> 
         </button>
     </div>
 
     <!-- Contenedor principal -->
-    <div class="slide-in-up bg-gradient-gray-h rounded-2xl p-6 shadow-xl">
+    <div class="slide-in-up bg-gradient-gray-v rounded-2xl p-6 shadow-xl min-h-full">
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-semibold">Clientes y Proveedores</h1>
+            <h1 class="text-lg md:text-2xl font-semibold">Clientes y Proveedores</h1>
 
-            <button class="card bg-green-primary text-black px-6 py-2 rounded-xl font-light transition">
+            <button
+                class="card hidden md:flex items-center bg-green-primary text-black px-6 py-2 rounded-xl font-light transition"
+                (click)="openModal()"
+            >
+                <i class='bx  bx-plus'></i> 
+                Agregar Nuevo
+            </button>
+            <button
+                class="card flex items-center md:hidden bg-green-primary text-black px-6 py-2 rounded-xl font-light transition"
+                (click)="openModal()"
+            >
+                <i class='bx  bx-plus'></i> 
                 Agregar
             </button>
         </div>
@@ -23,10 +34,25 @@
         <!-- Línea divisora -->
         <span class="block bg-gray-details w-full h-0.5 my-3"></span>
 
+        <section class="w-full flex flex-col md:flex-row gap-5 h-auto">
+            <div class="p-4 md:p-6 md:min-w-[300px] rounded-2xl bg-gradient-gray-h flex flex-row items-start gap-2">
+                <h2 class="text-xl font-light">Número de Clientes:</h2>
+                <p class="text-xl font-semibold text-[#46E24D]">{{totalClientes}}</p>
+            </div>
+
+            <div class="p-4 md:p-6 md:min-w-[300px] rounded-2xl bg-gradient-gray-h flex flex-row items-start gap-2">
+                <h2 class="text-xl font-light">Número de Proveedores:</h2>
+                <p class="text-xl font-semibold text-[#46E24D]">{{totalProveedores}}</p>
+            </div>
+        </section>
+
+        <!-- Línea divisora -->
+        <span class="block bg-gray-details w-full h-0.5 my-3"></span>
+
         <!-- TABS -->
         <div class="flex mt-3 overflow-x-auto w-full overscroll-none">
             <button
-                (click)="selectorFilter('todos')"
+                (click)="selectorFilter('todos'); filtrarPersonas('todos')"
                 [class.filter-activate]="selectFilter() === 'todos'"
                 [class.filter-inactivate]="selectFilter() !== 'todos'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
@@ -34,25 +60,25 @@
                 Todas
             </button>
             <button
-                (click)="selectorFilter('clientes')"
+                (click)="selectorFilter('clientes'); filtrarPersonas('clientes')"
                 [class.filter-activate]="selectFilter() === 'clientes'"
                 [class.filter-inactivate]="selectFilter() !== 'clientes'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
             >
-                Ingresos
+                Clientes
             </button>
             <button
-                (click)="selectorFilter('proveedores')"
+                (click)="selectorFilter('proveedores'); filtrarPersonas('proveedores')"
                 [class.filter-activate]="selectFilter() === 'proveedores'"
                 [class.filter-inactivate]="selectFilter() !== 'proveedores'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
             >
-                Egresos
+                Proveedores
             </button>
         </div>
 
         <!-- CONTENEDOR TABLA -->
-        <section class="bg-zinc-800 md:rounded-tr-2xl overscroll-none overflow-auto">
+        <section class="bg-zinc-800 min-h-78 max-h-100 md:rounded-tr-2xl rounded-b-2xl overscroll-none overflow-auto">
             <table class="w-full text-center">
                 <thead class="text-white">
                     <tr class="bg-zinc-900">
@@ -66,20 +92,37 @@
                 </thead>
 
                 <tbody>
-                    @for (persona of personas; track persona.id) {
-                        <tr>
+                    @for (persona of personasFiltradas; track persona.id_persona) {
+                        <tr
+                            class="border-b border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
+                            <td class="font-thin p-4">{{persona.nombre}}</td>
+                            @switch (persona.tipo) {
+                                @case ('cliente') {
+                                    <td class="font-thin p-4">Cliente</td>
+                                }
+                                @case ('proveedor') {
+                                    <td class="font-thin p-4">Proveedor</td>
+                                }
+                            }
+                            <td class="font-thin p-4">${{persona.deuda}}</td>
                             <td class="font-thin p-4"></td>
-                            <td class="font-thin p-4"></td>
-                            <td class="font-thin p-4"></td>
-                            <td class="font-thin p-4"></td>
-                            <td class="font-thin p-4"></td>
-                            <td class="font-thin p-4"></td>
+                            @switch (persona.estatus) {
+                                @case ('activo') {
+                                    <td class="font-thin p-4">Activo</td>
+                                }
+                                @case ('baja') {
+                                    <td class="font-thin p-4">Baja</td>
+                                }
+                            }
+                            <td class="font-thin p-4">
+                                <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                            </td>
                         </tr>
                     }
                     @empty {
                         <tr>
                             <td colspan="6" class="font-thin p-4 text-center">
-                                No hay clientes o proveedores registrados.
+                                No hay clientes o proveedores.
                             </td>
                         </tr>
                     }
@@ -87,5 +130,66 @@
             </table>
         </section>
     </div>
+    @if (modalOpen()) {
+        <div class="modal">
+            <div
+                class="modal-container"
+                [class.animate]="animateModal()"
+            >
+                <form
+                    [formGroup]="formNewPersona"
+                    (ngSubmit)="createPersona()"
+                    class="w-full h-full flex flex-col gap-2 items-center justify-center text-black">
+                    <div class="w-full flex flex-row items-center justify-between">
+                        <h2 class="text-2xl font-semibold">Nuevo Cliente/Proveedor</h2>
+                        <button
+                            type="button"
+                            (click)="closeModal()"
+                            class="text-3xl">
+                            <i class='bx  bx-x'  ></i> 
+                        </button>
+                    </div>
+                    <!-- Línea divisora -->
+                    <span class="bg-gray-200 w-full h-0.5"></span>
 
+                    <section class="w-full flex flex-col items-center justify-start gap-4">
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="nombre">Nombre Completo</label>
+                            <input
+                                type="text"
+                                formControlName="nombre"
+                                placeholder="Nombre"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                            @if (formNewPersona.get('nombre')?.touched && formNewPersona.get('nombre')?.invalid) {
+                                <small class="text-red-500 text-sm">
+                                    * El nombre es obligatorio y debe tener mínimo 3 caracteres
+                                </small>
+                            }
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="tipo">Tipo</label>
+                            <select
+                                formControlName="tipo"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                                <option value="">--Seleccionar tipo--</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="proveedor">Proveedor</option>
+                            </select>
+                            @if (formNewPersona.get('tipo')?.touched && formNewPersona.get('tipo')?.invalid) {
+                                <small class="text-red-500 text-sm">
+                                    * Debes seleccionar un tipo
+                                </small>
+                            }
+                        </div>
+                        <button
+                            type="submit"
+                            class="card bg-green-primary p-4 rounded-2xl w-full font-medium"
+                        >
+                            Crear
+                        </button>
+                    </section>
+                </form>
+            </div>
+        </div>
+    }
 </main>

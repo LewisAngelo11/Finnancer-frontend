@@ -1,6 +1,7 @@
-import { Component, OnInit, signal, inject, output } from '@angular/core';
+import { Component, OnInit, signal, inject, output, PLATFORM_ID } from '@angular/core';
 import { CategoriaService } from '../../services/categoria-service';
 import { Categorias } from '../categories';
+import { isPlatformBrowser } from '@angular/common';
 
 type FiltrosCategorias = 'Todos' | 'Ingreso' | 'Egreso' | 'Activo' | 'Baja';
 
@@ -16,6 +17,7 @@ export class CategoriesTable implements OnInit {
   animateModal = signal(false);
 
   private categoriaService = inject(CategoriaService);
+  private platformId = inject(PLATFORM_ID);
 
   icons: Record<number, string> = {
     1: 'bx bx-money',
@@ -35,6 +37,15 @@ export class CategoriesTable implements OnInit {
   };
 
   ngOnInit() {
+    let authToken;
+
+    // Solo acceder a localStorage si ya está en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      authToken = localStorage.getItem('token');
+    }
+
+    if (!authToken) return;
+    
     this.categoriaService.getAllCategories().subscribe({
       next: (res) => {
         this.categorias = res;

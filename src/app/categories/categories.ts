@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { BodyCreateCategory, CategoriaService } from '../services/categoria-serv
 import { CategoriesTable } from './categories-table/categories-table';
 import { SubcategoriesTable } from './subcategories-table/subcategories-table';
 import { BodyCreateSubcategory, SubcategoriaService } from '../services/subcategoria-service';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface Categorias {
   id_categoria: number,
@@ -39,6 +40,7 @@ export class Categories implements OnInit {
   private fb = inject(FormBuilder);
   private categoriaService = inject(CategoriaService);
   private subcategoriaService = inject(SubcategoriaService);
+  private platformId = inject(PLATFORM_ID);
 
   tipoOperacion: string | null = null;
   modalOpenCategoria = signal(false);
@@ -57,6 +59,15 @@ export class Categories implements OnInit {
 
 
   ngOnInit() {
+    let authToken;
+
+    // Solo acceder a localStorage si ya está en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      authToken = localStorage.getItem('token');
+    }
+
+    if (!authToken) return;
+
     this.formCreateCategory.get('tipoMovimiento')!.valueChanges.subscribe(value => {
       this.tipoOperacion = value;
     });

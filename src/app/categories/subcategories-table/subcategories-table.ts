@@ -1,6 +1,7 @@
-import { Component, inject, OnInit, output, signal } from '@angular/core';
+import { Component, inject, OnInit, output, signal, PLATFORM_ID } from '@angular/core';
 import { SubcategoriaService } from '../../services/subcategoria-service';
 import { Subcategorias } from '../categories';
+import { isPlatformBrowser } from '@angular/common';
 
 type FiltrosSubcategorias = 'Todos' | 'Ingreso' | 'Egreso' | 'Activo' | 'Baja';
 
@@ -18,6 +19,7 @@ export class SubcategoriesTable implements OnInit {
   modalOpen = output<boolean>();
 
   selectedFilterSubcategories = signal<FiltrosSubcategorias>('Todos');
+  private platformId = inject(PLATFORM_ID);
 
   // Iconos para las categorías y subcategorías
   icons: Record<number, string> = {
@@ -38,6 +40,15 @@ export class SubcategoriesTable implements OnInit {
   };
 
   ngOnInit(): void {
+    let authToken;
+
+    // Solo acceder a localStorage si ya está en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      authToken = localStorage.getItem('token');
+    }
+
+    if (!authToken) return;
+
     this.subcategoriaService.getAllSubcategories().subscribe({
       next: (res) => {
         this.subcategorias = res;
