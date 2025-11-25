@@ -2,6 +2,18 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Subcategoria {
+  id_subcategoria: number;
+  nombre: string;
+  tipo: string;
+  estatus: string;
+  flujo: string;
+  id_categoria: number;
+  mostrar_panel: boolean;
+  id_usuario: number;
+  icono: number;
+}
+
 export interface BodyCreateSubcategory {
   idCategoria: number,
   icono: number,
@@ -25,5 +37,9 @@ export class SubcategoriaService {
 
   getAllSubcategories(): Observable<any> {
     return this.http.get(`${this.apiUrl}/subcategorias/all`);
+  }
+
+  getAllSubcategoriesFromCategory(idCategoria: number): Observable<Subcategoria[]> {
+    return this.http.get<Subcategoria[]>(`${this.apiUrl}/subcategorias/${idCategoria}`);
   }
 }
