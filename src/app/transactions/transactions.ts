@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CategoriaService } from '../services/categoria-service';
 import { SubcategoriaService, Subcategoria } from '../services/subcategoria-service';
-import { BodyCreateTransaction } from '../services/transaction-service';
+import { BodyCreateTransaction, BodyUpdateTransaction } from '../services/transaction-service';
 import { TransactionService } from '../services/transaction-service';
 
 type Filtros = 'todas' | 'ingresos' | 'egresos' | 'pagadas' | 'pendientes' | 'canceladas';
@@ -11,12 +11,27 @@ type Filtros = 'todas' | 'ingresos' | 'egresos' | 'pagadas' | 'pendientes' | 'ca
 interface Transacciones {
   id_transaccion: number,
   categoria: string,
+  tipo: string,
   subcategoria: string,
   perfil: string,
   persona: string,
   monto_total: number,
   fecha_transaccion: Date,
   estatus: string,
+}
+
+interface UltimasTransacciones {
+  id_transaccion: number,
+  tipo: string,
+  fecha_transaccion: string,
+  nota: string,
+  monto_total: number,
+  plazos: number,
+  estatus: string,
+  categoria: string,
+  icono_categoria: number,
+  id_persona: number | null,
+  perfil: number
 }
 
 interface Categorias {
@@ -53,6 +68,8 @@ export class Transactions implements OnInit {
   modalEditCuota = signal(false);
   animateModal = signal(false);
   selectFilter = signal<Filtros>('todas');
+  flujoTransaccionConsultada = signal('');
+  mensajeEdit = signal('');
   
   formNewTransaction = this.fb.group({
     categoria: [null, Validators.required],
@@ -68,9 +85,32 @@ export class Transactions implements OnInit {
   subcategorias: Subcategoria[] = [];
   transacciones: Transacciones[] = [];
   personas: Personas[] = [];
+  ultimasTransacciones: UltimasTransacciones[] = [];
   mensajeConsultarTransaccion: string = '';
+  numTransaccionesIngresos = 0;
+  numTransaccionesEgresos = 0;
+  montoIngresosTransacciones = 0;
+  montoEgresosTransacciones = 0;
   
   editarForm!: FormGroup;
+
+  // Iconos para las categorías
+  icons: Record<number, string> = {
+    1: 'bx bx-money',
+    2: 'bx bx-bulb',
+    3: 'bx bx-trending-up',
+    4: 'bx bx-trending-down',
+    5: 'bx bx-water',
+    6: 'bx bx-money',
+    7: 'bx bx-receipt',
+    8: 'bx bx-dollar',
+    9: 'bx bx-building',
+    10: 'bx bx-coin',
+    11: 'bx bx-line-chart',
+    12: 'bx bx-bookmark',
+    13: 'bx-bar-chart-alt-2',
+    14: 'bx bx-credit-card',
+  };
 
   ngOnInit(): void {
     // Inicializar el formlario de editar a transacción
@@ -93,10 +133,45 @@ export class Transactions implements OnInit {
     this.transaccionService.getAllTransactions().subscribe({
       next: (res) => {
         this.transacciones = res;
-        console.log(this.transacciones);
+
+        // Hacer un conteo de las transacciones que son de tipo ingresos
+        this.numTransaccionesIngresos = this.transacciones.reduce((acc, transaccion) => {
+          return transaccion.tipo === 'ingreso' ? acc + 1 : acc;
+        }, 0);
+
+        // Hacer un conteo de las transacciones que son de tipo egresos
+        this.numTransaccionesEgresos = this.transacciones.reduce((acc, transaccion) => {
+          return transaccion.tipo === 'egreso' ? acc + 1 : acc;
+        }, 0);
+      },  
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    this.transaccionService.getAllIncomesAmount().subscribe({
+      next: (data) => {
+        let montoTotal = data._sum.monto_total; // Obtener el monto de la request
+        this.montoIngresosTransacciones = montoTotal;
       },
       error: (err) => {
         console.log(err);
+      }
+    });
+
+    this.transaccionService.getAllEspensesAmount().subscribe({
+      next: (data) => {
+        let montoTotal = data._sum.monto_total; // Obtener el monto de la request
+        this.montoEgresosTransacciones = montoTotal;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    this.transaccionService.getLastTransactiona().subscribe({
+      next: (data) => {
+        this.ultimasTransacciones = data;
       }
     })
   }
@@ -133,6 +208,7 @@ export class Transactions implements OnInit {
   // Cierra el modal de editar
   closeEditModal() {
     this.animateModal.set(false);
+    this.flujoTransaccionConsultada.set('');
     // Espera a que la animación termine antes de ocultarlo en el DOM
     setTimeout(() => this.modalOpenEdit.set(false), 200);
   }
@@ -257,6 +333,9 @@ export class Transactions implements OnInit {
       next: (data) => {
         this.mensajeConsultarTransaccion = '';
 
+        // Guardar el tipo de transacción
+        this.flujoTransaccionConsultada.set(data.categoria.flujo);
+
         // Mensaje que remplazará el nulo en caso de no haber id_subcategoria referenciada en la transacción
         let mensajeSubcategoria;
 
@@ -267,8 +346,6 @@ export class Transactions implements OnInit {
           mensajeSubcategoria = 'Sin subcategoría';
         }
 
-        console.log(categoriaBuscada);
-        console.log(subcategoriaBuscada);
         // Rellenamos el form con la info de la transacción
         this.editarForm.patchValue({
           categoria: categoriaBuscada?.nombre,
@@ -285,5 +362,41 @@ export class Transactions implements OnInit {
         this.mensajeConsultarTransaccion = 'No existe la transacción';
       }
     });
+  }
+
+  actualizarTransaccion() {
+    const idTransaccion = this.editarForm.get('numeroTransaccion')?.value;
+    const nota = this.editarForm.get('nota')?.value;
+
+    const body: BodyUpdateTransaction = {
+      idTransaccion: Number(idTransaccion),
+      nota: nota,
+    };
+
+    this.transaccionService.updateTransaction(body).subscribe({
+      next: () => {
+        this.closeEditTransaction();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  cancelarTransaccion() {
+    const idTransaccion = this.editarForm.get('numeroTransaccion')?.value;
+
+    const body = {
+      idTransaccion: idTransaccion,
+    };
+
+    this.transaccionService.cancelTransaction(body).subscribe({
+      next: () => {
+        this.mensajeEdit.set('La tranacción ha sido cancelada.');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 }

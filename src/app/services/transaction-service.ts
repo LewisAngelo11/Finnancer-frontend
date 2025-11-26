@@ -12,6 +12,11 @@ export interface BodyCreateTransaction {
   fechaTransaccion: string | null;
 }
 
+export interface BodyUpdateTransaction {
+  idTransaccion: number;
+  nota: string | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,5 +37,25 @@ export class TransactionService {
 
   getOneTransaction(idTransaccion: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/transacciones/${idTransaccion}`);
+  }
+
+  getAllIncomesAmount(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/transacciones/amount/incomes`);
+  }
+
+  getAllEspensesAmount(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/transacciones/amount/espenses`);
+  }
+
+  getLastTransactiona(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/transacciones/last-transactions`);
+  }
+
+  updateTransaction(body: BodyUpdateTransaction): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/transacciones/update`, body);
+  }
+
+  cancelTransaction(body: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/transacciones/cancel`, body);
   }
 }
