@@ -28,4 +28,12 @@ export class PersonaService {
   getAllDebt(body: any): Observable<number> {
     return this.http.post<number>(`${this.apiUrl}/personas/debt`, body);
   }
+
+  getAllClients(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/personas/clients`);
+  }
+
+  getAllProviders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/personas/providers`);
+  }
 }

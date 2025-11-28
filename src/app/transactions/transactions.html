@@ -112,7 +112,7 @@
 
         <div class="flex mt-3 overflow-x-auto w-full overscroll-none">
             <button
-                (click)="selectorFilter('todas')"
+                (click)="selectorFilterTransacciones('todas'); filtrarTransacciones('todas')"
                 [class.filter-activate]="selectFilter() === 'todas'"
                 [class.filter-inactivate]="selectFilter() !== 'todas'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
@@ -120,7 +120,7 @@
                 Todas
             </button>
             <button
-                (click)="selectorFilter('ingresos')"
+                (click)="selectorFilterTransacciones('ingresos'); filtrarTransacciones('ingresos')"
                 [class.filter-activate]="selectFilter() === 'ingresos'"
                 [class.filter-inactivate]="selectFilter() !== 'ingresos'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
@@ -128,7 +128,7 @@
                 Ingresos
             </button>
             <button
-                (click)="selectorFilter('egresos')"
+                (click)="selectorFilterTransacciones('egresos'); filtrarTransacciones('egresos')"
                 [class.filter-activate]="selectFilter() === 'egresos'"
                 [class.filter-inactivate]="selectFilter() !== 'egresos'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
@@ -136,15 +136,15 @@
                 Egresos
             </button>
             <button
-                (click)="selectorFilter('pagadas')"
+                (click)="selectorFilterTransacciones('pagadas'); filtrarTransacciones('pagadas')"
                 [class.filter-activate]="selectFilter() === 'pagadas'"
                 [class.filter-inactivate]="selectFilter() !== 'pagadas'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
             >
-                Completadas
+                Pagadas
             </button>
             <button
-                (click)="selectorFilter('pendientes')"
+                (click)="selectorFilterTransacciones('pendientes'); filtrarTransacciones('pendientes')"
                 [class.filter-activate]="selectFilter() === 'pendientes'"
                 [class.filter-inactivate]="selectFilter() !== 'pendientes'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
@@ -152,7 +152,7 @@
                 Pendientes
             </button>
             <button
-                (click)="selectorFilter('canceladas')"
+                (click)="selectorFilterTransacciones('canceladas'); filtrarTransacciones('canceladas')"
                 [class.filter-activate]="selectFilter() === 'canceladas'"
                 [class.filter-inactivate]="selectFilter() !== 'canceladas'"
                 class="filter-inactivate px-4 py-2 rounded-t-xl font-thin"
@@ -178,7 +178,7 @@
                 </thead>
 
                 <tbody>
-                    @for (transaccion of transacciones; track transaccion.id_transaccion) {
+                    @for (transaccion of transaccionesFiltradas; track transaccion.id_transaccion) {
                         <tr class="border-b border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
                             <td class="font-thin p-4">{{transaccion.id_transaccion}}</td>
                             <td class="font-thin p-4">{{transaccion.categoria}}</td>
@@ -303,11 +303,14 @@
                             <select
                                 formControlName="persona" 
                                 class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
-                                @for (persona of personas; track persona.id) {
-                                    <option value="">{{persona.nombre}}</option>
+                                @if (personas.length > 0) {
+                                    <option [value]="null">-- Seleccione Cliente o Proveedor --</option>
+                                }
+                                @for (persona of personas; track persona.id_persona) {
+                                    <option [value]="persona.id_persona">{{persona.nombre}}</option>
                                 }
                                 @empty {
-                                    <option value="">No hay clientes o proveedores</option>
+                                    <option [value]="">No hay clientes o proveedores</option>
                                 }
                             </select>
                         </div>
@@ -446,6 +449,8 @@
                         <div class="w-full flex flex-row items-center justify-start gap-3 text-black">
                             @if (flujoTransaccionConsultada() === 'efectivo') {
                                 <button
+                                    type="button"
+                                    (click)="completarTransaccion()"
                                     class="card bg-green-primary p-3 rounded-2xl w-full font-medium">
                                     Completar Transacción
                                 </button>
@@ -459,6 +464,8 @@
                             }
                             @else if (flujoTransaccionConsultada() === 'cuenta_por_cobrar' || flujoTransaccionConsultada() === 'cuenta_por_pagar'){
                                 <button
+                                    type="button"
+                                    (click)="abonarCuota()"
                                     class="card bg-green-primary p-3 rounded-2xl w-full font-medium">
                                     Abonar
                                 </button>
@@ -472,12 +479,17 @@
                             }
                         </div>
                     </section>
-                    <p class="text-red-500 font-thin text-base">{{mensajeEdit()}}</p>
+                    @if (transaccionPagada()) {
+                        <p class="text-green-500 font-thin text-base">{{mensajeEdit()}}</p>    
+                    }
+                    @else if (cancelacionTransaccion()) {
+                        <p class="text-red-500 font-thin text-base">{{mensajeEdit()}}</p>
+                    }
                 </form>
             </div>
         </div>
     }
-    @if (modalEditCuota()) {
+    @if (modalCuota()) {
         <div class="modal-edit">
             <div
                 class="modal-edit-container"
@@ -493,16 +505,24 @@
                 <!-- Línea divisora -->
                 <span class="bg-gray-200 w-full h-0.5"></span>
                 <section class="w-full flex flex-col items-start justify-start gap-3 text-black">
-                    <div class="w-full flex flex-col gap-2 items-start justify-start">
-                        <label for="">Número de Transacción</label>
+                    <form
+                        [formGroup]="formCuotas"
+                        class="w-full flex flex-col gap-2 items-start justify-start">
+                        <label for="transaccion">Número de Transacción</label>
                         <div class="w-full flex flex-row gap-2 items-start justify-start">
                             <input
+                                formControlName="transaccion"
                                 type="text"
                                 placeholder="Ingrese el número de transacción"
                                 class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
-                            <button class="card bg-green-primary p-3 rounded-2xl w-full font-medium">Consultar</button>
+                            <button
+                                (click)="consultarCuotas()"
+                                class="card bg-green-primary p-3 rounded-2xl w-full font-medium"
+                            >
+                                Consultar
+                            </button>
                         </div>
-                    </div>
+                    </form>
 
                     <div class="w-full flex flex-row items-center justify-between text-black">
                         <h2 class="text-2xl font-semibold">Cuotas</h2>
@@ -523,17 +543,125 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="font-thin p-4"></td>
-                                    <td class="font-thin p-4"></td>
-                                    <td class="font-thin p-4"></td>
-                                    <td class="font-thin p-4"></td>
-                                    <td class="font-thin p-4"></td>
-                                </tr>
+                                @for (cuota of transaccionesCuotas; track cuota.id_cuota) {
+                                    <tr>
+                                        <td class="font-thin p-4">{{cuota.id_cuota}}</td>
+                                        <td class="font-thin p-4">${{cuota.monto}}</td>
+                                        @if (!cuota.fecha_vencimiento) {
+                                            <td class="font-thin p-4">Sin vencimiento</td>
+                                        }
+                                        @else {
+                                            <td class="font-thin p-4">{{cuota.fecha_vencimiento}}</td>
+                                        }
+                                        <td class="font-thin p-4">{{cuota.estatus}}</td>
+                                        <td class="font-thin p-4">
+                                            <button
+                                                type="button"
+                                                (click)="openCuotaModal(cuota)">
+                                                <i class='bx  bx-pencil text-[#46E24D]'  ></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </section>
                 </section>
+            </div>
+        </div>
+    }
+    @if (modalEditCuota()) {
+        <div class="modal-cuota">
+            <div
+                class="modal-edit-cuota"
+                [class.animate-cuota]="animateModal()">
+                <form
+                    [formGroup]="formEditCuota"
+                    class="w-full h-full flex flex-col gap-2 items-center justify-start">
+                    <div class="w-full flex flex-row items-center justify-between text-black">
+                        <h2 class="text-2xl font-semibold">Editar Cuota</h2>
+                        <button (click)="closeCuotaModal()" type="button" class="text-3xl">
+                            <i class='bx  bx-x'  ></i> 
+                        </button>
+                    </div>
+
+                    <!-- Línea divisora -->
+                    <span class="bg-gray-200 w-full h-0.5"></span>
+                    <section class="w-full flex flex-col items-start justify-start gap-3 text-black">
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label>Número de Cuota</label>
+                            <input
+                                formControlName="numeroCuota"
+                                type="number"
+                                class="card w-auto p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+
+                        <div class="w-full flex flex-row gap-2 items-center justify-between">
+                            <div class="w-full flex flex-col gap-2 items-start justify-start">
+                                <label>Monto a pagar</label>
+                                <input
+                                    formControlName="montoPagar"
+                                    type="number"
+                                    class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                            </div>
+                            <div class="w-full flex flex-col gap-2 items-start justify-start">
+                                <label for="">Monto pagado</label>
+                                <input
+                                    formControlName="montoPagado"
+                                    type="number"
+                                    class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                            </div>
+                        </div>
+
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="">Fecha de vencimiento</label>
+                            <input
+                                formControlName="fechaVencimiento"
+                                type="date"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+                        <button
+                            type="submit"
+                            (click)="actualizarFechaExpiracion()"
+                            class="card bg-green-primary p-3 rounded-2xl w-full font-medium"
+                        >
+                            Guardar Cambios
+                        </button>
+                        @if (updateCuotaDone()) {
+                            <p class="text-green-500 font-thin text-base">{{mensajeUpdateCuota()}}</p>
+                        }
+                        @else {
+                            <p class="text-red-500 font-thin text-base">{{mensajeUpdateCuota()}}</p>
+                        }
+
+                        <!-- Línea divisora -->
+                        <span class="bg-gray-200 w-full h-0.5"></span>
+                    </section>
+                    <section class="w-full flex flex-col items-start justify-start gap-3 text-black">
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label>Restante</label>
+                            <input
+                                formControlName="restante"
+                                type="number"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label>Abonar</label>
+                            <input
+                                formControlName="abonar"
+                                type="number"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+                        <button
+                            (click)="agregarAbonoCuota()"
+                            [disabled]="!habilitarBotonAbonar()"
+                            class="card bg-green-primary p-3 rounded-2xl w-full font-medium"
+                        >
+                            Abonar a la cuota
+                        </button>
+                        <p class="text-green-500 font-thin text-base">{{mensajeAbonoCuota()}}</p>
+                    </section>
+                </form>
             </div>
         </div>
     }

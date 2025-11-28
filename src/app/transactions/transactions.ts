@@ -2,8 +2,9 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CategoriaService } from '../services/categoria-service';
+import { PersonaService } from '../services/persona-service';
 import { SubcategoriaService, Subcategoria } from '../services/subcategoria-service';
-import { BodyCreateTransaction, BodyUpdateTransaction } from '../services/transaction-service';
+import { BodyCreateTransaction, BodyUpdateTransaction, BodyUpdateTransaccionCuota, BodyAbonarCuota, TransaccionesCuotas } from '../services/transaction-service';
 import { TransactionService } from '../services/transaction-service';
 
 type Filtros = 'todas' | 'ingresos' | 'egresos' | 'pagadas' | 'pendientes' | 'canceladas';
@@ -43,7 +44,7 @@ interface Categorias {
 }
 
 interface Personas {
-  id: number,
+  id_persona: number,
   nombre: string,
   tipo: string,
   estatus: string,
@@ -61,15 +62,24 @@ export class Transactions implements OnInit {
   private categoriaService = inject(CategoriaService);
   private subcategoriaService = inject(SubcategoriaService);
   private transaccionService = inject(TransactionService);
+  private personasService = inject(PersonaService);
 
-  modalOpen = signal(false);
+  modalOpen = signal(false); // Signal para manejar la apertura del modal 'formNewTransaction'
   modalOpenEdit = signal(false);
-  modalEditTransaction = signal(false);
-  modalEditCuota = signal(false);
-  animateModal = signal(false);
-  selectFilter = signal<Filtros>('todas');
+  modalEditTransaction = signal(false); // Signal para manejar la apertura del modal 'editarForm'
+  modalCuota = signal(false); // Signal para manejar la apertura del modal 'formCuotas'
+  animateModal = signal(false); // Signal que se usa para habilitar las animaciones de apertura y cierre de los modales
+  animateCuotaModal = signal(false);
+  selectFilter = signal<Filtros>('todas'); // Signal que indica que filtro se seleccionó
   flujoTransaccionConsultada = signal('');
   mensajeEdit = signal('');
+  transaccionPagada = signal(false);
+  cancelacionTransaccion = signal(false);
+  modalEditCuota = signal(false)
+  updateCuotaDone = signal(false);
+  habilitarBotonAbonar = signal(false);
+  mensajeUpdateCuota = signal('');
+  mensajeAbonoCuota = signal('');
   
   formNewTransaction = this.fb.group({
     categoria: [null, Validators.required],
@@ -84,6 +94,8 @@ export class Transactions implements OnInit {
   categorias: Categorias[] = [];
   subcategorias: Subcategoria[] = [];
   transacciones: Transacciones[] = [];
+  transaccionesFiltradas: Transacciones[] = [];
+  transaccionesCuotas: TransaccionesCuotas[] = [];
   personas: Personas[] = [];
   ultimasTransacciones: UltimasTransacciones[] = [];
   mensajeConsultarTransaccion: string = '';
@@ -93,6 +105,11 @@ export class Transactions implements OnInit {
   montoEgresosTransacciones = 0;
   
   editarForm!: FormGroup;
+  formEditCuota!: FormGroup;
+
+  formCuotas = this.fb.group({
+    transaccion: ['', Validators.required],
+  });
 
   // Iconos para las categorías
   icons: Record<number, string> = {
@@ -124,6 +141,16 @@ export class Transactions implements OnInit {
       plazos: [{ value: '', disabled: true }],
     });
 
+    // Formulario para la cuota a editar
+    this.formEditCuota = this.fb.group({
+      numeroCuota: [{ value: null, disabled: true }],
+      montoPagar: [{ value: null, disabled: true }],
+      montoPagado: [{ value: null, disabled: true }],
+      fechaVencimiento: [null, [Validators.required]],
+      restante: [{ value: null, disabled: true }],
+      abonar: [null, [Validators.min(0)]],
+    });
+
     this.categoriaService.getAllCategories().subscribe({
       next: (res) => {
         this.categorias = res;
@@ -133,6 +160,7 @@ export class Transactions implements OnInit {
     this.transaccionService.getAllTransactions().subscribe({
       next: (res) => {
         this.transacciones = res;
+        this.filtrarTransacciones('todas');
 
         // Hacer un conteo de las transacciones que son de tipo ingresos
         this.numTransaccionesIngresos = this.transacciones.reduce((acc, transaccion) => {
@@ -181,8 +209,36 @@ export class Transactions implements OnInit {
   }
 
   // Funión que cambia el filtro seleccionado
-  selectorFilter(filter: Filtros) {
+  selectorFilterTransacciones(filter: Filtros) {
     this.selectFilter.set(filter);
+  }
+
+  filtrarTransacciones(tipo: string) {
+    switch (tipo) {
+      case 'ingresos':
+        this.transaccionesFiltradas = this.transacciones.filter(t => t.tipo === 'ingreso');
+        break;
+
+      case 'egreso':
+        this.transaccionesFiltradas = this.transacciones.filter(t => t.tipo === 'egreso');
+        break;
+
+      case 'pagadas':
+        this.transaccionesFiltradas = this.transacciones.filter(t => t.estatus === 'pagada');
+        break;
+        
+      case 'pendientes':
+        this.transaccionesFiltradas = this.transacciones.filter(t => t.estatus === 'pendiente');
+        break;
+
+      case 'canceladas':
+        this.transaccionesFiltradas = this.transacciones.filter(t => t.estatus === 'cancelada');
+        break;
+
+      default:
+        this.transaccionesFiltradas = [...this.transacciones];
+        break;
+    }
   }
 
   // Abre el modal de crear transacción
@@ -241,15 +297,68 @@ export class Transactions implements OnInit {
   // Abre el modal de editar una cuota
   openEditCouta() {
     this.closeEditModal();
-    this.modalEditCuota.set(true);
+    this.modalCuota.set(true);
     setTimeout(() => this.animateModal.set(true), 400);
   }
 
   // Cierra el modal de editar una cuota
   closeEditCuota() {
     this.animateModal.set(false);
+    this.transaccionesCuotas = [];
+
+    this.formCuotas.patchValue({
+      transaccion: '',
+    });
+    // Espera a que la animación termine antes de ocultarlo en el DOM
+    setTimeout(() => this.modalCuota.set(false), 200);
+  }
+
+  // Cierra el modal de editar una cuota
+  closeEditCuotaFromCuotaForm() {
+    this.animateModal.set(false);
+    // Espera a que la animación termine antes de ocultarlo en el DOM
+    setTimeout(() => this.modalCuota.set(false), 200);
+  }
+
+
+  // Función que abre el modal para editar una cuota o abonar
+  openCuotaModal(cuota: any) {
+    const restante = (Number(cuota.monto) - Number(cuota.pagado));
+
+    // Convertir la fecha del backend, a el formato del input
+    const fecha = cuota.fecha_vencimiento
+      ? new Date(cuota.fecha_vencimiento).toISOString().split('T')[0]
+      : null;
+    // Llenar el formulario con los datos de la cuota seleccionada
+    this.formEditCuota.patchValue({
+      numeroCuota: cuota.id_cuota,
+      montoPagar: cuota.monto,
+      montoPagado: cuota.pagado || 0, // si no viene del backend
+      fechaVencimiento: fecha || null,
+      restante: restante,
+      abonar: null
+    });
+    
+    this.closeEditCuotaFromCuotaForm();
+
+    // Habilitar o deshabilitar el input de abonar dependiendo el estatus de la cuota
+    if (cuota.estatus === 'pagada') {
+      this.formEditCuota.get('abonar')?.disable();
+      this.habilitarBotonAbonar.set(false);
+    } else {
+      this.formEditCuota.get('abonar')?.enable();
+      this.habilitarBotonAbonar.set(true);
+    }
+
+    this.modalEditCuota.set(true);
+    setTimeout(() => this.animateModal.set(true), 400);
+  }
+
+  closeCuotaModal() {
+    this.animateModal.set(false);
     // Espera a que la animación termine antes de ocultarlo en el DOM
     setTimeout(() => this.modalEditCuota.set(false), 200);
+    this.openEditCouta();
   }
 
   // Función que detecta los cambios en el select de categorías
@@ -262,17 +371,17 @@ export class Transactions implements OnInit {
     if (!categoriaSeleccionada) {
       this.formNewTransaction.patchValue({
         subcategoria: null,
+        persona: null,
       });
       return;
     }
 
     this.formNewTransaction.patchValue({
       subcategoria: null,
+      persona: null,
     });
 
     const idCategoria = categoriaSeleccionada.id_categoria;
-
-    console.log('Id categoría:', idCategoria);
 
     this.subcategoriaService.getAllSubcategoriesFromCategory(idCategoria).subscribe({
       next: (res) => {
@@ -280,10 +389,20 @@ export class Transactions implements OnInit {
       },
     });
 
+    // Consultar los clientes o proveedores dependiendo del tipo de categoría que es
     if (categoriaSeleccionada.tipo === 'ingreso') {
-      
+      this.personasService.getAllClients().subscribe({
+        next: (data) => {
+          console.log(data);
+          this.personas = data;
+        },
+      });
     } else if (categoriaSeleccionada.tipo === 'egreso') {
-
+      this.personasService.getAllProviders().subscribe({
+        next: (data) => {
+          this.personas = data;
+        },
+      });
     }
   }
 
@@ -300,8 +419,6 @@ export class Transactions implements OnInit {
       plazos: Number(formValue.plazos),
       fechaTransaccion: formValue.fechaTransaccion || null,
     };
-
-    console.log(body);
 
     this.transaccionService.createNewTransaction(body).subscribe({
       next: (res) => {
@@ -383,6 +500,26 @@ export class Transactions implements OnInit {
     })
   }
 
+  // Método que marca como pagada la transacción consultada (Solo las que son de flujo: efectivo)
+  completarTransaccion() {
+    const idTransaccion = this.editarForm.get('numeroTransaccion')?.value;
+
+    const body = {
+      idTransaccion: idTransaccion,
+    };
+
+    this.transaccionService.changeStatusTransaction(body).subscribe({
+      next: () => {
+        this.transaccionPagada.set(true);
+        this.mensajeEdit.set('La tranacción ha sido completada.');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  // Método que cancela la transacción consultada
   cancelarTransaccion() {
     const idTransaccion = this.editarForm.get('numeroTransaccion')?.value;
 
@@ -393,6 +530,83 @@ export class Transactions implements OnInit {
     this.transaccionService.cancelTransaction(body).subscribe({
       next: () => {
         this.mensajeEdit.set('La tranacción ha sido cancelada.');
+        this.cancelacionTransaccion.set(true);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  // Función que dirige a el modal de consultar las cuotas de una transacción
+  abonarCuota() {
+    const idTransaccion = this.editarForm.get('numeroTransaccion')?.value;
+
+    this.formCuotas.patchValue({
+      transaccion: idTransaccion,
+    });
+
+    this.openEditCouta();
+  }
+
+  // Método para consultar las cuotas de una transacción
+  consultarCuotas() {
+    const idTransaccion = Number(this.formCuotas.get('transaccion')?.value);
+
+    this.transaccionService.getAllFeesOfTransaction(idTransaccion).subscribe({
+      next: (data) => {
+        this.transaccionesCuotas = data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  // Método que actualiza la fecha de vencimiento de la cuota
+  actualizarFechaExpiracion() {
+    const data = this.formEditCuota.getRawValue();
+    const idCuota = Number(data.numeroCuota);
+
+    const fechaStr = this.formEditCuota.get('fechaVencimiento')?.value;
+    const fechaISO = fechaStr ? new Date(fechaStr).toISOString() : null;
+
+    const body: BodyUpdateTransaccionCuota = {
+      idCuota: idCuota,
+      fechaVencimiento: fechaISO,
+    };
+
+    console.log(body);
+
+    this.transaccionService.updateExpirationDate(body).subscribe({
+      next: (res) => {
+        this.updateCuotaDone.set(true);
+        this.mensajeUpdateCuota.set(res.mensaje);
+      },
+      error: (err) => {
+        console.log(err);
+        this.mensajeUpdateCuota.set(err.error.message);
+      },
+    });
+  }
+
+  agregarAbonoCuota() {
+    const data = this.formEditCuota.getRawValue();
+    const idCuota = Number(data.numeroCuota);
+    const idTransaccion = Number(this.formCuotas.get('transaccion')?.value);
+
+    const body: BodyAbonarCuota = {
+      idCuota: idCuota,
+      idTransaccion: idTransaccion,
+      pago: Number(this.formEditCuota.get('abonar')?.value) || 0,
+    };
+
+    console.log(body);
+
+    this.transaccionService.paymentTransactionFee(body).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.mensajeAbonoCuota.set(res.mensaje);
       },
       error: (err) => {
         console.log(err);

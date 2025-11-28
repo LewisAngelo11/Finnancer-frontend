@@ -12,9 +12,30 @@ export interface BodyCreateTransaction {
   fechaTransaccion: string | null;
 }
 
+export interface TransaccionesCuotas {
+  id_cuota: number,
+  id_transaccion: number,
+  monto: number,
+  fecha_vencimiento: string | null,
+  fecha_pago: string | null,
+  estatus: string,
+  pagado: number,
+}
+
 export interface BodyUpdateTransaction {
   idTransaccion: number;
   nota: string | null;
+}
+
+export interface BodyUpdateTransaccionCuota {
+  idCuota: number,
+  fechaVencimiento: string | null,
+}
+
+export interface BodyAbonarCuota {
+  idCuota: number,
+  idTransaccion: number,
+  pago: number,
 }
 
 @Injectable({
@@ -57,5 +78,21 @@ export class TransactionService {
 
   cancelTransaction(body: any): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/transacciones/cancel`, body);
+  }
+
+  changeStatusTransaction(body: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/transacciones/complete`, body);
+  }
+
+  paymentTransactionFee(body: BodyAbonarCuota): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/transacciones-cuotas/payment`, body)
+  }
+
+  getAllFeesOfTransaction(idTransaccion: number): Observable<TransaccionesCuotas[]> {
+    return this.http.get<TransaccionesCuotas[]>(`${this.apiUrl}/transacciones-cuotas/${idTransaccion}`);
+  }
+
+  updateExpirationDate(body: BodyUpdateTransaccionCuota): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/transacciones-cuotas/updateExpiration`, body);
   }
 }
