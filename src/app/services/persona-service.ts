@@ -36,4 +36,12 @@ export class PersonaService {
   getAllProviders(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/personas/providers`);
   }
+
+  updatePerson(body: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/personas/status`, body);
+  }
+
+  changeStatus(body: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/personas/status`, body);
+  }
 }

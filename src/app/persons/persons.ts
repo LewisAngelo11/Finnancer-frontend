@@ -29,7 +29,9 @@ export class Persons implements OnInit {
 
   selectFilter = signal<Filtros>('todos');
   modalOpen = signal(false);
+  modalEditOpen = signal(false);
   animateModal = signal(false);
+  personaActiva = signal(false);
   selectedFilterPersons = signal<Filtros>('todos');
 
   personas: Personas[] = [];
@@ -40,6 +42,12 @@ export class Persons implements OnInit {
   formNewPersona = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
     tipo: ['', Validators.required]
+  });
+
+  formEditPersona = this.fb.group({
+    idPersona: [{value: '', disabled: true}],
+    nombre: ['', [Validators.required, Validators.minLength(3)]],
+    tipo: [{value: '', disabled: true}],
   });
 
   ngOnInit(): void {
@@ -85,15 +93,6 @@ export class Persons implements OnInit {
     this.selectFilter.set(filter);
   }
 
-  openModal() {
-    this.modalOpen.set(true);
-    setTimeout(() => this.animateModal.set(true), 10);
-  }
-
-  selectorFilterCategories(filtro: Filtros) {
-    this.selectedFilterPersons.set(filtro);
-  }
-
   filtrarPersonas(tipo: string) {
     switch (tipo) {
       case 'clientes':
@@ -110,12 +109,53 @@ export class Persons implements OnInit {
     }
   }
 
+  openModal() {
+    this.modalOpen.set(true);
+    setTimeout(() => this.animateModal.set(true), 10);
+  }
+
   closeModal() {
     this.animateModal.set(false);
     // Espera a que la animación termine antes de ocultarlo en el DOM
     setTimeout(() => this.modalOpen.set(false), 100);
   }
 
+  // Función que abre el modal para editar una persona
+  openEditModal(persona: any) {
+    this.modalEditOpen.set(true);
+
+    // Llenar los valores al formulario
+    this.formEditPersona.patchValue({
+      idPersona: persona.id_persona,
+      nombre: persona.nombre,
+      tipo: persona.tipo,
+    });
+
+    // Verificar el estatus de la persona
+    if (persona.estatus === 'activo') {
+      this.personaActiva.set(true);
+    } else {
+      this.personaActiva.set(false);
+    }
+
+    setTimeout(() => this.animateModal.set(true), 10);
+  }
+
+  // Función que cierra el modal para editar una persona
+  closeEditModal() {
+    this.animateModal.set(false);
+
+    // Resetear los valores del formulario 
+    this.formEditPersona.reset({
+      idPersona: '',
+      nombre: '',
+      tipo: '',
+    });
+    // Espera a que la animación termine antes de ocultarlo en el DOM
+    setTimeout(() => this.modalEditOpen.set(false), 100);
+  }
+
+  // Función que crea una nueva persona
   createPersona() {
     if (this.formNewPersona.invalid) {
       this.formNewPersona.markAllAsTouched();
@@ -142,6 +182,52 @@ export class Persons implements OnInit {
         console.log(err);
       },
     });
+  }
+
+  // Función que actualiza una persona
+  updatePersona() {
+    const persona = this.formEditPersona.getRawValue();
+    const idPersona = persona.idPersona;
+
+    const body = {
+      idPersona: idPersona,
+      nombre: this.formEditPersona.get('nombre')?.value,
+      tipoPersona: this.formEditPersona.get('tipo')?.value,
+    }
+
+    // TODO: Implementar mensajes de respuestas
+    this.personaService.updatePerson(body).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.closeEditModal();
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  // Método que cambia el estatus de una persona
+  changeEstatus(estatusCambiado: string) {
+    const persona = this.formEditPersona.getRawValue();
+    const idPersona = persona.idPersona;
+
+    const body = {
+      idPersona: idPersona,
+      tipoPersona: this.formEditPersona.get('tipo')?.value,
+      estatus: estatusCambiado,
+    }
+
+    // TODO: Implementar mensajes de respuestas
+    this.personaService.changeStatus(body).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.closeEditModal();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
   // Función que cuenta el total de clientes

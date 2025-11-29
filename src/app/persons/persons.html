@@ -82,10 +82,10 @@
             <table class="w-full text-center">
                 <thead class="text-white">
                     <tr class="bg-zinc-900">
+                        <th class="font-thin p-4">ID</th>
                         <th class="font-thin p-4">Nombre</th>
                         <th class="font-thin p-4">Tipo</th>
-                        <th class="font-thin p-4">Deuda</th>
-                        <th class="font-thin p-4">Último Movimiento</th>
+                        <th class="font-thin p-4">Deuda Total</th>
                         <th class="font-thin p-4">Estatus</th>
                         <th class="font-thin p-4">Acciones</th>
                     </tr>
@@ -95,6 +95,7 @@
                     @for (persona of personasFiltradas; track persona.id_persona) {
                         <tr
                             class="border-b border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
+                            <td class="font-thin p-4">{{persona.id_persona}}</td>
                             <td class="font-thin p-4">{{persona.nombre}}</td>
                             @switch (persona.tipo) {
                                 @case ('cliente') {
@@ -105,7 +106,6 @@
                                 }
                             }
                             <td class="font-thin p-4">${{persona.deuda}}</td>
-                            <td class="font-thin p-4"></td>
                             @switch (persona.estatus) {
                                 @case ('activo') {
                                     <td class="font-thin p-4">Activo</td>
@@ -115,7 +115,9 @@
                                 }
                             }
                             <td class="font-thin p-4">
-                                <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                                <button (click)="openEditModal(persona)">
+                                    <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                                </button>
                             </td>
                         </tr>
                     }
@@ -187,6 +189,95 @@
                         >
                             Crear
                         </button>
+                    </section>
+                </form>
+            </div>
+        </div>
+    }
+    @else if (modalEditOpen()) {
+        <div class="modal-edit">
+            <div
+                class="modal-container-edit"
+                [class.animate-edit]="animateModal()"
+            >
+                <form
+                    [formGroup]="formEditPersona"
+                    (ngSubmit)="updatePersona()"
+                    class="w-full h-full flex flex-col gap-2 items-center justify-center text-black">
+                    <div class="w-full flex flex-row items-center justify-between">
+                        <h2 class="text-2xl font-semibold">Editar Cliente/Proveedor</h2>
+                        <button
+                            type="button"
+                            (click)="closeEditModal()"
+                            class="text-3xl">
+                            <i class='bx  bx-x'  ></i> 
+                        </button>
+                    </div>
+                    <!-- Línea divisora -->
+                    <span class="bg-gray-200 w-full h-0.5"></span>
+
+                    <section class="w-full flex flex-col items-center justify-start gap-4">
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="idPersona">Número de cliente o proveedor</label>
+                            <input
+                                type="text"
+                                formControlName="idPersona"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="nombre">Nombre Completo</label>
+                            <input
+                                type="text"
+                                formControlName="nombre"
+                                placeholder="Nombre"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                            @if (formEditPersona.get('nombre')?.touched && formEditPersona.get('nombre')?.invalid) {
+                                <small class="text-red-500 text-sm">
+                                    * El nombre es obligatorio y debe tener mínimo 3 caracteres
+                                </small>
+                            }
+                        </div>
+
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="tipo">Tipo</label>
+                            <select
+                                formControlName="tipo"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                                <option value="">--Seleccionar tipo--</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="proveedor">Proveedor</option>
+                            </select>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="card bg-green-primary p-4 rounded-2xl w-full font-medium"
+                        >
+                            Guardar Cambios
+                        </button>
+
+                        <!-- Línea divisora -->
+                        <span class="bg-gray-200 w-full h-0.5"></span>
+
+                        @if (personaActiva()) {
+                            <button
+                                type="button"
+                                (click)="changeEstatus('baja')"
+                                class="card border-2 border-red-500 p-3 rounded-2xl w-full font-medium"
+                            >
+                                Dar de baja
+                            </button>
+                        }
+                        @else if (!personaActiva()) {
+                            <button
+                                type="button"
+                                (click)="changeEstatus('activo')"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                            >
+                                Habilitar
+                            </button>
+                        }
                     </section>
                 </form>
             </div>

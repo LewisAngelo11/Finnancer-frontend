@@ -16,6 +16,9 @@ body {
   justify-content: center;
 }
 
+button {
+    cursor: pointer;
+}
 
 /* Estilos globales para la app */
 .bg-gradient-gray-h {
