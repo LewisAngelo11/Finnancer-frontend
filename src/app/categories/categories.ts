@@ -335,7 +335,7 @@ export class Categories implements OnInit {
     }
 
     this.categoriaService.createCategory(body).subscribe({
-      next: () => {
+      next: (data) => {
         // Resetear el formulario para volver a los valores por defecto
         this.formCreateCategory.reset({
           nombre: '',
@@ -344,6 +344,8 @@ export class Categories implements OnInit {
           flujoEfectivo: 'seleccionar',
           mostrarPanel: false
         });
+
+        this.categorias.push(data);
 
         this.closeModalCategoria();
       },
@@ -391,7 +393,7 @@ export class Categories implements OnInit {
     }
 
     this.subcategoriaService.createSubcategory(body).subscribe({
-      next: () => {
+      next: (data) => {
         // Resetear el formulario para volver a los valores por defecto
         this.formCreateSubcategory.reset({
           categoria: 'seleccionar',
@@ -401,6 +403,8 @@ export class Categories implements OnInit {
           flujoEfectivo: '',
           mostrarPanel: false
         });
+
+        this.subcategorias.push(data);
 
         this.closeModalSubcategoria();
       },

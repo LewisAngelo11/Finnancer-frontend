@@ -422,8 +422,8 @@ export class Transactions implements OnInit {
 
     this.transaccionService.createNewTransaction(body).subscribe({
       next: (res) => {
-        const newTransaccion = res;
-        this.transacciones.push(newTransaccion);
+        const newTransaccion = res.transaccion;
+        this.transaccionesFiltradas.push(newTransaccion);
         this.closeModal();
 
         this.formNewTransaction.patchValue({
