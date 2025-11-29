@@ -10,6 +10,13 @@ export interface BodyCreateCategory {
   mostrarPanel: boolean,
 }
 
+export interface BodyUpdateCategory {
+  idCategoria: number,
+  nombre: string,
+  mostrarPanel: boolean,
+  icono: number,
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,5 +33,13 @@ export class CategoriaService {
 
   getAllCategories(): Observable<any> {
     return this.http.get(`${this.apiUrl}/categorias/all`);
+  }
+
+  updateCategory(body: BodyUpdateCategory): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/categorias/update`, body);
+  }
+
+  changeEstatus(body: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/categorias/status`, body);
   }
 }

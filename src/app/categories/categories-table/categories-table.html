@@ -112,7 +112,9 @@
                             }
                             <th class="font-thin p-4">{{categoria.estatus}}</th>
                             <th class="font-thin p-4">
-                                <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                                <button (click)="notifyOpenEditModalCategoria(categoria)">
+                                    <i class='bx  bx-pencil text-[#46E24D]'  ></i> 
+                                </button>
                             </th>
                         </tr>
                         }

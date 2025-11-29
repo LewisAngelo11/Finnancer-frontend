@@ -17,6 +17,7 @@ export class SubcategoriesTable implements OnInit {
   subcategorias: Subcategorias[] = [];
   subcategoriasFiltradas: Subcategorias[] = [];
   modalOpen = output<boolean>();
+  editarSubcategoria = output<boolean>();
 
   selectedFilterSubcategories = signal<FiltrosSubcategorias>('Todos');
   private platformId = inject(PLATFORM_ID);
@@ -91,6 +92,11 @@ export class SubcategoriesTable implements OnInit {
   // Función que notifica al componente padre de abrir el modal de crear una subcategoria
   notifyOpenModalSubcategoria() {
     this.modalOpen.emit(true);
+  }
+
+  // Función que notifica al componente padre de abrir el modal de editar una subcategoria
+  notifyOpenEditModalSubcategoria(subcategoria: any) {
+    this.editarSubcategoria.emit(subcategoria);
   }
 
   // Función para animar los botones de los filtros

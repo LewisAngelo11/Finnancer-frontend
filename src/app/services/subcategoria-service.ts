@@ -21,6 +21,13 @@ export interface BodyCreateSubcategory {
   mostrarPanel: boolean,
 }
 
+export interface BodyUpdateSubcategory {
+  idSubcategoria: number,
+  nombre: string,
+  mostrarPanel: boolean,
+  icono: number,
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -41,5 +48,13 @@ export class SubcategoriaService {
 
   getAllSubcategoriesFromCategory(idCategoria: number): Observable<Subcategoria[]> {
     return this.http.get<Subcategoria[]>(`${this.apiUrl}/subcategorias/${idCategoria}`);
+  }
+
+  updateSubcategory(body: BodyUpdateSubcategory): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/subcategorias/update`, body);
+  }
+
+  changeStatusSubcategory(body: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/subcategorias/change-status`, body);
   }
 }

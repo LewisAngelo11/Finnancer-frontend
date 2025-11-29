@@ -14,6 +14,7 @@ type FiltrosCategorias = 'Todos' | 'Ingreso' | 'Egreso' | 'Activo' | 'Baja';
 export class CategoriesTable implements OnInit {
   selectedFilterCategories = signal<FiltrosCategorias>('Todos');
   modalOpen = output<boolean>();
+  editarCategoria = output<any>();
   animateModal = signal(false);
 
   private categoriaService = inject(CategoriaService);
@@ -95,6 +96,11 @@ export class CategoriesTable implements OnInit {
   // Función que notifica al componente padre de abrir el modal de crear una categoria
   notifyOpenModalCategoria() {
     this.modalOpen.emit(true);
+  }
+
+  // Función que notifica al componente padre de abrir el modal de editar una categoria
+  notifyOpenEditModalCategoria(categoria: any) {
+    this.editarCategoria.emit(categoria);
   }
 
   // Función para animar los botones de los filtros

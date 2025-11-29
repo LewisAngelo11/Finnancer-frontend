@@ -28,6 +28,36 @@
   transform: translateX(0);
 }
 
+.modal-edit-cat {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  z-index: 1000;
+}
+
+.modal-container-edit-cat {
+  background-color: #fff;
+  padding: 20px 20px;
+  width: 600px;
+  height: 100%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: start;
+  align-items: center;
+  transform: translateX(-100%);
+  transition: all 0.20s ease;
+}
+
+.animate-edit-cat {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .modal-sub {
   position: fixed;
   inset: 0;
@@ -54,6 +84,36 @@
 }
 
 .animate-sub {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.modal-edit-sub {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  z-index: 1000;
+}
+
+.modal-container-edit-sub {
+  background-color: #fff;
+  padding: 10px 20px;
+  width: 600px;
+  height: 100%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(100%);
+  transition: transform 0.20s ease;
+}
+
+.animate-edit-sub {
   opacity: 1;
   transform: translateX(0);
 }

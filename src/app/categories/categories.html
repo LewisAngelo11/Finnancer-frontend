@@ -43,10 +43,16 @@
 
         <!-- Sección de las tablas de las categorías u subcategorías -->
         <section class="w-full flex flex-col items-stretch gap-4 py-4">
-            <app-categories-table (modalOpen)="openModalCategoria($event)"></app-categories-table>
+            <app-categories-table
+                (modalOpen)="openModalCategoria($event)"
+                (editarCategoria)="onEditarCategoria($event)"
+            ></app-categories-table>
             <!-- Línea divisora -->
             <span class="bg-gray-details w-full h-0.5"></span>
-            <app-subcategories-table (modalOpen)="openModalSubcategoria($event)"></app-subcategories-table>
+            <app-subcategories-table
+                (modalOpen)="openModalSubcategoria($event)"
+                (editarSubcategoria)="onEditarSubcategoria($event)"
+            ></app-subcategories-table>
         </section>
     </div>
     @if (modalOpenCategoria()) {
@@ -275,6 +281,236 @@
                         >
                             Crear Categoría
                         </button>
+                    </section>
+                </form>
+            </div>
+        </div>
+    }
+    @if (modalOpenEditCategoria()) {
+        <div class="modal-edit-cat">
+            <div
+                class="modal-container-edit-cat"
+                [class.animate-edit-cat]="animateModal()">
+                <form
+                    [formGroup]="formEditCategory"
+                    (ngSubmit)="modifyCategory()"
+                    class="w-full h-full flex flex-col gap-2 items-center justify-center"
+                >
+                    <div class="w-full flex flex-row items-center justify-between text-black">
+                        <h2 class="text-2xl font-semibold">Editar Categoría</h2>
+                        <button type="button" class="text-3xl" (click)="closeModalEditarCategoria()">
+                            <i class='bx  bx-x'  ></i> 
+                        </button>
+                    </div>
+                    <!-- Línea divisora -->
+                    <span class="bg-gray-200 w-full h-0.5"></span>
+
+                    <section class="w-full flex flex-col items-start justify-start gap-5 text-black">
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="nombre">Nombre de la categoría</label>
+                            <input
+                                formControlName="nombre"
+                                type="text"
+                                placeholder="Nombre"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="icono">Icono</label>
+                            <select
+                                name="icono"
+                                formControlName="icono"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                            >
+                                <option value="1">Money</option>
+                                <option value="2">Bulb</option>
+                                <option value="3">Trending Up</option>
+                                <option value="4">Trending Down</option>
+                                <option value="5">Water</option>
+                                <option value="6">Money</option>
+                                <option value="7">Receipt</option>
+                                <option value="8">Dollar</option>
+                                <option value="9">Building</option>
+                                <option value="10">Coin</option>
+                                <option value="11">Line chart</option>
+                                <option value="12">Bookmark</option>
+                                <option value="13">Chart alt</option>
+                                <option value="14">Credit card</option>
+                            </select>
+                        </div>
+
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="tipoMovimiento">Tipo de movimiento</label>
+                            <select
+                                name="tipos"
+                                formControlName="tipoMovimiento"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                                >
+                                <option value="ingreso">Ingreso</option>
+                                <option value="egreso">Egreso</option>
+                            </select>
+                        </div>
+
+                        
+                        <div class="w-full flex flex-col items-start gap-2">
+                            <label for="flujoEfectivo">Flujo de efectivo</label>
+                            <select
+                                formControlName="flujoEfectivo"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                            >
+                                <option value="efectivo">Efectivo</option>
+                                <option value="cuenta_por_cobrar">Cuentas por cobrar</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-row gap-2">
+                            <input type="checkbox" formControlName="mostrarPanel" class="checkboxes">
+                            <label class="label-check font-light" for="mostrarPanel">Mostrar en el panel</label>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="card bg-green-primary p-4 rounded-2xl w-full font-medium"
+                        >
+                            Modificar Categoría
+                        </button>
+
+                        <!-- Línea divisora -->
+                        <span class="bg-gray-200 w-full h-0.5"></span>
+
+                        @if (categoriaActiva()) {
+                            <button
+                                type="button"
+                                (click)="changeEstatusCategory('baja')"
+                                class="card border-2 border-red-500 p-3 rounded-2xl w-full font-medium"
+                            >
+                                Dar de baja
+                            </button>
+                        }
+                        @else if (!categoriaActiva()) {
+                            <button
+                                type="button"
+                                (click)="changeEstatusCategory('activo')"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                            >
+                                Habilitar Categoría
+                            </button>
+                        }
+                    </section>
+                </form>
+            </div>
+        </div>
+    }
+    @if (modalOpenEditSubcategoria()) {
+        <div class="modal-edit-sub">
+            <div
+                class="modal-container-edit-sub"
+                [class.animate-edit-sub]="animateModal()">
+                <form
+                    [formGroup]="formEditSubcategory"
+                    (ngSubmit)="modifySubcategory()"
+                    class="w-full h-full flex flex-col gap-2 items-center justify-center"
+                >
+                    <div class="w-full flex flex-row items-center justify-between text-black">
+                        <h2 class="text-2xl font-semibold">Editar Categoría</h2>
+                        <button type="button" class="text-3xl" (click)="closeModalEditarSubcategoria()">
+                            <i class='bx  bx-x'  ></i> 
+                        </button>
+                    </div>
+                    <!-- Línea divisora -->
+                    <span class="bg-gray-200 w-full h-0.5"></span>
+
+                    <section class="w-full flex flex-col items-start justify-start gap-5 text-black">
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="nombre">Nombre de la subcategoría</label>
+                            <input
+                                formControlName="nombre"
+                                type="text"
+                                placeholder="Nombre"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                        </div>
+
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="icono">Icono</label>
+                            <select
+                                name="icono"
+                                formControlName="icono"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                            >
+                                <option value="1">Money</option>
+                                <option value="2">Bulb</option>
+                                <option value="3">Trending Up</option>
+                                <option value="4">Trending Down</option>
+                                <option value="5">Water</option>
+                                <option value="6">Money</option>
+                                <option value="7">Receipt</option>
+                                <option value="8">Dollar</option>
+                                <option value="9">Building</option>
+                                <option value="10">Coin</option>
+                                <option value="11">Line chart</option>
+                                <option value="12">Bookmark</option>
+                                <option value="13">Chart alt</option>
+                                <option value="14">Credit card</option>
+                            </select>
+                        </div>
+
+                        <div class="w-full flex flex-col gap-2 items-start justify-start">
+                            <label for="tipoMovimiento">Tipo de movimiento</label>
+                            <select
+                                name="tipos"
+                                formControlName="tipoMovimiento"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                                >
+                                <option value="ingreso">Ingreso</option>
+                                <option value="egreso">Egreso</option>
+                            </select>
+                        </div>
+
+                        
+                        <div class="w-full flex flex-col items-start gap-2">
+                            <label for="flujoEfectivo">Flujo de efectivo</label>
+                            <select
+                                formControlName="flujoEfectivo"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                            >
+                                <option value="efectivo">Efectivo</option>
+                                <option value="cuenta_por_cobrar">Cuentas por cobrar</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-row gap-2">
+                            <input type="checkbox" formControlName="mostrarPanel" class="checkboxes">
+                            <label class="label-check font-light" for="mostrarPanel">Mostrar en el panel</label>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="card bg-green-primary p-4 rounded-2xl w-full font-medium"
+                        >
+                            Modificar Subcategoría
+                        </button>
+
+                        <!-- Línea divisora -->
+                        <span class="bg-gray-200 w-full h-0.5"></span>
+
+                        @if (subcategoriaActiva()) {
+                            <button
+                                type="button"
+                                (click)="changeStatusSubcategory('baja')"
+                                class="card border-2 border-red-500 p-3 rounded-2xl w-full font-medium"
+                            >
+                                Dar de baja
+                            </button>
+                        }
+                        @else if (!subcategoriaActiva()) {
+                            <button
+                                type="button"
+                                (click)="changeStatusSubcategory('activo')"
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500"
+                            >
+                                Habilitar Subcategoría
+                            </button>
+                        }
                     </section>
                 </form>
             </div>
