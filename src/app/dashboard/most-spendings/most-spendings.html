@@ -4,11 +4,11 @@
         <div class="overflow-auto w-full h-full">
             <!-- Próximamente -->
             <section class="relative min-h-[300px] min-w-[600px]">
-                @for (gasto of gastos; track gasto.id) {
-                    <div [class]="containers[gasto.id]" class="font-thin text-xs flex items-center justify-center text-center">
+                @for (gasto of gastos; track gasto.id_transaccion; let i = $index) {
+                    <div [class]="containers[i + 1]" class="font-thin text-xs flex items-center justify-center text-center">
                         <div>
                         {{ gasto.categoria }} <br />
-                        ${{ gasto.monto }}
+                        ${{ gasto.monto_total }}
                         </div>
                     </div>
                 }

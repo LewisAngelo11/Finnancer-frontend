@@ -21,7 +21,7 @@ interface Transacciones {
   estatus: string,
 }
 
-interface UltimasTransacciones {
+export interface UltimasTransacciones {
   id_transaccion: number,
   tipo: string,
   fecha_transaccion: string,

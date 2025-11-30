@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { TransactionService } from '../../services/transaction-service';
 
 @Component({
   selector: 'app-bar-chart',
@@ -10,13 +11,16 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './bar-chart.html',
   styleUrl: './bar-chart.css'
 })
-export class BarChart {
+export class BarChart implements OnInit {
   // Al usar isPlatformBrowser, se evita que se pinte el <canvas> en el servidor,
   // previniendo el error "NotYetImplemented" que anteriormente tuve con el <canvas>
   private platformId = inject(PLATFORM_ID);
+  private transactionService = inject(TransactionService);
   isBrowser = isPlatformBrowser(this.platformId);
 
-  gastosTotales: number = 44000;
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+
+  gastosTotales: number = 0;
 
   // Grafico de barras a lo largo del tiempo
   barChartOptions: ChartConfiguration<'bar'>['options'] = {
@@ -61,10 +65,10 @@ export class BarChart {
   barChartType = 'bar' as const;
   
   barChartData: ChartData<'bar'> = {
-    labels: ['ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP'],
+    labels: [],
     datasets: [
-      { data: [5000, 6000, 8000, 10000, 15000, 20000],
-        backgroundColor: ['#46e24eb4', '#46E24D', '#00AA09', '#028008', '#004403','#002B02'],
+      { data: [],
+        backgroundColor: [],
         borderRadius: 50,
         maxBarThickness: 75, // La barra puede reducirse si el contenedor es más pequeño
         borderSkipped: false // Evita que se “recorte” la esquina inferior
@@ -81,4 +85,57 @@ export class BarChart {
   }): void {
     console.log(event, active);
   }
+
+
+  ngOnInit(): void {
+    this.transactionService.getExpensesTransaction().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.generarGraficaEgresos(data);
+      },
+    });
+  }
+
+  generarGraficaEgresos(transacciones: any[]) {
+    const meses = Array(12).fill(0);
+    let coloresBarChart = [];
+
+    transacciones.forEach(t => {
+      const fecha = new Date(t.fecha_transaccion);
+      const mes = fecha.getMonth();
+      meses[mes] += Number(t.monto_total);
+    });
+
+    meses.forEach(m => {
+      this.gastosTotales += m;
+    })
+
+    coloresBarChart = this.generarColores(12);
+
+    // Asignar los datos al barChart
+    this.barChartData.labels = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+    this.barChartData.datasets[0].data = meses;
+    this.barChartData.datasets[0].backgroundColor = coloresBarChart;
+
+    // Forzar la actualización del chart
+    if (this.chart) {
+      this.chart.update();
+    }
+  }
+
+  // Función que genera dinámicamente los colores del piechart
+  private generarColores(cantidad: number): string[] {
+    const colores: string[] = [];
+
+    for (let i = 0; i < cantidad; i++) {
+      const color = this.colorBases[i % this.colorBases.length];
+      colores.push(color);
+    }
+
+    return colores;
+  }
+
+  colorBases = [
+    '#46e24eb4', '#46E24D', '#00AA09', '#028008', '#004403', '#002B02'
+  ];
 }

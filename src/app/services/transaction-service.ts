@@ -38,6 +38,33 @@ export interface BodyAbonarCuota {
   pago: number,
 }
 
+export interface CategoriaTransaccion {
+  icono: number;
+  nombre: string;
+  mostrar_panel: boolean;
+}
+
+export interface TransaccionDashboard {
+  id_transaccion: number;
+  tipo: string;
+  fecha_transaccion: string;
+  nota: string | null;
+  monto_total: string;
+  plazos: number | null;
+  estatus: string;
+  id_categoria: number | null;
+  id_usuario: number | null;
+  id_perfil: number | null;
+  id_subcategoria: number | null;
+  id_persona: number | null;
+  categoria: CategoriaTransaccion;
+}
+
+export interface TotalAndTransactionsResponse {
+  total: string;
+  transacciones: TransaccionDashboard[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -58,6 +85,10 @@ export class TransactionService {
 
   getOneTransaction(idTransaccion: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/transacciones/${idTransaccion}`);
+  }
+
+  getExpensesTransaction():Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/transacciones/expenses`);
   }
 
   getAllIncomesAmount(): Observable<any> {
@@ -94,5 +125,11 @@ export class TransactionService {
 
   updateExpirationDate(body: BodyUpdateTransaccionCuota): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/transacciones-cuotas/updateExpiration`, body);
+  }
+
+  getTotalAndSumCategory(idCategoria: number) {
+    return this.http.get<TotalAndTransactionsResponse>(
+      `${this.apiUrl}/transacciones/total-cat/${idCategoria}`
+    );
   }
 }

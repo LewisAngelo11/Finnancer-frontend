@@ -5,17 +5,19 @@
         <div class="overflow-y-auto w-auto">
             <table class="w-full">
                 <tbody class="flex flex-col gap-4">
-                    @for (transaccion of ultimasTransacciones; track transaccion.id) {
+                    @for (transaccion of ultimasTransacciones; track transaccion.id_transaccion) {
                         <tr class="flex justify-between items-center p-2">
                             <td class="rounded-full p-2 bg-[#46E24D] w-[40px] text-center">
-                                <i [class]="icons[+transaccion.icono]"></i>
+                                <i [class]="icons[+transaccion.icono_categoria]"></i>
                             </td>
-                            <td class="font-thin">{{transaccion.nombre}}</td>
-                            <td class="font-thin">${{transaccion.monto}}</td>
+                            <td class="font-thin">{{transaccion.categoria}}</td>
+                            <td class="font-thin">${{transaccion.monto_total}}</td>
                         </tr>
                     }
                     @empty {
-                        <p>No hay transacciones recientes</p>
+                        <tr colspan="3">
+                            <td>No hay transacciones recientes</td>
+                        </tr>
                     }
                 </tbody>
             </table>

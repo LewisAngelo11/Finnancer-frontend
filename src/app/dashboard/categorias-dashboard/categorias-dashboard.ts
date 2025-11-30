@@ -1,4 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { CategoriaService } from '../../services/categoria-service';
+import { TransactionService} from '../../services/transaction-service';
+import { map } from 'rxjs';
+
+export interface CategoriaMostrar {
+  id_categoria: number;
+  icono: number;
+  nombre: string;
+  tipo: string;
+  monto_total: number;
+  mostrar_panel: boolean;
+}
 
 @Component({
   selector: 'app-categorias-dashboard',
@@ -6,14 +18,11 @@ import { Component } from '@angular/core';
   templateUrl: './categorias-dashboard.html',
   styleUrl: './categorias-dashboard.css'
 })
-export class CategoriasDashboard {
-    // Datos de prueba
-  categorias = [
-    {id: 1, icono: 1 ,nombre: 'Ingresos de Ventas', total: 5499},
-    {id: 2, icono: 2 ,nombre: 'Servicios Básicos', total: 2599},
-    {id: 3, icono: 3 ,nombre: 'Otros Ingresos', total: 3769},
-    {id: 4, icono: 4 ,nombre: 'Otros Egresos', total: 1229},
-  ];
+export class CategoriasDashboard implements OnInit {
+  private categoriaService = inject(CategoriaService);
+  private transactionService = inject(TransactionService);
+
+  categorias: CategoriaMostrar[] = [];
 
   icons: Record<number, string> = {
     1: 'bx bx-money',
@@ -31,4 +40,27 @@ export class CategoriasDashboard {
     14: 'bx-bar-chart-alt-2',
     15: 'bx bx-credit-card',
   };
+
+  ngOnInit(): void {
+    // Obtner solo las categorías para mostrar en el panel o dashboard
+    this.categoriaService.getAllCategories()
+      .pipe(
+        map(categorias => categorias.filter(cat => cat.mostrar_panel === true))
+      )
+      .subscribe({
+        next: categoriasFiltradas => {
+          this.categorias = categoriasFiltradas;
+
+          // Obtener todo el total del mes de cada categoría mostrada en el panel
+          this.categorias.map(cat => {
+            this.transactionService.getTotalAndSumCategory(cat.id_categoria).subscribe({
+              next: (data) => {
+                let total = data.total;
+                cat.monto_total = Number(total);
+              },
+            });
+          });
+        },
+    });
+  }
 }

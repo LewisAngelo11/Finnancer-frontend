@@ -1,7 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { HeaderDashboard } from '../header-dashboard/header-dashboard';
 import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
@@ -11,6 +10,8 @@ import { PieChart } from './pie-chart/pie-chart';
 import { BarChart } from './bar-chart/bar-chart';
 import { LastTransactions } from './last-transactions/last-transactions';
 import { MostSpendings } from './most-spendings/most-spendings';
+import { UsuarioService } from '../services/usuario-service';
+import { TransactionService } from '../services/transaction-service';
 
 interface Gasto {
   id: number,
@@ -26,7 +27,7 @@ interface Gasto {
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
 
 // Al usar isPlatformBrowser, se evita que se pinte el <canvas> en el servidor,
 // previniendo el error "NotYetImplemented" que anteriormente tuve con el <canvas>
@@ -65,16 +66,51 @@ export class Dashboard {
   private mayoresGastosSort: Gasto[] = [];
 
   // Datos de prueba
-  presupuesto: number = 200500;
-  ingresosMensuales: number = 10000;
-  ingresosMinimos: number = 4000;
-  egresosMensuales: number = 4000;
-  egresosMinimos: number = 3000;
+  presupuesto: number = 0;
+  ingresosMensuales: number = 0;
+  ingresosMinimos: number = 0;
+  egresosMensuales: number = 0;
+  egresosMaximos: number = 0;
   gastosTotales: number = 44000;
 
-  isPositive = signal(true);
-  signo: string = '';
+  isPositiveI = signal(false);
+  isPositiveE = signal(false);
   private router = inject(Router);
+  private usuarioSerivce = inject(UsuarioService);
+  private transactionService = inject(TransactionService);
+
+  ngOnInit(): void {
+    // Obtener los datos financieros del usuario
+    this.usuarioSerivce.getInfoUser().subscribe({
+      next: (data) => {
+        let usuario = data;
+        this.presupuesto = usuario.presupuesto;
+        this.ingresosMinimos = usuario.ingreso_minimo;
+        this.egresosMaximos = usuario.egreso_maximo;
+      },
+      error: (err) => { console.log(err) }
+    });
+
+    // Obtener todos los ingresos del usuario
+    this.transactionService.getAllIncomesAmount().subscribe({
+      next: (data) => {
+        let montoTotal = data._sum.monto_total;
+        this.ingresosMensuales = montoTotal;
+        this.verificarPositivoIngresos(this.ingresosMensuales, this.ingresosMinimos);
+      },
+      error: (err) => { console.log(err) },
+    });
+
+    // Obtener todos los Egresos del usuario
+    this.transactionService.getAllEspensesAmount().subscribe({
+      next: (data) => {
+        let montoTotal = data._sum.monto_total;
+        this.egresosMensuales = montoTotal;
+        this.verificarPositivoEgresos(this.egresosMensuales, this.egresosMaximos);
+      },
+      error: (err) => { console.log(err) },
+    });
+  }
 
   goToAccount() {
     this.router.navigate(['account']);
@@ -88,12 +124,19 @@ export class Dashboard {
     return egresosMen - egresosMin;
   }
 
-  verificarPositivo() {
-    let result = this.calcularIngresos(this.ingresosMensuales, this.ingresosMinimos)
+  verificarPositivoIngresos(ingresosMen: number, ingresosMin: number) {
+    let result = this.calcularIngresos(ingresosMen, ingresosMin)
 
     if (result > 0) {
-      this.isPositive.set(true);
-      this.signo = '+';
+      this.isPositiveI.set(true);
+    }
+  }
+
+  verificarPositivoEgresos(egresosMen: number, egresosMin: number) {
+    let result = this.calcularEgresos(egresosMen, egresosMin)
+
+    if (result > 0) {
+      this.isPositiveE.set(true);
     }
   }
 

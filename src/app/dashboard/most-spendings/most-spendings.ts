@@ -1,9 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { TransactionService } from '../../services/transaction-service';
 
 interface Gastos {
-  id: number,
+  id_transaccion: number,
+  tipo: string,
+  fecha_transaccion: string | Date,
+  nota: string,
+  monto_total: number,
+  plazos: number,
+  estatus: string,
   categoria: string,
-  monto: number,
+  subcategoria: string,
+  persona: string,
+  perfil: string
 }
 
 @Component({
@@ -12,19 +21,10 @@ interface Gastos {
   templateUrl: './most-spendings.html',
   styleUrl: './most-spendings.css'
 })
-export class MostSpendings {
-  gastos: Gastos[] = [
-    {id: 1, categoria: 'Servicios Básicos', monto: 6500},
-    {id: 2, categoria: 'Servicios Básicos', monto: 3500},
-    {id: 3, categoria: 'Servicios Básicos', monto: 2500},
-    {id: 4, categoria: 'Servicios Básicos', monto: 1500},
-    {id: 5, categoria: 'Otros Egresos', monto: 1000},
-    {id: 6, categoria: 'Servicios Básicos', monto: 700},
-    {id: 7, categoria: 'Otros Egresos', monto: 600},
-    {id: 8, categoria: 'Servicios Básicos', monto: 500},
-    {id: 9, categoria: 'Otros Egresos', monto: 500},
-    {id: 10, categoria: 'Otros Egresos', monto: 400},
-  ];
+export class MostSpendings implements OnInit {
+  private transactionService = inject(TransactionService);
+
+  gastos: Gastos[] = [];
 
   // Estilos para los mayores gastos
   containers: Record<number, string> = {
@@ -39,4 +39,17 @@ export class MostSpendings {
     9: 'card rounded-full w-[90px] h-[90px] bg-[#004403] p-1 absolute top-[200px] left-[20px] ',
     10: 'card rounded-full w-[90px] h-[90px] bg-[#002B02] p-1 absolute top-[10px] left-[20px]',//
   };
+
+  ngOnInit(): void {
+    this.transactionService.getAllTransactions().subscribe({
+      next: (data) => {
+        this.gastos = data;
+        const gastosFiltrados = this.gastos.filter(g => g.tipo === 'egreso');
+        this.gastos = gastosFiltrados.sort((a, b) => b.monto_total - a.monto_total);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
 }

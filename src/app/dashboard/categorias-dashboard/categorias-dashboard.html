@@ -1,12 +1,12 @@
 <div class="w-full h-full lg:p-0 flex flex-col gap-3 lg:gap-0 lg:justify-between overflow-y-auto">
-    @for (categoria of categorias; track categoria.id) {
+    @for (categoria of categorias; track categoria.id_categoria) {
         <div class="bg-gradient-gray-h slide-in-down card flex flex-row rounded-3xl p-7 w-full text-white gap-4 justify-between items-center">
             <p class="w-22 h-19 flex items-center justify-center font-bold p-4 rounded-full border-5 border-[#46E24D]">
                 <i [class]="icons[+categoria.icono]" class="text-3xl"></i>
             </p>
             <div class="flex flex-col gap-1 w-full items-start h-full">
                 <p class="font-thin lg:text-xl">{{categoria.nombre}}</p>
-                <p class="text-lg lg:text-2xl">${{categoria.total}}</p>
+                <p class="text-lg lg:text-2xl">${{categoria.monto_total}}</p>
             </div>
         </div>
     }

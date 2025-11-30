@@ -54,7 +54,9 @@
                     <div class="flex flex-row justify-between w-full">
                         <h2>Ingresos</h2>
                         <div class="flex flex-row">
-                            <p>{{signo}}</p> <!-- Pendiente de corregir en el ts -->
+                            @if (isPositiveI()) {
+                                <p>+</p>
+                            }
                             <p>{{calcularIngresos(ingresosMensuales, ingresosMinimos)}}</p>
                         </div>
                     </div>
@@ -69,13 +71,15 @@
                     <div class="flex flex-row justify-between w-full">
                         <h2>Egresos</h2>
                         <div class="flex flex-row">
-                            <p>{{signo}}</p> <!-- Pendiente de corregir en el ts -->
-                            <p>{{calcularEgresos(egresosMensuales, egresosMinimos)}}</p>
+                            @if (isPositiveE()) {
+                                <p>+</p>
+                            }
+                            <p>{{calcularEgresos(egresosMensuales, egresosMaximos)}}</p>
                         </div>
                     </div>
                 </div>
                 <span class="bg-green-primary w-full h-1 rounded-full"></span>
-                <p class="font-thin">${{egresosMensuales}} de ${{egresosMinimos}}</p>
+                <p class="font-thin">${{egresosMensuales}} de ${{egresosMaximos}}</p>
             </div>
         </div>
     </div>

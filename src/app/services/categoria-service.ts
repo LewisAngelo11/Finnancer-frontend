@@ -31,8 +31,8 @@ export class CategoriaService {
     return this.http.post(`${this.apiUrl}/categorias/new`, body);
   }
 
-  getAllCategories(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/categorias/all`);
+  getAllCategories(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/categorias/all`);
   }
 
   updateCategory(body: BodyUpdateCategory): Observable<any> {

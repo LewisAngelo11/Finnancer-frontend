@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { UltimasTransacciones } from '../../transactions/transactions';
+import { TransactionService } from '../../services/transaction-service';
 
 @Component({
   selector: 'app-last-transactions',
@@ -6,15 +8,11 @@ import { Component } from '@angular/core';
   templateUrl: './last-transactions.html',
   styleUrl: './last-transactions.css'
 })
-export class LastTransactions {
-  // Datos de prueba
-  ultimasTransacciones = [
-    {id: 1, icono: 3, nombre: 'Otros Ingresos', monto: 1500},
-    {id: 2, icono: 1, nombre: 'Ingresos de Ventas', monto: 2230},
-    {id: 3, icono: 1, nombre: 'Ingresos de Ventas', monto: 3499},
-    {id: 4, icono: 2, nombre: 'Servicios Básicos', monto: 1199},
-    {id: 5, icono: 1, nombre: 'Ingresos de Ventas', monto: 3299}
-  ];
+export class LastTransactions implements OnInit {
+
+  ultimasTransacciones: UltimasTransacciones[] = [];
+
+  private transactionService = inject(TransactionService);
 
   icons: Record<number, string> = {
     1: 'bx bx-money',
@@ -32,4 +30,13 @@ export class LastTransactions {
     14: 'bx-bar-chart-alt-2',
     15: 'bx bx-credit-card',
   };
+
+  ngOnInit(): void {
+    // Obtener las últimas 10 transacciones hechas por el usuario
+    this.transactionService.getLastTransactiona().subscribe({
+      next: (data) => {
+        this.ultimasTransacciones = data;
+      }
+    });
+  }
 }

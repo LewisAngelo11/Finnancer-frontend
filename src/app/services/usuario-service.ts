@@ -35,6 +35,22 @@ export interface BodyUpdateProfile {
   estatus: string;
 }
 
+export interface Usuario {
+  id_usuario: number,
+  nombre: string,
+  apellido_paterno: string,
+  apellido_materno: string,
+  correo: string,
+  fecha_creacion: string | Date,
+  foto_perfil: null,
+  estatus: string,
+  presupuesto: number,
+  ingreso_minimo: number,
+  egreso_maximo: number,
+  ahorro_mensual: number,
+  dia_corte: number
+}
+
 export interface Perfil {
   id_perfil: number;
   nombre: string;
@@ -62,8 +78,8 @@ export class UsuarioService {
   }
 
   // Método que solicita la info de el usuario
-  getInfoUser() {
-    return this.http.get(`${this.apiUrl}/usuarios/me`);
+  getInfoUser(): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.apiUrl}/usuarios/me`);
   }
 
   // Método que actualiza los datos financieros del usuario ya autenticado
