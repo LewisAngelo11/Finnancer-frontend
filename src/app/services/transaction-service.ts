@@ -65,6 +65,25 @@ export interface TotalAndTransactionsResponse {
   transacciones: TransaccionDashboard[];
 }
 
+export interface Transaccion {
+  id_transaccion: number;
+  tipo: string;
+  fecha_transaccion: string;
+  nota: string;
+  monto_total: string;
+  plazos: number;
+  estatus: string;
+  id_categoria: number;
+  id_usuario: number;
+  id_perfil: number;
+  id_subcategoria: number | null;
+  id_persona: number | null;
+  categoria: {
+    icono: number;
+    nombre: string;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -125,6 +144,10 @@ export class TransactionService {
 
   updateExpirationDate(body: BodyUpdateTransaccionCuota): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/transacciones-cuotas/updateExpiration`, body);
+  }
+
+  getAllTransactionsFromProfile(): Observable<Transaccion[]> {
+    return this.http.get<Transaccion[]>(`${this.apiUrl}/transacciones/all-profile`);
   }
 
   getTotalAndSumCategory(idCategoria: number) {

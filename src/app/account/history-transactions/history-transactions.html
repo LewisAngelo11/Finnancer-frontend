@@ -10,15 +10,26 @@
     <span class="bg-gray-details w-full h-0.5"></span>
 
     <!-- Tabla para mostrar las transacciones del perfil actual -->
-    <div class="w-full overflow-auto text-white border border-[#3B3B3B] rounded-lg">
-        <table class="min-w-100 flex flex-col items-center p-4">
-            <tbody class="w-full flex flex-col items-start gap-4 lg:p-2">
-                @for (transaction of transactionsHistory; track transaction.id) {
-                    <tr class="w-full flex flex-row items-center justify-between">
-                        <td>{{transaction.icono}}</td>
-                        <td>{{transaction.nombre}}</td>
-                        <td>{{transaction.monto}}</td>
-                        <td>{{transaction.fecha}}</td>
+    <div class="w-full h-78 md:rounded-t-2xl text-white rounded-b-2xl border border-[#3B3B3B] overscroll-none overflow-auto">
+        <table class="w-full text-center">
+            <thead class="text-white bg-[#151515] sticky top-0 z-20">
+                <tr>
+                    <th class="font-thin p-4">Icono</th>
+                    <th class="font-thin p-4">Categoría</th>
+                    <th class="font-thin p-4">Monto Total</th>
+                    <th class="font-thin p-4">Fecha de transacción</th>
+                </tr>
+            </thead>
+
+            <tbody class="w-full lg:p-2">
+                @for (transaction of transactionsHistory; track transaction.id_transaccion) {
+                    <tr class="border-b border-[#3B3B3B] hover:bg-[#1f1f1f] transition">
+                        <td class="font-thin p-4">
+                            <i [class]="icons[+transaction.categoria.icono]" class="bg-[#46E24D] rounded-full p-2 text-black"></i>
+                        </td>
+                        <td class="font-thin p-4">{{transaction.categoria.nombre}}</td>
+                        <td class="font-thin p-4">${{transaction.monto_total}}</td>
+                        <td class="font-thin p-4">{{transaction.fecha_transaccion}}</td>
                     </tr>
                 }
             </tbody>

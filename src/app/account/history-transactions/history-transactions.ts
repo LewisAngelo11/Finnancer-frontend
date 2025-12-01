@@ -1,4 +1,12 @@
-import { Component, input } from '@angular/core';
+import { Component, input, inject, OnInit } from '@angular/core';
+import { TransactionService, Transaccion } from '../../services/transaction-service';
+
+interface TransactiosHistory {
+  id_transaccion: number;
+  categoria: string;
+  icono: number;
+  fecha_transaccion: string | Date;
+}
 
 @Component({
   selector: 'app-history-transactions',
@@ -6,14 +14,40 @@ import { Component, input } from '@angular/core';
   templateUrl: './history-transactions.html',
   styleUrl: './history-transactions.css'
 })
-export class HistoryTransactions{
+export class HistoryTransactions implements OnInit{
   perfilActual = input<string>();
+  private transactionService = inject(TransactionService);
 
-  transactionsHistory = [
-    {id: 1, icono: 1, nombre: 'Ingresos de Ventas', monto: 2230, fecha: '15/09/2025'},
-    {id: 2, icono: 2, nombre: 'Servicios Básicos', monto: 1200, fecha: '15/09/2025'},
-    {id: 3, icono: 4, nombre: 'Otros Egresos', monto: 690, fecha: '13/09/2025'},
-    {id: 4, icono: 1, nombre: 'Ingresos de Ventas', monto: 4200, fecha: '13/09/2025'},
-    {id: 5, icono: 1, nombre: 'Ingresos de Ventas', monto: 5000, fecha: '12/09/2025'},
-  ]
+  transactionsHistory: Transaccion[] = [];
+
+  icons: Record<number, string> = {
+    1: 'bx bx-money',
+    2: 'bx bx-bulb',
+    3: 'bx bx-trending-up',
+    4: 'bx bx-trending-down',
+    5: 'bx bx-water',
+    6: 'bx bx-money',
+    7: 'bx bx-receipt',
+    8: 'bx bx-dollar',
+    9: 'bx bx-building',
+    10: 'bx bx-coin',
+    11: 'bx bx-line-chart',
+    12: 'bx bx-bookmark',
+    13: 'bx-bar-chart-alt-2',
+    14: 'bx bx-credit-card',
+  };
+
+  ngOnInit(): void {
+    this.getTransactionsFromProfile();
+  }
+
+  getTransactionsFromProfile() {
+    this.transactionService.getAllTransactionsFromProfile().subscribe({
+      next: (data: Transaccion[]) => {
+        this.transactionsHistory = data;
+
+        console.log(this.transactionsHistory);
+      }
+    })
+  }
 }
