@@ -155,4 +155,8 @@ export class TransactionService {
       `${this.apiUrl}/transacciones/total-cat/${idCategoria}`
     );
   }
+
+  generateBalance(mes: number, anio: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/transacciones/balance/${anio}/${mes}`)
+  }
 }

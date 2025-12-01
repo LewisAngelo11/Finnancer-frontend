@@ -33,5 +33,9 @@ export class HeaderDashboard {
     this.router.navigate(['/transactions']);
   }
 
+  goToBalance() {
+    this.router.navigate(['/balance']);
+  }
+
   enterAnimation = signal('slide-in-down');
 }

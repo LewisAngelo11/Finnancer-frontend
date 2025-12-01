@@ -9,6 +9,7 @@ import { Onboarding } from './onboarding/onboarding';
 import { ProfilesSelector } from './profiles-selector/profiles-selector';
 import { Transactions } from './transactions/transactions';
 import { Persons } from './persons/persons';
+import { Balance } from './balance/balance';
 
 export const routes: Routes = [
     {
@@ -50,5 +51,9 @@ export const routes: Routes = [
     {
         path: 'transactions',
         component: Transactions,
+    },
+    {
+        path: 'balance',
+        component: Balance,
     }
 ];
