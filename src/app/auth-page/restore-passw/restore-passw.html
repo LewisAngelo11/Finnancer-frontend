@@ -47,29 +47,51 @@
                 Finn<p class="text-green-400">ancer</p>
             </h2>
         </div>
-        <div class="slide-in-down w-full flex flex-col p-6 gap-5 ">
+        <form
+            [formGroup]="formVerifyEmail"
+            (ngSubmit)="sendVerificationCode()"
+            class="slide-in-down w-full flex flex-col p-6 gap-5"
+            >
+
+            <h2 class="text-xl font-medium text-center">
+                Para asegurarnos de que eres tú, ingresa tu correo electrónico
+            </h2>
+
+            <!-- Campo email -->
             <div class="flex flex-col w-full items-start gap-1 mt-2">
-                <label for="">Correo Electrónico</label>
-                <input type="text" placeholder="Ingrese su correo" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
+                <label for="email">Correo Electrónico</label>
+
+                <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="Ingrese su correo"
+                class="w-full card p-3 border-1 border-gray-400 rounded-xl text-gray-500"
+                />
+
+                <!-- Validación visual -->
+                @if(email.invalid && (email.touched || email.dirty)) {
+                    <p class="text-red-500 text-sm">Ingrese un correo válido</p>
+                }
             </div>
-            <div class="flex flex-col w-full items-start gap-1">
-                <label for="">Nueva Contraseña</label>
-                <input type="password" placeholder="Ingrese la nueva contraseña" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
-            </div>
-            <div class="flex flex-col w-full items-start gap-1">
-                <label for="">Confirmar Nueva Contraseña</label>
-                <input type="password" placeholder="Confirme la nueva contraseña" class="w-full p-3 border-1 border-gray-400 rounded-xl text-gray-500">
-            </div>
+
+            <!-- Texto: volver a login -->
             <div class="flex flex-row w-full items-center justify-center gap-2">
-                <p>¿Recordó su contraeña?</p>
-                <a
-                    class="text-green-400 cursor-pointer"
-                    routerLink=""
-                >
-                    Iniciar Sesión
+                <p>¿Recordó su contraseña?</p>
+                <a routerLink="" class="text-green-400 cursor-pointer">
+                Iniciar Sesión
                 </a>
             </div>
-            <button class="flex items-start justify-center font-bold w-full h-auto p-3 rounded-lg bg-green-400 mt-4 md:m-0 slide-in-down-2">Restablecer Contraseña</button>
-        </div>
+
+            <!-- Botón enviar -->
+            <button
+                type="submit"
+                [disabled]="formVerifyEmail.invalid"
+                class="card flex items-start justify-center font-bold w-full h-auto p-3 rounded-lg bg-green-400 mt-4 md:m-0 slide-in-down-2 disabled:opacity-50"
+            >
+                Envíar código de verificación
+            </button>
+
+            </form>
     </div>
 </div>

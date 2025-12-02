@@ -53,4 +53,12 @@ export class Auth {
   sendMail(to: string, name: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/send-mail`, {to, name});
   }
+
+  sendMailToRecoveryPassw(to: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/send-mail/recovery-passw`, { to });
+  }
+
+  validateCode(body: { correo: string; codigo: number }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/verify-mail`, body);
+  }
 }

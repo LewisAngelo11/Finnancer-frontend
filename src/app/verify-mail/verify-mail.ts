@@ -17,6 +17,7 @@ export class VerifyMail {
 
   private auth = inject(Auth);
   private router = inject(Router);
+  mensajeError = '';
 
   private registrationState = inject(RegistrationState);
 
@@ -34,10 +35,12 @@ export class VerifyMail {
 
     this.auth.signUp(registerBody).subscribe({
       next: () => {
+        this.mensajeError = '';
         this.router.navigate(['/onboarding']);
       },
       error: (err) => {
         console.log(err);
+        this.mensajeError = err.error.message;
       }
     });
   }

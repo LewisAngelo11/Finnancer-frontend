@@ -10,6 +10,7 @@ import { ProfilesSelector } from './profiles-selector/profiles-selector';
 import { Transactions } from './transactions/transactions';
 import { Persons } from './persons/persons';
 import { Balance } from './balance/balance';
+import { VerifyMailPassw } from './verify-mail-passw/verify-mail-passw';
 
 export const routes: Routes = [
     {
@@ -55,5 +56,9 @@ export const routes: Routes = [
     {
         path: 'balance',
         component: Balance,
+    },
+    {
+        path: 'verifyMailPassw',
+        component: VerifyMailPassw,
     }
 ];
