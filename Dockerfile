@@ -1,23 +1,34 @@
-# Usa node 18
-FROM node:18-alpine
+# Use Node 18
+FROM node:18-alpine AS build
 
-# Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copiar package.json
+# Copy package files
 COPY package*.json ./
 
-# Instalar dependencias (solo prod)
+# Install all dependencies
 RUN npm install
 
-# Copiar el resto del proyecto
+# Copy the rest of the app
 COPY . .
 
 # Build Angular
 RUN npm run build
 
-# Exponer puerto
+
+# ---- Runtime stage ----
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy built dist only
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/server.csr.js ./
+COPY --from=build /app/package*.json ./
+
+# Install only production deps for runtime
+RUN npm install --omit=dev
+
 EXPOSE 8080
 
-# Comando para iniciar el server CSR
 CMD ["node", "server.csr.js"]
