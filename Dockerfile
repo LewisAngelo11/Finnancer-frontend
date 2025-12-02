@@ -1,5 +1,5 @@
-# Use Node 18
-FROM node:18-alpine AS build
+# Use Node 22 (requerido por Angular 20)
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
@@ -15,9 +15,8 @@ COPY . .
 # Build Angular
 RUN npm run build
 
-
 # ---- Runtime stage ----
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
