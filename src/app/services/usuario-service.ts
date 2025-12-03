@@ -67,11 +67,7 @@ export interface Perfil {
 })
 export class UsuarioService {
   private http = inject(HttpClient);
-  private host = 'localhost';
-  private port = 3000;
   private perfiles$?: Observable<Perfil[]>; // Cache local en memoria para evitar peticiones repetitivas
-
-  private apiUrl = `http://${this.host}:${this.port}`;
 
   // Método que crea los parametros de finanzas del usuario
   createFinanceParams(bodyCreateUserFinance: BodyCreateUserFinance): Observable<any> {

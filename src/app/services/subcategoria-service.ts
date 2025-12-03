@@ -34,10 +34,6 @@ export interface BodyUpdateSubcategory {
 })
 export class SubcategoriaService {
   private http = inject(HttpClient);
-  private host = 'localhost';
-  private port = 3000;
-
-  private apiUrl = `http://${this.host}:${this.port}`;
 
   createSubcategory(body: BodyCreateSubcategory): Observable<any> {
     return this.http.post(`${environment.apiUrl}/subcategorias/create`, body);

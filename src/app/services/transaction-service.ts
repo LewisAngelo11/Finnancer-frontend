@@ -90,10 +90,6 @@ export interface Transaccion {
 })
 export class TransactionService {
   private http = inject(HttpClient);
-  private host = 'localhost';
-  private port = 3000;
-
-  private apiUrl = `http://${this.host}:${this.port}`;
 
   createNewTransaction(body: BodyCreateTransaction): Observable<any> {
     return this.http.post(`${environment.apiUrl}/transacciones/create`, body);

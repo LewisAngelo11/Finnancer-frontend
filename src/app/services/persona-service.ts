@@ -13,10 +13,6 @@ export interface BodyCreatePerson {
 })
 export class PersonaService {
   private http = inject(HttpClient);
-  private host = 'localhost';
-  private port = 3000;
-
-  private apiUrl = `http://${this.host}:${this.port}`;
 
   createPerson(body: BodyCreatePerson): Observable<any> {
     return this.http.post(`${environment.apiUrl}/personas/create`, body);

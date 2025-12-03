@@ -23,10 +23,6 @@ export interface BodyUpdateCategory {
 })
 export class CategoriaService {
   private http = inject(HttpClient);
-  private host = 'localhost';
-  private port = 3000;
-
-  private apiUrl = `http://${this.host}:${this.port}`;
 
   createCategory(body: BodyCreateCategory): Observable<any> {
     return this.http.post(`${environment.apiUrl}/categorias/new`, body);
