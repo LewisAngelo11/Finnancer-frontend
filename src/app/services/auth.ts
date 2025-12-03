@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { response } from 'express';
+import { environment } from '../../environments/environment';
 
 export interface bodyCreateUser {
   nombre: string,
@@ -25,15 +25,11 @@ export interface bodyCreateUserWithCode {
 })
 export class Auth {
   private http = inject(HttpClient);
-  private host = 'localhost';
-  private port = 3000;
-
-  private apiUrl = `http://${this.host}:${this.port}`;
 
   // Método login
   login(credentials: { correo: string, contrasena: string }) {
     // La función promete recibir un access_token, desde el backend
-    return this.http.post<{ access_token: string }>(`${this.apiUrl}/auth/login`, credentials).pipe(
+    return this.http.post<{ access_token: string }>(`${environment.apiUrl}/auth/login`, credentials).pipe(
       tap((response) => {
         localStorage.setItem('token', response.access_token); // Guarda el token en el localStorage
       })
@@ -42,7 +38,7 @@ export class Auth {
 
   // Método signUp
   signUp(bodyCrear: bodyCreateUserWithCode) {
-    return this.http.post<{ access_token : string }>(`${this.apiUrl}/auth/create`, bodyCrear).pipe(
+    return this.http.post<{ access_token : string }>(`${environment.apiUrl}/auth/create`, bodyCrear).pipe(
       tap((response) => {
         localStorage.setItem('token', response.access_token); // Guarda el token en el localStorage
       })
@@ -51,14 +47,14 @@ export class Auth {
 
   // Método enviar correo
   sendMail(to: string, name: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/send-mail`, {to, name});
+    return this.http.post(`${environment.apiUrl}/auth/send-mail`, {to, name});
   }
 
   sendMailToRecoveryPassw(to: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/send-mail/recovery-passw`, { to });
+    return this.http.post(`${environment.apiUrl}/auth/send-mail/recovery-passw`, { to });
   }
 
   validateCode(body: { correo: string; codigo: number }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/verify-mail`, body);
+    return this.http.post(`${environment.apiUrl}/auth/verify-mail`, body);
   }
 }

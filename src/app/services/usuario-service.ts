@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 // Interfaz que es para actualizar los datos del usuario sin el correo
 export interface BodyUpdateUser {
@@ -74,41 +75,41 @@ export class UsuarioService {
 
   // Método que crea los parametros de finanzas del usuario
   createFinanceParams(bodyCreateUserFinance: BodyCreateUserFinance): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/usuarios/finance`, bodyCreateUserFinance );
+    return this.http.patch(`${environment.apiUrl}/usuarios/finance`, bodyCreateUserFinance );
   }
 
   // Método que solicita la info de el usuario
   getInfoUser(): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.apiUrl}/usuarios/me`);
+    return this.http.get<Usuario>(`${environment.apiUrl}/usuarios/me`);
   }
 
   // Método que actualiza los datos financieros del usuario ya autenticado
   updateFinanceParamas(bodyCreateUserFinance: BodyCreateUserFinance): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/usuarios/update`, bodyCreateUserFinance);
+    return this.http.patch(`${environment.apiUrl}/usuarios/update`, bodyCreateUserFinance);
   }
 
   // Método que actualiza los datos personales del usuario
   updateInfo(bodyUpdateUser: BodyUpdateUser): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/usuarios/info`, bodyUpdateUser);
+    return this.http.patch(`${environment.apiUrl}/usuarios/info`, bodyUpdateUser);
   }
 
   // Método que actualiza la contraseña del usuario
   updatePassw(bodyUpdatePassw: BodyUpdatePassw): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/usuarios/security`, bodyUpdatePassw);
+    return this.http.patch(`${environment.apiUrl}/usuarios/security`, bodyUpdatePassw);
   }
 
   // ------- Endpoints para los perfiles relacionados a un usuario -----------
 
   // Método que crea un nuevo perfil de un usuario
   createProfile(bodyCreateProfile: BodyCreateProfile): Observable<any> {
-    return this.http.post(`${this.apiUrl}/perfiles/create`, bodyCreateProfile);
+    return this.http.post(`${environment.apiUrl}/perfiles/create`, bodyCreateProfile);
   }
 
   //Método que obtiene todos los perfiles relacionados al usuario
   getAllProfiles(): Observable<Perfil[]> {
     if (!this.perfiles$) {
       this.perfiles$ = this.http
-        .get<Perfil[]>(`${this.apiUrl}/perfiles/all`)
+        .get<Perfil[]>(`${environment.apiUrl}/perfiles/all`)
         .pipe(shareReplay(1)); // cachea la última respuesta
     }
     return this.perfiles$;
@@ -116,21 +117,21 @@ export class UsuarioService {
 
   // Método que obtiene únicamente los perfiles activos relacionados al usuario
   getAllActiveProfiles(): Observable<Perfil[]>{
-    return this.http.get<Perfil[]>(`${this.apiUrl}/perfiles/all-active`);
+    return this.http.get<Perfil[]>(`${environment.apiUrl}/perfiles/all-active`);
   }
 
   // Método que obtiene un perfil con el id
   getOneProfile(): Observable<Perfil>{
-    return this.http.get<Perfil>(`${this.apiUrl}/perfiles/one`);
+    return this.http.get<Perfil>(`${environment.apiUrl}/perfiles/one`);
   }
 
   // Método que valida el pin de un perfil
   validatePinProfile(credetnials: {idPerfil: number, pin: string}) {
-    return this.http.post(`${this.apiUrl}/perfiles/validatePIN`, credetnials);
+    return this.http.post(`${environment.apiUrl}/perfiles/validatePIN`, credetnials);
   }
 
   // Método que actializa los datos de un perfil
   updateProfile(bodyUpdateProfile: BodyUpdateProfile):Observable<any> {
-    return this.http.patch(`${this.apiUrl}/perfiles/update`, bodyUpdateProfile);
+    return this.http.patch(`${environment.apiUrl}/perfiles/update`, bodyUpdateProfile);
   }
 }

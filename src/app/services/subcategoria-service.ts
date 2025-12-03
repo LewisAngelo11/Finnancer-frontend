@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Subcategoria {
   id_subcategoria: number;
@@ -39,22 +40,22 @@ export class SubcategoriaService {
   private apiUrl = `http://${this.host}:${this.port}`;
 
   createSubcategory(body: BodyCreateSubcategory): Observable<any> {
-    return this.http.post(`${this.apiUrl}/subcategorias/create`, body);
+    return this.http.post(`${environment.apiUrl}/subcategorias/create`, body);
   }
 
   getAllSubcategories(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/subcategorias/all`);
+    return this.http.get(`${environment.apiUrl}/subcategorias/all`);
   }
 
   getAllSubcategoriesFromCategory(idCategoria: number): Observable<Subcategoria[]> {
-    return this.http.get<Subcategoria[]>(`${this.apiUrl}/subcategorias/${idCategoria}`);
+    return this.http.get<Subcategoria[]>(`${environment.apiUrl}/subcategorias/${idCategoria}`);
   }
 
   updateSubcategory(body: BodyUpdateSubcategory): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/subcategorias/update`, body);
+    return this.http.patch<any>(`${environment.apiUrl}/subcategorias/update`, body);
   }
 
   changeStatusSubcategory(body: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/subcategorias/change-status`, body);
+    return this.http.patch<any>(`${environment.apiUrl}/subcategorias/change-status`, body);
   }
 }

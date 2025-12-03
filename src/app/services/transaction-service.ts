@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface BodyCreateTransaction {
   idCategoria: number;
@@ -95,68 +96,68 @@ export class TransactionService {
   private apiUrl = `http://${this.host}:${this.port}`;
 
   createNewTransaction(body: BodyCreateTransaction): Observable<any> {
-    return this.http.post(`${this.apiUrl}/transacciones/create`, body);
+    return this.http.post(`${environment.apiUrl}/transacciones/create`, body);
   }
 
   getAllTransactions(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/transacciones/all`)
+    return this.http.get(`${environment.apiUrl}/transacciones/all`)
   }
 
   getOneTransaction(idTransaccion: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/transacciones/${idTransaccion}`);
+    return this.http.get(`${environment.apiUrl}/transacciones/${idTransaccion}`);
   }
 
   getExpensesTransaction():Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/transacciones/expenses`);
+    return this.http.get<any[]>(`${environment.apiUrl}/transacciones/expenses`);
   }
 
   getAllIncomesAmount(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/transacciones/amount/incomes`);
+    return this.http.get(`${environment.apiUrl}/transacciones/amount/incomes`);
   }
 
   getAllEspensesAmount(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/transacciones/amount/espenses`);
+    return this.http.get(`${environment.apiUrl}/transacciones/amount/espenses`);
   }
 
   getLastTransactiona(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/transacciones/last-transactions`);
+    return this.http.get(`${environment.apiUrl}/transacciones/last-transactions`);
   }
 
   updateTransaction(body: BodyUpdateTransaction): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/transacciones/update`, body);
+    return this.http.patch<any>(`${environment.apiUrl}/transacciones/update`, body);
   }
 
   cancelTransaction(body: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/transacciones/cancel`, body);
+    return this.http.patch<any>(`${environment.apiUrl}/transacciones/cancel`, body);
   }
 
   changeStatusTransaction(body: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/transacciones/complete`, body);
+    return this.http.patch<any>(`${environment.apiUrl}/transacciones/complete`, body);
   }
 
   paymentTransactionFee(body: BodyAbonarCuota): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/transacciones-cuotas/payment`, body)
+    return this.http.patch<any>(`${environment.apiUrl}/transacciones-cuotas/payment`, body)
   }
 
   getAllFeesOfTransaction(idTransaccion: number): Observable<TransaccionesCuotas[]> {
-    return this.http.get<TransaccionesCuotas[]>(`${this.apiUrl}/transacciones-cuotas/${idTransaccion}`);
+    return this.http.get<TransaccionesCuotas[]>(`${environment.apiUrl}/transacciones-cuotas/${idTransaccion}`);
   }
 
   updateExpirationDate(body: BodyUpdateTransaccionCuota): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/transacciones-cuotas/updateExpiration`, body);
+    return this.http.patch<any>(`${environment.apiUrl}/transacciones-cuotas/updateExpiration`, body);
   }
 
   getAllTransactionsFromProfile(): Observable<Transaccion[]> {
-    return this.http.get<Transaccion[]>(`${this.apiUrl}/transacciones/all-profile`);
+    return this.http.get<Transaccion[]>(`${environment.apiUrl}/transacciones/all-profile`);
   }
 
   getTotalAndSumCategory(idCategoria: number) {
     return this.http.get<TotalAndTransactionsResponse>(
-      `${this.apiUrl}/transacciones/total-cat/${idCategoria}`
+      `${environment.apiUrl}/transacciones/total-cat/${idCategoria}`
     );
   }
 
   generateBalance(mes: number, anio: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/transacciones/balance/${anio}/${mes}`)
+    return this.http.get<any>(`${environment.apiUrl}/transacciones/balance/${anio}/${mes}`)
   }
 }

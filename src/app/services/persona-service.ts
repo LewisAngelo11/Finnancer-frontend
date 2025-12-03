@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface BodyCreatePerson {
   nombre: string,
@@ -18,30 +19,30 @@ export class PersonaService {
   private apiUrl = `http://${this.host}:${this.port}`;
 
   createPerson(body: BodyCreatePerson): Observable<any> {
-    return this.http.post(`${this.apiUrl}/personas/create`, body);
+    return this.http.post(`${environment.apiUrl}/personas/create`, body);
   }
 
   getAllPersons(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/personas/all`);
+    return this.http.get(`${environment.apiUrl}/personas/all`);
   }
 
   getAllDebt(body: any): Observable<number> {
-    return this.http.post<number>(`${this.apiUrl}/personas/debt`, body);
+    return this.http.post<number>(`${environment.apiUrl}/personas/debt`, body);
   }
 
   getAllClients(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/personas/clients`);
+    return this.http.get<any[]>(`${environment.apiUrl}/personas/clients`);
   }
 
   getAllProviders(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/personas/providers`);
+    return this.http.get<any[]>(`${environment.apiUrl}/personas/providers`);
   }
 
   updatePerson(body: any): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/personas/status`, body);
+    return this.http.patch(`${environment.apiUrl}/personas/status`, body);
   }
 
   changeStatus(body: any): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/personas/status`, body);
+    return this.http.patch(`${environment.apiUrl}/personas/status`, body);
   }
 }
