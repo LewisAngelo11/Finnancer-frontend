@@ -167,13 +167,11 @@ export class Persons implements OnInit {
       tipoPersona: this.formNewPersona.value.tipo ?? ''
     };
 
-    console.log(body);
-
     this.personaService.createPerson(body).subscribe({
       next: (res) => {
         const newPersona = res.persona;
-        console.log(newPersona);
         this.closeModal();
+        this.personas.push(newPersona);
         this.personasFiltradas.push(newPersona);
         this.countClients();
         this.countProviders();
@@ -195,10 +193,9 @@ export class Persons implements OnInit {
       tipoPersona: this.formEditPersona.get('tipo')?.value,
     }
 
-    // TODO: Implementar mensajes de respuestas
+    // Implementar mensajes de respuestas
     this.personaService.updatePerson(body).subscribe({
-      next: (res) => {
-        console.log(res);
+      next: () => {
         this.closeEditModal();
       },
       error: (err) => {

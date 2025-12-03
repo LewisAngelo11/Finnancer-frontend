@@ -35,7 +35,7 @@ export class PersonaService {
   }
 
   updatePerson(body: any): Observable<any> {
-    return this.http.patch(`${environment.apiUrl}/personas/status`, body);
+    return this.http.patch(`${environment.apiUrl}/personas/update`, body);
   }
 
   changeStatus(body: any): Observable<any> {
