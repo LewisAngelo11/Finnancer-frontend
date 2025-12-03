@@ -90,8 +90,8 @@ export class Balance implements OnInit {
 
   // Formulario para los periodos de los balances
   formBalance = this.fb.group({
-    mes: new FormControl(null, { nonNullable: true }),
-    anio: new FormControl(null, { nonNullable: true }),
+    mes: new FormControl('', { nonNullable: true }),
+    anio: new FormControl('', { nonNullable: true }),
   });
 
   consultarBalance() {

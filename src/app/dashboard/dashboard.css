@@ -70,3 +70,57 @@
 .slide-to-right {
     animation: slideToRight 900ms ease-out;
 }
+
+/* Estilos y animaciones para el boton de la IA */
+.dynamic-btn {
+    position: relative;
+    padding: 0.7rem 1.2rem;
+    border-radius: 2rem;
+    color: black;
+    font-weight: 400;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    
+    /* Background dinámico */
+    background: linear-gradient(135deg, var(--color1), var(--color2), var(--color3));
+    background-size: 200% 200%;
+    animation: gradientMove 4s ease infinite;
+}
+
+/* Dinámico ♥ → Puedes cambiar estos colores por Angular */
+.dynamic-btn {
+    --color1: #46E24D;
+    --color2: #a4ffa8;    
+    --color3: #00C40A;
+}
+
+.dynamic-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Animación del degradado */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Ripple click */
+.dynamic-btn:active::after {
+    content: "";
+    position: absolute;
+    width: 250%;
+    height: 250%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 0.4s ease-out;
+}
+
+@keyframes ripple {
+    from { transform: translate(-50%, -50%) scale(0); }
+    to   { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}

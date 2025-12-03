@@ -64,7 +64,6 @@
                     <th class="font-thin p-4">Categoría</th>
                     <th class="font-thin p-4">Tipo de Movimiento</th>
                     <th class="font-thin p-4">Flujo de Efectivo</th>
-                    <th class="font-thin p-4">Mostrar</th>
                     <th class="font-thin p-4">Estatus</th>
                     <th class="font-thin p-4">Acciones</th>
                 </tr>
@@ -97,12 +96,6 @@
                             @case ('cuenta_por_pagar') {
                                 <th class="font-thin p-4">Cuenta por pagar</th>
                             }
-                        }
-                        @if (subcategoria.mostrar_panel) {
-                            <th class="font-thin p-4">Mostrar</th>
-                        }
-                        @else {
-                            <th class="font-thin p-4">No mostrar</th>
                         }
                         <th class="font-thin p-4">{{subcategoria.estatus}}</th>
                         <th class="font-thin p-4">

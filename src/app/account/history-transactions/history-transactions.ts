@@ -1,5 +1,6 @@
 import { Component, input, inject, OnInit } from '@angular/core';
 import { TransactionService, Transaccion } from '../../services/transaction-service';
+import { CommonModule } from '@angular/common';
 
 interface TransactiosHistory {
   id_transaccion: number;
@@ -10,7 +11,7 @@ interface TransactiosHistory {
 
 @Component({
   selector: 'app-history-transactions',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './history-transactions.html',
   styleUrl: './history-transactions.css'
 })

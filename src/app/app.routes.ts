@@ -12,6 +12,7 @@ import { Persons } from './persons/persons';
 import { Balance } from './balance/balance';
 import { VerifyMailPassw } from './verify-mail-passw/verify-mail-passw';
 import { ChangePassw } from './change-passw/change-passw';
+import { authGuard } from './auth-guard';
 
 export const routes: Routes = [
     {

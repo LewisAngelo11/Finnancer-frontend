@@ -19,7 +19,6 @@ export interface BodyCreateSubcategory {
   idCategoria: number,
   icono: number,
   nombre: string,
-  mostrarPanel: boolean,
 }
 
 export interface BodyUpdateSubcategory {

@@ -29,7 +29,7 @@
                         </td>
                         <td class="font-thin p-4">{{transaction.categoria.nombre}}</td>
                         <td class="font-thin p-4">${{transaction.monto_total}}</td>
-                        <td class="font-thin p-4">{{transaction.fecha_transaccion}}</td>
+                        <td class="font-thin p-4">{{transaction.fecha_transaccion | date:'dd/MM/yyyy'}}</td>
                     </tr>
                 }
             </tbody>

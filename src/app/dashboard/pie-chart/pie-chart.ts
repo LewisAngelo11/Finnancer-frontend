@@ -33,12 +33,11 @@ export class PieChart implements OnInit{
     '#46E24D',
     '#00C40A',
     '#00C40A',
-    '#1E90FF',
-    '#FFD700',
-    '#FF6347',
-    '#20B2AA',
-    '#9370DB',
-    '#FF69B4',
+    '#46E24D',
+    '#00AA09',
+    '#028008',
+    '#004403',
+    '#002B02'
   ];
 
   // Inicializar el pie chart con datos vacíos

@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CategoriaService } from '../services/categoria-service';
 import { PersonaService } from '../services/persona-service';
@@ -52,7 +53,7 @@ interface Personas {
 
 @Component({
   selector: 'app-transactions',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './transactions.html',
   styleUrl: './transactions.css'
 })
@@ -80,16 +81,19 @@ export class Transactions implements OnInit {
   habilitarBotonAbonar = signal(false);
   mensajeUpdateCuota = signal('');
   mensajeAbonoCuota = signal('');
+  puedeGuardar = false;
+  puedeAbonar = false;
+  puedeCancelar = true;
   
   formNewTransaction = this.fb.group({
     categoria: [null, Validators.required],
-    subcategoria: [null, Validators.required],
+    subcategoria: [null],
     nota: [''],
     montoTotal: ['', Validators.required],
-    plazos: [1],
+    plazos: [1, Validators.required],
     fechaTransaccion: [''],
-    persona: ['', Validators.required],
-  })
+    persona: [''],
+  });
   
   categorias: Categorias[] = [];
   subcategorias: Subcategoria[] = [];
@@ -219,7 +223,7 @@ export class Transactions implements OnInit {
         this.transaccionesFiltradas = this.transacciones.filter(t => t.tipo === 'ingreso');
         break;
 
-      case 'egreso':
+      case 'egresos':
         this.transaccionesFiltradas = this.transacciones.filter(t => t.tipo === 'egreso');
         break;
 
@@ -357,6 +361,7 @@ export class Transactions implements OnInit {
   closeCuotaModal() {
     this.animateModal.set(false);
     // Espera a que la animación termine antes de ocultarlo en el DOM
+    this.mensajeAbonoCuota.set('');
     setTimeout(() => this.modalEditCuota.set(false), 200);
     this.openEditCouta();
   }
@@ -380,6 +385,16 @@ export class Transactions implements OnInit {
       subcategoria: null,
       persona: null,
     });
+
+    console.log(categoriaSeleccionada.tipo);
+
+    // Cambiar la lógica del campo "plazos" según el tipo
+    if (categoriaSeleccionada.flujo === 'efectivo') {
+      this.formNewTransaction.get('plazos')?.setValue(1);
+      this.formNewTransaction.get('plazos')?.disable();
+    } else {
+      this.formNewTransaction.get('plazos')?.enable();
+    }
 
     const idCategoria = categoriaSeleccionada.id_categoria;
 
@@ -408,7 +423,7 @@ export class Transactions implements OnInit {
 
   // Método que crea una nueva transacción
   addNewTransaction() {
-    const formValue = this.formNewTransaction.value;
+    const formValue = this.formNewTransaction.getRawValue();
 
     const body: BodyCreateTransaction = {
       idCategoria: Number(formValue.categoria),
@@ -423,8 +438,17 @@ export class Transactions implements OnInit {
     this.transaccionService.createNewTransaction(body).subscribe({
       next: (res) => {
         const newTransaccion = res.transaccion;
+        this.transacciones.push(newTransaccion);
         this.transaccionesFiltradas.push(newTransaccion);
         this.closeModal();
+        if(newTransaccion.tipo === 'ingreso') {
+          this.numTransaccionesIngresos += 1;
+          this.montoIngresosTransacciones + newTransaccion.monto_total;
+
+        } else if (newTransaccion.tipo === 'egreso') {
+          this.numTransaccionesEgresos += 1;
+          this.montoEgresosTransacciones + newTransaccion.monto_total;
+        } 
 
         this.formNewTransaction.patchValue({
           categoria: null,
@@ -446,12 +470,26 @@ export class Transactions implements OnInit {
   consultarTransaccion() {
     const idTransaccion = this.editarForm.get('numeroTransaccion')?.value;
 
+    if (!idTransaccion) {
+      this.mensajeConsultarTransaccion = "Debes ingresar un número de transacción.";
+      return;
+    }
+
     this.transaccionService.getOneTransaction(idTransaccion).subscribe({
       next: (data) => {
         this.mensajeConsultarTransaccion = '';
+        const transaccionEstatus = data.estatus;
 
         // Guardar el tipo de transacción
         this.flujoTransaccionConsultada.set(data.categoria.flujo);
+
+        // Habilita el boton de guardar cambios
+        this.puedeGuardar = true;
+
+        if (transaccionEstatus === 'pagada') {
+          this.puedeAbonar = false;
+          this.puedeCancelar = false;
+        }
 
         // Mensaje que remplazará el nulo en caso de no haber id_subcategoria referenciada en la transacción
         let mensajeSubcategoria;
@@ -476,7 +514,8 @@ export class Transactions implements OnInit {
         this.editarForm.get('nota')?.enable();
       },
       error: () => {
-        this.mensajeConsultarTransaccion = 'No existe la transacción';
+        this.mensajeConsultarTransaccion = "No existe la transacción ingresada.";
+        this.puedeGuardar = false;
       }
     });
   }

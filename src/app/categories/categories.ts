@@ -251,7 +251,6 @@ export class Categories implements OnInit {
       icono: subcategoria.icono,
       tipoMovimiento: subcategoria.tipo,
       flujoEfectivo: subcategoria.flujo,
-      mostrarPanel: subcategoria.mostrar_panel,
     });
   }
 
@@ -285,7 +284,6 @@ export class Categories implements OnInit {
       icono: 1,
       tipoMovimiento: '',
       flujoEfectivo: '',
-      mostrarPanel: false
     });
     // Espera a que termine la animación antes de ocultarlo
     setTimeout(() => this.modalOpenSubcategoria.set(false), 100);
@@ -314,7 +312,6 @@ export class Categories implements OnInit {
     this.formEditSubcategory.reset({
       nombre: '',
       icono: '',
-      mostrarPanel: false,
       tipoMovimiento: '',
       flujoEfectivo: '',
     });
@@ -389,7 +386,6 @@ export class Categories implements OnInit {
       idCategoria: categoriaBuscada?.id_categoria || 0,
       icono: Number(this.iconoSubcategoria?.value) || 1,
       nombre: this.nombreSubcategoria?.value || '',
-      mostrarPanel: this.mostrarSubcategoria?.value || false,
     }
 
     this.subcategoriaService.createSubcategory(body).subscribe({
@@ -401,7 +397,6 @@ export class Categories implements OnInit {
           icono: 1,
           tipoMovimiento: '',
           flujoEfectivo: '',
-          mostrarPanel: false
         });
 
         this.subcategorias.push(data);
@@ -420,10 +415,12 @@ export class Categories implements OnInit {
 
     const body: BodyUpdateCategory = {
       idCategoria: idCategoria,
-      nombre: this.formEditCategory.get('nombre')?.value || '',
-      icono: Number(this.formEditCategory.get('icono')?.value) || 1,
-      mostrarPanel: this.formEditCategory.get('mostrar')?.value || false,
+      nombre: this.formEditCategory.get('nombre')?.value ?? '',
+      icono: Number(this.formEditCategory.get('icono')?.value) ?? 1,
+      mostrarPanel: this.formEditCategory.get('mostrarPanel')?.value ?? false,
     }
+
+    console.log(body);
 
     this.categoriaService.updateCategory(body).subscribe({
       next: (res) => {

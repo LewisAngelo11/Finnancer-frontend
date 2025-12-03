@@ -19,7 +19,7 @@
 
                 <!-- Select Mes -->
                 <select
-                    class="card w-full p-3 border-1 border-white rounded-xl md:rounded-2xl text-gray-500"
+                    class="card w-full p-3 border-1 border-white rounded-xl md:rounded-2xl text-gray-200"
                     formControlName="mes">
                     <option value="" disabled selected>Seleccione mes</option>
                     @for (mes of meses; track mes.value) {
@@ -29,7 +29,7 @@
 
                 <!-- Select Año -->
                 <select
-                    class="card w-full p-3 border border-white rounded-xl md:rounded-2xl text-gray-500"
+                    class="card w-full p-3 border border-white rounded-xl md:rounded-2xl text-gray-200"
                     formControlName="anio">
                     <option value="" disabled selected>Seleccione año</option>
                     @for (anio of anios; track $index) {
