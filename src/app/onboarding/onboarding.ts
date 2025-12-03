@@ -46,7 +46,7 @@ export class Onboarding {
   }
 
   omitFinances() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/profilesSelector']);
   }
 
   onSumbit() {

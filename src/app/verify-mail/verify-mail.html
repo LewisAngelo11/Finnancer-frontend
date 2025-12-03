@@ -15,10 +15,14 @@
     
       <button 
         type="submit"
+        [disabled]="formVerificacion.invalid"
         class="card items-start justify-center font-bold h-auto px-4 py-2 rounded-lg 
-                bg-green-400">
+                bg-green-400 disabled:opacity-50">
         Validar Código
       </button>
+      @if (formVerificacion.get('codigo')?.touched && formVerificacion.get('codigo')?.invalid) {
+        <p class="text-red-500">El código debe tener 6 dígitos.</p>
+      }
       <p class="text-red-500">{{mensajeError}}</p>
     
       <div class="flex flex-col gap-2 items-center justify-center mt-2">

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RegistrationState } from '../services/registration-state';
 import { Auth } from '../services/auth';
@@ -23,14 +23,14 @@ export class VerifyMail {
 
   constructor(private fb: FormBuilder) {
     this.formVerificacion = this.fb.group({
-      codigo: [''],
+      codigo: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
     });
   }
 
   // Método que registra al usuario a la BD
   onSubmit() {
     let registerBody = {
-      ...this.registrationState.getRegistrationData(), codigo: this.formVerificacion.value.codigo
+      ...this.registrationState.getRegistrationData(), codigoVerificacion: this.formVerificacion.value.codigo
     }
 
     this.auth.signUp(registerBody).subscribe({

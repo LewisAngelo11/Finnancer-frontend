@@ -57,4 +57,11 @@ export class Auth {
   validateCode(body: { correo: string; codigo: number }): Observable<any> {
     return this.http.post(`${environment.apiUrl}/auth/verify-mail`, body);
   }
+
+  resetPassword(correo: string, newPassword: string) {
+    return this.http.post(`${environment.apiUrl}/auth/reset-password`, {
+      correo,
+      newPassword
+    });
+  }
 }

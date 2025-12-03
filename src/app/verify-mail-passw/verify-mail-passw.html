@@ -13,10 +13,10 @@
         </div>
 
         <input
-            type="text"
+            type="number"
             formControlName="code"
             maxlength="6"
-            class="card p-2 border-1 text-center border-gray-400 text-lg rounded-xl text-gray-500 w-full"
+            class="card p-2 border-1 text-center border-gray-400 text-lg rounded-xl text-gray-500 focus:ring-green-400"
         />
 
         <p class="text-red-500">
@@ -25,7 +25,7 @@
 
         <button
             type="submit"
-            class="card items-start justify-center font-bold h-auto px-4 py-2 rounded-lg bg-green-400 w-full"
+            class="card items-start justify-center font-bold h-auto px-4 py-2 rounded-lg bg-green-400 w-full disabled:opacity-50"
             [disabled]="formVerifyCode.invalid"
         >
             Validar Código

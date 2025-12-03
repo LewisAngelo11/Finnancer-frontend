@@ -38,13 +38,12 @@ export class VerifyMailPassw implements OnInit {
       codigo: Number(code)
     }).subscribe({
       next: (res) => {
-        console.log('Código válido:', res);
         this.mensajeError = '';
         
-        // 👇 Redirección a cambiar contraseña si quieres
-        // this.router.navigate(['/changePassword'], {
-        //   queryParams: { email: this.correoUsuario }
-        // });
+        // Redirección a cambiar contraseña con el correo del usuario
+        this.router.navigate(['/changePassword'], {
+          queryParams: { email: this.correoUsuario }
+        });
       },
       error: (err) => {
         this.mensajeError = err.error.message;

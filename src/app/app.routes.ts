@@ -11,6 +11,7 @@ import { Transactions } from './transactions/transactions';
 import { Persons } from './persons/persons';
 import { Balance } from './balance/balance';
 import { VerifyMailPassw } from './verify-mail-passw/verify-mail-passw';
+import { ChangePassw } from './change-passw/change-passw';
 
 export const routes: Routes = [
     {
@@ -60,5 +61,9 @@ export const routes: Routes = [
     {
         path: 'verifyMailPassw',
         component: VerifyMailPassw,
+    },
+    {
+        path: 'changePassword',
+        component: ChangePassw,
     }
 ];
