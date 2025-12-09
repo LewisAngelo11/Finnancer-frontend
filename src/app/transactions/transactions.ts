@@ -293,6 +293,10 @@ export class Transactions implements OnInit {
       montoTotal: '',
       plazos: '',
     });
+
+    this.puedeGuardar = false;
+
+    this.mensajeEdit.set('');
     // Espera a que la animación termine antes de ocultarlo en el DOM
     setTimeout(() => this.modalEditTransaction.set(false), 200);
   }
@@ -486,10 +490,16 @@ export class Transactions implements OnInit {
         // Habilita el boton de guardar cambios
         this.puedeGuardar = true;
 
+        if (data.flujo === 'cuenta_por_cobrar' || 'cuenta_por_pagar' ){
+          this.puedeAbonar = true;
+          this.puedeCancelar = true;
+        }
+
         if (transaccionEstatus === 'pagada') {
           this.puedeAbonar = false;
           this.puedeCancelar = false;
         }
+
 
         // Mensaje que remplazará el nulo en caso de no haber id_subcategoria referenciada en la transacción
         let mensajeSubcategoria;
@@ -584,6 +594,8 @@ export class Transactions implements OnInit {
     this.formCuotas.patchValue({
       transaccion: idTransaccion,
     });
+
+    this.closeEditTransaction();
 
     this.openEditCouta();
   }

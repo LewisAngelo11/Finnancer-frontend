@@ -107,6 +107,14 @@ export class TransactionService {
     return this.http.get<any[]>(`${environment.apiUrl}/transacciones/expenses`);
   }
 
+  getAllIncomesAmountCurrent(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/transacciones/current-incomes`);
+  }
+
+  getAllExpensesAmountCurrent(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/transacciones/current-expenses`);
+  }
+
   getAllIncomesAmount(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/transacciones/amount/incomes`);
   }

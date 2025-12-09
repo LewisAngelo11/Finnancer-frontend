@@ -32,6 +32,11 @@
                         <td class="font-thin p-4">{{transaction.fecha_transaccion | date:'dd/MM/yyyy'}}</td>
                     </tr>
                 }
+                @empty {
+                    <tr>
+                        <td colspan="4" class="font-thin p-4">No hay transacciones hechas</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

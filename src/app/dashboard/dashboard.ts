@@ -91,8 +91,8 @@ export class Dashboard implements OnInit {
       error: (err) => { console.log(err) }
     });
 
-    // Obtener todos los ingresos del usuario
-    this.transactionService.getAllIncomesAmount().subscribe({
+    // Obtener todos los ingresos del usuario del mes actual
+    this.transactionService.getAllIncomesAmountCurrent().subscribe({
       next: (data) => {
         let montoTotal = data._sum.monto_total;
         this.ingresosMensuales = montoTotal;
@@ -101,8 +101,8 @@ export class Dashboard implements OnInit {
       error: (err) => { console.log(err) },
     });
 
-    // Obtener todos los Egresos del usuario
-    this.transactionService.getAllEspensesAmount().subscribe({
+    // Obtener todos los Egresos del usuario del mes actual
+    this.transactionService.getAllExpensesAmountCurrent().subscribe({
       next: (data) => {
         let montoTotal = data._sum.monto_total;
         this.egresosMensuales = montoTotal;
