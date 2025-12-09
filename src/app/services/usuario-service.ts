@@ -30,6 +30,7 @@ export interface BodyCreateProfile {
 }
 
 export interface BodyUpdateProfile {
+  idPerfil: number;
   nombre: string;
   icono: number;
   pin: string | null;

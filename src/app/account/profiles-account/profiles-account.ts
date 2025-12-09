@@ -18,6 +18,7 @@ export class ProfilesAccount implements OnInit {
   pinEnabled = signal(false);
   statusEnabled = signal(false);
   isSuperUser = signal(false); // Este signal lu utilizo para limitar a los perfiles que son de tipo 'Usuario' y no 'Administrador'
+  perfilSeleccionado!: Perfil;
   
   private fb = inject(FormBuilder);
   private usuarioService = inject(UsuarioService);
@@ -146,6 +147,7 @@ export class ProfilesAccount implements OnInit {
 
   // Función que abre el modal de actualizar los datos del perfil
   openModalUpdate(perfil: Perfil) {
+    this.perfilSeleccionado = perfil; // Guardo el perfil seleccionado
     this.modalUpdateOpen.set(true);
     setTimeout(() => this.animateModal.set(true), 10);
 
@@ -206,6 +208,7 @@ export class ProfilesAccount implements OnInit {
 
   modifyProfile() {
     const body: BodyUpdateProfile = {
+      idPerfil: this.perfilSeleccionado.id_perfil,
       nombre: this.nombrePerfilUpdate?.value || '',
       icono: Number(this.getIconoPerfilUpdate?.value) || 2,
       pin: this.pinProfileUpdate?.value || null,
