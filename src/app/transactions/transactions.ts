@@ -7,6 +7,7 @@ import { PersonaService } from '../services/persona-service';
 import { SubcategoriaService, Subcategoria } from '../services/subcategoria-service';
 import { BodyCreateTransaction, BodyUpdateTransaction, BodyUpdateTransaccionCuota, BodyAbonarCuota, TransaccionesCuotas } from '../services/transaction-service';
 import { TransactionService } from '../services/transaction-service';
+import { forkJoin } from 'rxjs';
 
 type Filtros = 'todas' | 'ingresos' | 'egresos' | 'pagadas' | 'pendientes' | 'canceladas';
 
@@ -84,6 +85,7 @@ export class Transactions implements OnInit {
   puedeGuardar = false;
   puedeAbonar = false;
   puedeCancelar = true;
+  abonoExitoso = false;
   
   formNewTransaction = this.fb.group({
     categoria: [null, Validators.required],
@@ -480,65 +482,56 @@ export class Transactions implements OnInit {
       return;
     }
 
-    this.transaccionService.getOneTransaction(idTransaccion).subscribe({
-      next: (data) => {
-        this.mensajeConsultarTransaccion = '';
-        const transaccionEstatus = data.estatus;
-
-        // Guardar el tipo de transacción
-        this.flujoTransaccionConsultada.set(data.categoria.flujo);
-
-        // Habilita el boton de guardar cambios
-        this.puedeGuardar = true;
-
-        if (data.flujo === 'cuenta_por_cobrar' || data.flujo === 'cuenta_por_pagar' ){
-          this.puedeAbonar = true;
-          this.puedeCancelar = true;
-        }
-
-        if (transaccionEstatus === 'pagada') {
-          this.puedeAbonar = false;
-          this.puedeCancelar = false;
-        }
-
-
-        // Mensaje que remplazará el nulo en caso de no haber id_subcategoria referenciada en la transacción
-        let mensajeSubcategoria;
-
-        const categoriaBuscada = this.categorias.find(c => c.id_categoria === data.id_categoria);
-        const subcategoriaBuscada = this.subcategorias.find(s => s.id_subcategoria === data.id_subcategoria);
-
-        if (!subcategoriaBuscada) {
-          mensajeSubcategoria = 'Sin subcategoría';
-        }
-
-        // Rellenamos el form con la info de la transacción
-        this.editarForm.patchValue({
-          categoria: categoriaBuscada?.nombre,
-          subcategoria: subcategoriaBuscada?.nombre || mensajeSubcategoria,
-          nota: data.nota,
-          montoTotal: data.monto_total,
-          plazos: data.plazos
-        });
-
-        // Habilitamos los demás campos que deben permitir editarse
-        this.editarForm.get('nota')?.enable();
-      },
-      error: () => {
-        this.mensajeConsultarTransaccion = "No existe la transacción ingresada.";
-        this.puedeGuardar = false;
+    forkJoin({
+      transaccion: this.transaccionService.getOneTransaction(idTransaccion),
+      abonos: this.transaccionService.getFeesTransaction(idTransaccion), 
+    }).subscribe(({ transaccion, abonos }) => {
+      this.mensajeConsultarTransaccion = '';
+      const transaccionEstatus = transaccion.estatus;
+  
+      // Guardar el tipo de transacción
+      this.flujoTransaccionConsultada.set(transaccion.categoria.flujo);
+  
+      // Habilita el boton de guardar cambios
+      this.puedeGuardar = true;
+  
+      if (transaccion.flujo === 'cuenta_por_cobrar' || 'cuenta_por_pagar' ){
+        this.puedeAbonar = true;
+        this.puedeCancelar = true;
       }
-    });
-
-    // Verifica si hay abonos a esa transacción
-    this.transaccionService.getFeesTransaction(idTransaccion).subscribe({
-      next: (data) => {
-        const abonado = Number(data._sum.pagado);
-        console.log(abonado)
-        if (abonado > 0) {
-          this.puedeCancelar = false;
-        }
-      },
+  
+      if (transaccionEstatus === 'pagada') {
+        this.puedeAbonar = false;
+        this.puedeCancelar = false;
+      }
+  
+      // Verifica si hay abonos a esa transacción
+      const abonado = Number(abonos._sum.pagado);
+      if (abonado > 0) {
+        this.puedeCancelar = false;
+      }
+  
+      // Mensaje que remplazará el nulo en caso de no haber id_subcategoria referenciada en la transacción
+      let mensajeSubcategoria;
+  
+      const categoriaBuscada = this.categorias.find(c => c.id_categoria === transaccion.id_categoria);
+      const subcategoriaBuscada = this.subcategorias.find(s => s.id_subcategoria === transaccion.id_subcategoria);
+  
+      if (!subcategoriaBuscada) {
+        mensajeSubcategoria = 'Sin subcategoría';
+      }
+  
+      // Rellenamos el form con la info de la transacción
+      this.editarForm.patchValue({
+        categoria: categoriaBuscada?.nombre,
+        subcategoria: subcategoriaBuscada?.nombre || mensajeSubcategoria,
+        nota: transaccion.nota,
+        montoTotal: transaccion.monto_total,
+        plazos: transaccion.plazos
+      });
+  
+      // Habilitamos los demás campos que deben permitir editarse
+      this.editarForm.get('nota')?.enable();
     });
   }
 
@@ -668,11 +661,12 @@ export class Transactions implements OnInit {
 
     this.transaccionService.paymentTransactionFee(body).subscribe({
       next: (res) => {
-        console.log(res);
+        this.abonoExitoso = true;
         this.mensajeAbonoCuota.set(res.mensaje);
       },
       error: (err) => {
-        console.log(err);
+        this.abonoExitoso = false;
+        this.mensajeAbonoCuota.set(err.error.message);
       }
     })
   }

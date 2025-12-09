@@ -1,4 +1,4 @@
-<main class="w-screen h-screen text-white p-4">
+<main class="w-screen min-h-screen text-white p-4">
     <button
         (click)="goToDashboard()"
         class="bg-green-primary flex items-center justify-center rounded-full w-10 h-auto p-2 mb-4 ml-2"
@@ -656,16 +656,21 @@
                             <input
                                 formControlName="abonar"
                                 type="number"
-                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500">
+                                class="card w-full p-3 border-1 border-gray-400 rounded-xl md:rounded-2xl text-gray-500 disabled:bg-gray-200">
                         </div>
                         <button
                             (click)="agregarAbonoCuota()"
                             [disabled]="!habilitarBotonAbonar()"
-                            class="card bg-green-primary p-3 rounded-2xl w-full font-medium"
+                            class="card bg-green-primary p-3 rounded-2xl w-full font-medium disabled:opacity-50"
                         >
                             Abonar a la cuota
                         </button>
-                        <p class="text-green-500 font-thin text-base">{{mensajeAbonoCuota()}}</p>
+                        @if (abonoExitoso) {
+                            <p class="text-green-500 font-thin text-base">{{mensajeAbonoCuota()}}</p>
+                        }
+                        @else {
+                            <p class="text-red-500 font-thin text-base">{{mensajeAbonoCuota()}}</p>
+                        }
                     </section>
                 </form>
             </div>
