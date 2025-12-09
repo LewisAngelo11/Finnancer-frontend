@@ -491,7 +491,7 @@ export class Transactions implements OnInit {
         // Habilita el boton de guardar cambios
         this.puedeGuardar = true;
 
-        if (data.flujo === 'cuenta_por_cobrar' || 'cuenta_por_pagar' ){
+        if (data.flujo === 'cuenta_por_cobrar' || data.flujo === 'cuenta_por_pagar' ){
           this.puedeAbonar = true;
           this.puedeCancelar = true;
         }
