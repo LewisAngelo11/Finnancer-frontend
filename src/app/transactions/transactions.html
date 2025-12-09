@@ -557,7 +557,7 @@
                                             <td class="font-thin p-4">Sin vencimiento</td>
                                         }
                                         @else {
-                                            <td class="font-thin p-4">{{cuota.fecha_vencimiento}}</td>
+                                            <td class="font-thin p-4">{{ cuota.fecha_vencimiento | date:'dd/MM/yyyy' }}</td>
                                         }
                                         <td class="font-thin p-4">{{cuota.estatus}}</td>
                                         <td class="font-thin p-4">

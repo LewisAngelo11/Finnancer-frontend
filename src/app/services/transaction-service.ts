@@ -103,6 +103,10 @@ export class TransactionService {
     return this.http.get(`${environment.apiUrl}/transacciones/${idTransaccion}`);
   }
 
+  getFeesTransaction(idTransaccion: number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/transacciones/fees/${idTransaccion}`);
+  }
+
   getExpensesTransaction():Observable<any[]> {
     return this.http.get<any[]>(`${environment.apiUrl}/transacciones/expenses`);
   }

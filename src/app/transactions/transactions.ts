@@ -366,6 +366,7 @@ export class Transactions implements OnInit {
     this.animateModal.set(false);
     // Espera a que la animación termine antes de ocultarlo en el DOM
     this.mensajeAbonoCuota.set('');
+    this.mensajeUpdateCuota.set('');
     setTimeout(() => this.modalEditCuota.set(false), 200);
     this.openEditCouta();
   }
@@ -527,6 +528,17 @@ export class Transactions implements OnInit {
         this.mensajeConsultarTransaccion = "No existe la transacción ingresada.";
         this.puedeGuardar = false;
       }
+    });
+
+    // Verifica si hay abonos a esa transacción
+    this.transaccionService.getFeesTransaction(idTransaccion).subscribe({
+      next: (data) => {
+        const abonado = Number(data._sum.pagado);
+        console.log(abonado)
+        if (abonado > 0) {
+          this.puedeCancelar = false;
+        }
+      },
     });
   }
 
