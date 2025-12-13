@@ -2,17 +2,25 @@
     <div class="bg-gradient-gray-h card w-full h-full p-4 flex flex-col rounded-3xl text-white gap-4">
         <h2 class="font-medium text-xl">Mayores Gastos</h2>
         <div class="overflow-auto w-full h-full">
-            <!-- Próximamente -->
-            <section class="relative min-h-[300px] min-w-[600px]">
-                @for (gasto of gastos; track gasto.id_transaccion; let i = $index) {
-                    <div [class]="containers[i + 1]" class="font-thin text-xs flex items-center justify-center text-center">
-                        <div>
-                        {{ gasto.categoria }} <br />
-                        ${{ gasto.monto_total }}
+            @if(gastos.length > 0) {
+                <section class="relative min-h-[300px] min-w-[600px]">
+                    @for (gasto of gastos; track gasto.id_transaccion; let i = $index) {
+                        <div [class]="containers[i + 1]" class="font-thin text-xs flex items-center justify-center text-center">
+                            <div>
+                            {{ gasto.categoria }} <br />
+                            ${{ gasto.monto_total }}
+                            </div>
                         </div>
+                    }
+                </section>
+            }
+            @else {
+                <section class="relative h-full w-full">
+                    <div class="font-thin text-base flex items-center justify-center text-center">
+                        <p>No han habido gastos en el mes</p>
                     </div>
-                }
-            </section>
+                </section>
+            }
         </div>
     </div>
 </div>
