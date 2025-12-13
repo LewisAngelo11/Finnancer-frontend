@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, output, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, signal, inject, output, PLATFORM_ID, input, effect } from '@angular/core';
 import { CategoriaService } from '../../services/categoria-service';
 import { Categorias } from '../categories';
 import { isPlatformBrowser } from '@angular/common';
@@ -16,6 +16,7 @@ export class CategoriesTable implements OnInit {
   modalOpen = output<boolean>();
   editarCategoria = output<any>();
   animateModal = signal(false);
+  nuevaCategoria = input<Categorias | null>(null);
 
   private categoriaService = inject(CategoriaService);
   private platformId = inject(PLATFORM_ID);
@@ -37,6 +38,19 @@ export class CategoriesTable implements OnInit {
     14: 'bx bx-credit-card',
   };
 
+  constructor() {
+    effect(() => {
+      const nueva = this.nuevaCategoria();
+
+      if (!nueva) return;
+
+      this.categorias = [...this.categorias, nueva];
+      this.totalCategorias = this.categorias.length;
+      this.filtrarCategorias('Todos');
+
+    });
+  }
+
   ngOnInit() {
     let authToken;
 
@@ -53,9 +67,6 @@ export class CategoriesTable implements OnInit {
         this.totalCategorias = this.categorias.length;
         this.filtrarCategorias('Todos');
       },
-      error: (err) => {
-        console.log(err);
-      }
     });
   }
 

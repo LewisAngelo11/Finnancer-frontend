@@ -50,6 +50,7 @@ export class Categories implements OnInit {
   animateModal = signal(false);
 
   categorias: Categorias[] = [];
+  categoriaNueva: any; // Variable que se utiliza para guardar la nueva categoría registrada
   categoriaSeleccionada: any;
   categoriaActiva = signal(false);
   totalCategorias = 0;
@@ -57,6 +58,7 @@ export class Categories implements OnInit {
   categoriasEgresos = 0;
 
   subcategorias: Subcategorias[] = [];
+  subcategoriaNueva: any; // Variable que se utiliza para guardar la nueva subcategoría registrada
   subcategoriaSeleccionada: any;
   subcategoriaActiva = signal(false);
   totalSubcategorias = 0;
@@ -342,8 +344,7 @@ export class Categories implements OnInit {
           mostrarPanel: false
         });
 
-        this.categorias.push(data);
-
+        this.categoriaNueva = data.categoriaNueva;
         this.closeModalCategoria();
       },
 
@@ -399,12 +400,8 @@ export class Categories implements OnInit {
           flujoEfectivo: '',
         });
 
-        this.subcategorias.push(data);
-
+        this.subcategoriaNueva = data;
         this.closeModalSubcategoria();
-      },
-      error: (err) => {
-        console.log(err);
       }
     });
   }

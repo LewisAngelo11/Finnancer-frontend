@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output, signal, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, output, signal, PLATFORM_ID, input, effect } from '@angular/core';
 import { SubcategoriaService } from '../../services/subcategoria-service';
 import { Subcategorias } from '../categories';
 import { isPlatformBrowser } from '@angular/common';
@@ -18,6 +18,8 @@ export class SubcategoriesTable implements OnInit {
   subcategoriasFiltradas: Subcategorias[] = [];
   modalOpen = output<boolean>();
   editarSubcategoria = output<boolean>();
+  nuevaSubcategoria = input<Subcategorias | null>(null);
+  totalSubcategorias = 0;
 
   selectedFilterSubcategories = signal<FiltrosSubcategorias>('Todos');
   private platformId = inject(PLATFORM_ID);
@@ -39,6 +41,18 @@ export class SubcategoriesTable implements OnInit {
     13: 'bx-bar-chart-alt-2',
     14: 'bx bx-credit-card',
   };
+
+  constructor() {
+    effect(() => {
+      const nueva = this.nuevaSubcategoria();
+
+      if (!nueva) return;
+
+      this.subcategorias = [...this.subcategorias, nueva];
+      this.totalSubcategorias = this.subcategorias.length;
+      this.filtrarSubcategorias('Todos');
+    });
+  }
 
   ngOnInit(): void {
     let authToken;

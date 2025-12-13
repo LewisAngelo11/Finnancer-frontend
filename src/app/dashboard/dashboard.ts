@@ -130,6 +130,8 @@ export class Dashboard implements OnInit {
     if (result > 0) {
       this.isPositiveI.set(true);
     }
+    
+    this.isPositiveI.set(false);
   }
 
   verificarPositivoEgresos(egresosMen: number, egresosMin: number) {
@@ -138,6 +140,8 @@ export class Dashboard implements OnInit {
     if (result > 0) {
       this.isPositiveE.set(true);
     }
+
+    this.isPositiveE.set(false);
   }
 
   // Datos del pie chart

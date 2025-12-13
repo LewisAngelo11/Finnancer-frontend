@@ -46,12 +46,14 @@
             <app-categories-table
                 (modalOpen)="openModalCategoria($event)"
                 (editarCategoria)="onEditarCategoria($event)"
+                [nuevaCategoria]="categoriaNueva"
             ></app-categories-table>
             <!-- Línea divisora -->
             <span class="bg-gray-details w-full h-0.5"></span>
             <app-subcategories-table
                 (modalOpen)="openModalSubcategoria($event)"
                 (editarSubcategoria)="onEditarSubcategoria($event)"
+                [nuevaSubcategoria]="subcategoriaNueva"
             ></app-subcategories-table>
         </section>
     </div>
