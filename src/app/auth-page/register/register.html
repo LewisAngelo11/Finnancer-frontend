@@ -1,5 +1,5 @@
 <form [formGroup]="formSignUp" (ngSubmit)="onSumbit()">
-    <div class="flex flex-col items-center justify-center gap-1 lg:gap-3 w-full h-full slide-in-down">
+    <div class="flex flex-col items-center justify-center gap-3 lg:gap-4 w-full h-full slide-in-down">
         <div class="flex flex-col gap-1 items-start w-full slide-in-down-2">
             <div class="flex gap-2 items-center">
                 <label for="name">Nombre</label>
@@ -57,10 +57,24 @@
                     <small class="text-red-600 ml-2">Este campo es obligatorio</small>
                 }
             </div>
-            <input type="password" id="password" placeholder="Ingrese su contraseña" [class.input-invalid]="password?.touched && password?.invalid"
-                formControlName="password" required (click)="resetErrorMessage()"
-                class="card w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
-            >
+            <div class="relative w-full card">
+                <input [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Ingrese su contraseña" [class.input-invalid]="password?.touched && password?.invalid"
+                    formControlName="password" required (click)="resetErrorMessage()"
+                    class="w-full p-2 border-1 border-gray-400 rounded-xl text-gray-500"
+                >
+                <button
+                        class="absolute right-3 top-1/5 text-gray-500"
+                        type="button"
+                        (click)="togglePassword()"
+                    >
+                        @if (showPassword) {
+                            Ocultar
+                        }
+                        @else {
+                            Mostrar
+                        }
+                </button>
+            </div>
         </div>
         <button
             type="submit"

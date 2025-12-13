@@ -17,6 +17,7 @@ export class Register {
   private registrationState = inject(RegistrationState);
 
   mensajeError = '';
+  showPassword = false;
 
   // Crear el formulario de crear una cuenta.
   formSignUp = this.fb.group({
@@ -74,5 +75,10 @@ export class Register {
 
   resetErrorMessage() {
     this.mensajeError = '';
+  }
+
+  // Función para mostrar la contraseña en el input
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 }
