@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://finnancer-backend-production.up.railway.app'
+    apiUrl: 'https://finnancer-backend-h1nx.onrender.com'
 };
